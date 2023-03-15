@@ -1,17 +1,18 @@
 import type { NextPage } from 'next'
 
 import { useEffect, useState } from 'react'
-
 import { useRouter } from 'next/router'
+import ReactPlayer from 'react-player'
 
 interface Props {
   stream: string
 }
 
-const FeedPage: NextPage<Props> = () => {
+const StreamPage: NextPage<Props> = () => {
   const router = useRouter()
   const { url } = router.query
 
+  const [ isTwitcasting, setIsTwitcasting ] = useState(false)
   const [ streamFile, updateStreamFile ] = useState('')
   const [ startTime, updateStartTime ] = useState('0')
   const [ duration, updateDuration ] = useState('10')
@@ -30,13 +31,16 @@ const FeedPage: NextPage<Props> = () => {
         })
       })
       const data = await response.json()
-      console.log({ data })
 
       updateStreamFile(data.file)
     }
 
     if (url) {
       startStream()
+    }
+
+    if (url?.includes('twitcasting')) {
+      setIsTwitcasting(true)
     }
   }, [url])
 
@@ -70,9 +74,17 @@ const FeedPage: NextPage<Props> = () => {
     }, parseInt(duration) * 1000)
   }, [duration, prompt, startTime, streamFile])
 
+  console.log({ url })
+
   return (
     <div>
-      <iframe src={`${url}/embeddedplayer/live?auto_play=true&default_mute=false`} width="640px" height="360px" frameBorder="0"></iframe>
+      {
+        isTwitcasting ? (
+          <iframe src={`${url}/embeddedplayer/live?auto_play=true&default_mute=false`} width="640px" height="360px"></iframe>
+        ) : (
+          <ReactPlayer url={url} controls playing />
+        )
+      }
 
       <div>
         <h1>Transcriptions</h1>
@@ -90,4 +102,4 @@ const FeedPage: NextPage<Props> = () => {
   )
 }
 
-export default FeedPage
+export default StreamPage

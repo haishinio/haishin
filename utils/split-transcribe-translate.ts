@@ -35,7 +35,7 @@ export default async function splitTranscribeTranslate(
   
   // Transcribe into JP text
   const transcription = await openai.createTranscription(
-    fs.createReadStream(partFileName),
+    fs.createReadStream(partFileName) as unknown as File,
     'whisper-1',
     prompt,
     'json',
