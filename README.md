@@ -1,7 +1,13 @@
 RESOURCES:
   - https://blog.logrocket.com/build-video-streaming-server-node/ to send the stream to the videoJS with the /api/start
-  - node-streamlink api https://github.com/dragongoose/node-streamlink/blob/master/src/index.ts (Potentially just see about doing this myself to pass the stream url itself to video)
   - https://videojs.com/guides/live/
-  - https://github.com/ffmpegwasm/ffmpeg.wasm/blob/master/docs/api.md#ffmpeg-fs
-  - https://github.com/openai/openai-node/tree/master
-  - https://www.npmjs.com/package/deepl-node
+
+## Next steps
+
+- Rather than embedding twitcasting let's try to use videoJS to play the mp4 file we are currently archiving
+- Once above is done we should be able to reuse that to power the file upload (mp4 only) -> call /api/transcribe/archive
+- Styling
+- Deployment?
+- Can we overlay the last transcription + translation over stream?
+- Can we pull in comments + gifts from livestreams?
+- Can we add auth so you could comment directly from here?
