@@ -32,18 +32,24 @@ export default async function splitTranscribeTranslate(
   await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
   
   // Transcribe into JP text
-  const transcription = await openai.createTranscription(
-    fs.createReadStream(partFileName) as unknown as File,
-    'whisper-1',
-    prompt,
-    'json',
-    0,
-    'ja'
-  )
-  const transcriptionText = transcription.data.text
+  let transcriptionText = ''
+  try {
+    const transcription = await openai.createTranscription(
+      fs.createReadStream(partFileName) as unknown as File,
+      'whisper-1',
+      prompt,
+      'json',
+      0,
+      'ja'
+    )
+    transcriptionText = transcription.data.text
+  } catch {}
   
   // Translate the JP text
-  const translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
+  let translation = { text: '' }
+  try {
+    translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
+  } catch{}
 
   // Delete the stream part as we shouldn't need it anymore
   fs.unlinkSync(partFileName)
