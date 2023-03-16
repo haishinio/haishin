@@ -5,6 +5,8 @@ import { Streamlink } from '@dragongoose/streamlink'
 import { format } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { faker } from '@faker-js/faker/locale/en_GB'
+
 type Query = {
   url: string
 }
@@ -32,6 +34,14 @@ export default async function handler(
   const query: Query = JSON.parse(req.body)
   const originalUrl = query.url
   const file = `./public/streams/${setFileName(originalUrl)}`
+
+  if (process.env.APP_ENV === 'faker') {
+    return res.status(200).json({
+      file,
+      streamUrl: faker.internet.url(),
+      url: originalUrl,
+    })
+  }
 
   let {stdout: streamUrl} = await exec(`streamlink "${originalUrl}" best --stream-url`)
   streamUrl = streamUrl.replace('\r\n', '')

@@ -2,10 +2,19 @@ import type { NextPage } from 'next'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import { v4 as uuidv4 } from 'uuid'
+import { format } from 'date-fns'
 import ReactPlayer from 'react-player'
 
 interface Props {
   stream: string
+}
+
+interface Textlog {
+  id: string
+  date: string
+  transcription: string
+  translation: string
 }
 
 const StreamPage: NextPage<Props> = () => {
@@ -18,8 +27,7 @@ const StreamPage: NextPage<Props> = () => {
   const [ startTime, updateStartTime ] = useState('0')
   const [ duration, updateDuration ] = useState('10')
 
-  const [ transcriptions, updateTranscriptions ] = useState([])
-  const [ translations, updateTranslations ] = useState([])
+  const [ textLogs, updateTextLogs ] = useState<Textlog[]>([])
   const [ prompt, updatePrompt ] = useState('')
 
   // Starts capturing the stream
@@ -65,8 +73,12 @@ const StreamPage: NextPage<Props> = () => {
       })
 
       const data = await response.json()
-      updateTranscriptions(state => [data.transcription, ...state])
-      updateTranslations(state => [data.translation, ...state])
+      updateTextLogs(state => [{
+        id: uuidv4(),
+        date: format(new Date(), 'H:mm'),
+        transcription: data.transcription,
+        translation: data.translation,
+      }, ...state])
       updatePrompt(data.transcription)
 
       const newStartTime = parseInt(startTime) + parseInt(duration)
@@ -92,16 +104,16 @@ const StreamPage: NextPage<Props> = () => {
       }
 
       <div>
-        <h1>Transcriptions</h1>
-        {transcriptions.map((transcription) => (
-          <p key={transcription}>{transcription}</p>
-        ))}
-      </div>
-      <div>
-        <h1>Translations</h1>
-        {translations.map((translation) => (
-          <p key={translation}>{translation}</p>
-        ))}
+        <h1>Log</h1>
+        <table>
+          {textLogs.map((textLog: Textlog) => (
+            <tr key={textLog.id}>
+              <td>{textLog.date}</td>
+              <td>{textLog.transcription}</td>
+              <td>{textLog.translation}</td>
+            </tr>
+          ))}
+        </table>
       </div>
     </div>
   )

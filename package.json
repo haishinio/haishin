@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:faker": "cross-env APP_ENV=faker next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -21,13 +22,17 @@
     "openai": "^3.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-player": "^2.12.0"
+    "react-player": "^2.12.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/formidable": "^2.0.5",
     "@types/node": "18.15.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@types/uuid": "^9.0.1",
+    "cross-env": "^7.0.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "patch-package": "^6.5.1",
