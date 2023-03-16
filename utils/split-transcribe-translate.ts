@@ -10,7 +10,7 @@ const openAiConfig = new Configuration({
 const openai = new OpenAIApi(openAiConfig)
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 const ffmpeg = createFFmpeg({
-  log: true,
+  // log: true,
 })
 
 export default async function splitTranscribeTranslate(
@@ -22,8 +22,6 @@ export default async function splitTranscribeTranslate(
   const part = parseInt(startTime) / parseInt(duration)
   const partFileName = `./public/stream-part${part}.wav`
   const pathToFile = path.join(".", streamFile)
-
-  console.log({ partFileName })
 
   // Get the 10s wav part from the mp4
   if (!ffmpeg.isLoaded()) {

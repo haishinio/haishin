@@ -74,8 +74,6 @@ const StreamPage: NextPage<Props> = () => {
     }, parseInt(duration) * 1000)
   }, [duration, prompt, startTime, streamFile])
 
-  console.log({ url })
-
   return (
     <div>
       {

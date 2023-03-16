@@ -25,16 +25,7 @@ export default async function handler(
     prompt,
   }: Query = JSON.parse(req.body)
 
-  console.log({
-    streamFile,
-    startTime,
-    duration,
-    prompt,
-  })
-
   const data = await splitTranscribeTranslate(streamFile, startTime, duration, prompt)
-
-  console.log({ data })
 
   // Stream the JP and EN text?
   res.status(200).json({
