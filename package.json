@@ -13,6 +13,7 @@
     "@dragongoose/streamlink": "^1.1.1",
     "@ffmpeg/core": "^0.11.0",
     "@ffmpeg/ffmpeg": "^0.11.6",
+    "await-exec": "^0.1.2",
     "date-fns": "^2.29.3",
     "deepl-node": "^1.8.0",
     "formidable": "^2.1.1",

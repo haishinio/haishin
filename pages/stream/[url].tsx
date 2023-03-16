@@ -14,6 +14,7 @@ const StreamPage: NextPage<Props> = () => {
 
   const [ isTwitcasting, setIsTwitcasting ] = useState(false)
   const [ streamFile, updateStreamFile ] = useState('')
+  const [ streamUrl, updateStreamUrl ] = useState(url)
   const [ startTime, updateStartTime ] = useState('0')
   const [ duration, updateDuration ] = useState('10')
 
@@ -33,12 +34,18 @@ const StreamPage: NextPage<Props> = () => {
       const data = await response.json()
 
       updateStreamFile(data.file)
+
+      if (url?.includes('showroom')) {
+        // For showroom we can use the actual streamUrl in react-video
+        updateStreamUrl(data.streamUrl)
+      }
     }
 
     if (url) {
       startStream()
     }
 
+    // We need to use the twitcasting embed rather than react-video
     if (url?.includes('twitcasting')) {
       setIsTwitcasting(true)
     }
@@ -58,8 +65,8 @@ const StreamPage: NextPage<Props> = () => {
       })
 
       const data = await response.json()
-      updateTranscriptions(state => [...state, data.transcription])
-      updateTranslations(state => [...state, data.translation])
+      updateTranscriptions(state => [data.transcription, ...state])
+      updateTranslations(state => [data.translation, ...state])
       updatePrompt(data.transcription)
 
       const newStartTime = parseInt(startTime) + parseInt(duration)
@@ -78,9 +85,9 @@ const StreamPage: NextPage<Props> = () => {
     <div>
       {
         isTwitcasting ? (
-          <iframe src={`${url}/embeddedplayer/live?auto_play=true&default_mute=false`} width="640px" height="360px"></iframe>
+          <iframe src={`${streamUrl}/embeddedplayer/live?auto_play=true&default_mute=false`} width="640px" height="360px"></iframe>
         ) : (
-          <ReactPlayer url={url} controls playing />
+          <ReactPlayer url={streamUrl} controls playing />
         )
       }
 

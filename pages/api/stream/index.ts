@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import fs from 'fs'
+import exec from 'await-exec'
 import { Streamlink } from '@dragongoose/streamlink'
 import { format } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -10,6 +11,7 @@ type Query = {
 
 type Data = {
   file: string
+  streamUrl: string
   url: string
 }
 
@@ -31,11 +33,15 @@ export default async function handler(
   const originalUrl = query.url
   const file = `./public/streams/${setFileName(originalUrl)}`
 
+  let {stdout: streamUrl} = await exec(`streamlink "${originalUrl}" best --stream-url`)
+  streamUrl = streamUrl.replace('\r\n', '')
+
   const client = new Streamlink(originalUrl, { outputStdout: true })
   const streamFile = fs.createWriteStream(file)
 
   res.status(200).json({
     file,
+    streamUrl,
     url: originalUrl,
   });
 
