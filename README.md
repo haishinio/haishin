@@ -4,9 +4,10 @@ RESOURCES:
 
 ## Next steps
 
-- ~~Rather than embedding twitcasting let's try to use videoJS to play the mp4 file we are currently archiving~~ Instead will need to embed the stream that is being downloaded. For twitcasting we use their embed but for youtube+twitch we should be able to use react-player's embed. (They'll still be downloaded locally with streamlink)
-- File upload (mp4 only) -> call /api/transcribe/archive
-- Styling
+- How to handle when stream is finish? Can /transcribe/live say done?
+- Styling, thinking rows of datetime, transcription and translation
+- Can we not use the best preset so we can save on filesize
+- Can we speed up the duration to reduce lag?
 - Deployment?
 - Can we overlay the last transcription + translation over stream?
 - Can we pull in comments + gifts from livestreams?
