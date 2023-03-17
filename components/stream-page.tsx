@@ -18,9 +18,8 @@ type Props = {
 const StreamPage = (props: Props) => {
   const { isTwitcasting, originalUrl, streamUrl, textLogs, updateFileDuration } = props
 
-  const size = useWindowDimension()
-
   // Set logHeight
+  const size = useWindowDimension()
   const ref = useRef(null)
   const [logHeight, setLogHeight] = useState(0)
   useEffect(() => {
@@ -49,7 +48,7 @@ const StreamPage = (props: Props) => {
         </div>
 
         <div className={`col-span-12 xl:col-span-4 xl:!max-h-screen overflow-auto`} style={{maxHeight: `${logHeight}px`}}>
-          <table className="table-auto w-full">
+          <table className="w-full">
             <tbody>
             {textLogs.map((textLog: TextLog) => (
                 <tr key={textLog.id} className="odd:bg-white even:bg-slate-100">
