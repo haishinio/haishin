@@ -1,7 +1,9 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { v4 as uuidv4 } from 'uuid'
 import splitTranscribeTranslate from '../../../utils/split-transcribe-translate'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
+import type { TextLog } from '../../../types/Textlog'
 
 type Query = {
   fileDuration: number
@@ -9,8 +11,7 @@ type Query = {
 }
 
 type Data = {
-  transcriptions: string[]
-  translations: string[]
+  textLogs: TextLog[]
 }
 
 export default async function handler(
@@ -24,8 +25,7 @@ export default async function handler(
   // Get length of file uploaded if available
   const numOfParts = (fileDuration / partDuration)
 
-  let transcriptionArray = [] as string[]
-  let translationArray = [] as string[]
+  let textLogArray = [] as TextLog[]
   // For every 10s, split the file and send to whisper and then deepl
   for (let i = 0; i < numOfParts; i++) {
     const startTime = partDuration * i
@@ -33,16 +33,19 @@ export default async function handler(
       streamFile,
       startTime.toString(),
       '10', 
-      transcriptionArray.at(-1)
+      textLogArray.at(-1)?.transcription ?? ''
     )
-    
-    transcriptionArray.push(data.transcription)
-    translationArray.push(data.translation)
+
+    textLogArray.push({
+      id: uuidv4(),
+      time: startTime.toString(),
+      transcription: data.transcription,
+      translation: data.translation
+    })
   }
 
   // Then group the responses and send to the ui
   res.status(200).json({
-    transcriptions: transcriptionArray,
-    translations: translationArray
+    textLogs: textLogArray
   })
 }

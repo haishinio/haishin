@@ -3,18 +3,16 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import ReactPlayer from 'react-player'
+import TextLogRow from '../../components/textlog-row'
 
-interface Props {
-  stream: string
-}
+import type { TextLog } from '../../types/Textlog'
 
-const StreamPage: NextPage<Props> = () => {
+const StreamPage: NextPage = () => {
   const router = useRouter()
   const { url } = router.query
 
   const [ fileDuration, updateFileDuration ] = useState(0)
-  const [ transcriptions, updateTranscriptions ] = useState([])
-  const [ translations, updateTranslations ] = useState([])
+  const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])
 
   // Starts transcribing+translating the stream
   useEffect(() => {
@@ -28,8 +26,7 @@ const StreamPage: NextPage<Props> = () => {
       })
 
       const data = await response.json()
-      updateTranscriptions(data.transcriptions)
-      updateTranslations(data.translations)
+      updateTextLogs(data.textLogs)
     }
 
     if (url && fileDuration) {
@@ -38,24 +35,29 @@ const StreamPage: NextPage<Props> = () => {
   }, [fileDuration, url])
 
   return (
-    <div>
-      {
-        url && (
-          <ReactPlayer url={url} onDuration={(duration) => updateFileDuration(duration)} controls playing />
-        )
-      }
+    <div className="h-screen overflow-hidden">
+      <div className="grid grid-cols-12 xl:gap-4 content-start">
+        <div className="h-fit col-span-12 xl:col-span-5">
+          {
+            url && (
+              <div className="aspect-w-16 aspect-h-9">
+                <ReactPlayer url={url} onDuration={(duration) => updateFileDuration(duration)} controls playing width='100%' height='100%' />
+              </div>
+            )
+          }
+        </div>
 
-      <div>
-        <h1>Transcriptions</h1>
-        {transcriptions.map((transcription) => (
-          <p key={transcription}>{transcription}</p>
-        ))}
-      </div>
-      <div>
-        <h1>Translations</h1>
-        {translations.map((translation) => (
-          <p key={translation}>{translation}</p>
-        ))}
+        <div className="col-span-12 xl:col-span-7 max-h-96 xl:max-h-screen overflow-auto">
+          <table className="table-auto">
+            <tbody>
+              {textLogs.map((textLog: TextLog) => (
+                <tr key={textLog.id} className="odd:bg-white even:bg-slate-100">
+                  <TextLogRow textLog={textLog} />
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
