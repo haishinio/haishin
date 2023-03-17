@@ -1,10 +1,9 @@
 import type { NextPage } from 'next'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from 'uuid'
 import { format } from 'date-fns'
-import ReactPlayer from 'react-player'
 
 import StreamPage from '../../components/stream-page'
 
@@ -45,6 +44,7 @@ const StreamUrl: NextPage = () => {
     }
 
     if (url) {
+      updateStreamUrl(url)
       startStream()
     }
 
@@ -95,8 +95,8 @@ const StreamUrl: NextPage = () => {
   return (
     <>
       {
-        url ? (
-          <StreamPage isTwitcasting={isTwitcasting} streamUrl={streamUrl} textLogs={textLogs} updateFileDuration={() => {}} />
+        streamUrl ? (
+          <StreamPage isTwitcasting={isTwitcasting} originalUrl={url} streamUrl={streamUrl} textLogs={textLogs} updateFileDuration={() => {}} />
         ) : (
           <p>LOADING</p>
         )

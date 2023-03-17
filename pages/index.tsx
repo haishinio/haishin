@@ -30,7 +30,7 @@ const Home: NextPage = () => {
         </form>
 
         <div className="text-center">
-          <p>Currently known supported sites: <i>Youtube</i>, <i>Twitch</i>, <i>Twitcasting</i> and <i>Showroom</i>.</p>
+          <p>Currently known supported sites: <i>Youtube</i>, <i>Twitch</i>, <i>Twitcasting</i> and <i>Showroom (when under VPN)</i>.</p>
           <p>Anything supporting <a href="">Streamlink</a> <i>should</i> work</p>
         </div>
       </section>
@@ -47,7 +47,7 @@ const Home: NextPage = () => {
         <form action="/api/stream/upload" method="post" encType="multipart/form-data" className="flex my-4">
           <label className="relative flex-1">
             <span className="sr-only">File</span>
-            <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md p-2 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm" placeholder="accessStream" type="file" name="file" />
+            <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md p-2 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm" type="file" name="file" />
           </label>
           <button type="submit" className="ml-4 px-8 py-1 text-white rounded bg-sky-600 hover:bg-sky-700">Upload</button>
         </form>

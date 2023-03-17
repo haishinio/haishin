@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import ReactPlayer from 'react-player'
+import TopMenu from './top-menu'
 import TextLogRow from './textlog-row'
 
 import useWindowDimension from '../hooks/useWindowHeight'
@@ -8,13 +9,14 @@ import type { TextLog } from '../types/Textlog'
 
 type Props = {
   isTwitcasting: boolean
+  originalUrl: string | string[] | undefined
   streamUrl: string | string[] | undefined
   textLogs: TextLog[]
   updateFileDuration: Function
 }
 
 const StreamPage = (props: Props) => {
-  const { isTwitcasting, streamUrl, textLogs, updateFileDuration } = props
+  const { isTwitcasting, originalUrl, streamUrl, textLogs, updateFileDuration } = props
 
   const size = useWindowDimension()
 
@@ -31,7 +33,8 @@ const StreamPage = (props: Props) => {
   return (
     <div className="h-screen overflow-hidden">
       <div className="grid grid-cols-12 content-start">
-        <div className="h-fit col-span-12 xl:col-span-8" ref={ref}>
+        <div className="col-span-12 xl:col-span-8" ref={ref}>
+          <TopMenu url={originalUrl} />
           {
             isTwitcasting ? (
               <div className="aspect-w-16 aspect-h-9">
