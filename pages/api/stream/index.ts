@@ -18,6 +18,15 @@ type Data = {
 }
 
 function setFileName(url: string): string {
+  const paths = url
+    .replace('https://', '')
+    .replace('c:', '')
+    .split('/')
+  const path = `${paths[0]}--${paths[1]}.mp4`
+  return path
+}
+
+function setArchivedFileName(url: string): string {
   const dateTimeStart = format(new Date(), 'y-MM-dd_HH-mm-ss')
   const paths = url
     .replace('https://', '')
@@ -43,25 +52,44 @@ export default async function handler(
     })
   }
 
+  // Get the streamUrl
   let {stdout: streamUrl} = await exec(`streamlink "${originalUrl}" best --stream-url`)
   streamUrl = streamUrl.replace('\r\n', '')
 
-  const client = new Streamlink(originalUrl, { outputStdout: true })
-  const streamFile = fs.createWriteStream(file)
+  // Try access the file
+  try {
+    fs.accessSync(file, fs.constants.R_OK)
+    // If it exists then return the output
+    return res.status(200).json({
+      file,
+      streamUrl,
+      url: originalUrl,
+    });
+  } catch {
+    // If it doesn't exist then start archiving
+    const client = new Streamlink(originalUrl, { outputStdout: true })
+    const streamFile = fs.createWriteStream(file)
+  
+    res.status(200).json({
+      file,
+      streamUrl,
+      url: originalUrl,
+    });
+  
+    client.begin()
+    client.on('log', data => {
+      // console.log('writing to file')
+      streamFile.write(data) // puts data into file
+    })
+  
+    client.on('close', () => {
+      streamFile.close() // closes the file when the stream ends or is closed
+  
+      // Move completed file to backups
+      fs.copyFileSync(file, `./public/backup/${setArchivedFileName(originalUrl)}`)
 
-  res.status(200).json({
-    file,
-    streamUrl,
-    url: originalUrl,
-  });
-
-  client.begin()
-  client.on('log', data => {
-    // console.log('writing to file')
-    streamFile.write(data) // puts data into file
-  })
-
-  client.on('close', () => {
-    streamFile.close() // closes the file when the stream ends or is closed
-  })
+      // Delete file in streams
+      fs.unlinkSync(file)
+    })
+  }
 }
