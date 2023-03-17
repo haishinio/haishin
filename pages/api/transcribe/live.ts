@@ -8,7 +8,7 @@ import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 type Query = {
   streamFile: string
   startTime: string
-  duration: string
+  splitTime: string
   prompt: string
 }
 
@@ -21,6 +21,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
+  const {
+    streamFile,
+    startTime,
+    splitTime,
+    prompt,
+  }: Query = JSON.parse(req.body)
+
   if (process.env.APP_ENV === 'faker') {
     return res.status(200).json({
       transcription: fakerJP.lorem.words(10),
@@ -28,14 +35,7 @@ export default async function handler(
     })
   }
 
-  const {
-    streamFile,
-    startTime,
-    duration,
-    prompt,
-  }: Query = JSON.parse(req.body)
-
-  const data = await splitTranscribeTranslate(streamFile, startTime, duration, prompt)
+  const data = await splitTranscribeTranslate(streamFile, startTime, splitTime, prompt)
 
   // Stream the JP and EN text?
   res.status(200).json({

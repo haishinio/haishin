@@ -16,10 +16,10 @@ const ffmpeg = createFFmpeg({
 export default async function splitTranscribeTranslate(
   streamFile = './public/stream.mp4',
   startTime = '0',
-  duration = '10',
+  durationOfPart = '10',
   prompt = ''
 ) {
-  const part = parseInt(startTime) / parseInt(duration)
+  const part = parseInt(startTime) / parseInt(durationOfPart)
   const partFileName = `./public/stream-part${part}.wav`
   const pathToFile = path.join(".", streamFile)
 
@@ -28,7 +28,7 @@ export default async function splitTranscribeTranslate(
     await ffmpeg.load()
   }
   ffmpeg.FS('writeFile', 'stream.mp4', await fetchFile(pathToFile))
-  await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime, '-t', duration, '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
+  await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime, '-t', durationOfPart, '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
   await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
   
   // Transcribe into JP text

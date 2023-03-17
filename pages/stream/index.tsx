@@ -2,7 +2,6 @@ import type { NextPage } from 'next'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import ReactPlayer from 'react-player'
 import StreamPage from '../../components/stream-page'
 
 import type { TextLog } from '../../types/Textlog'
@@ -38,7 +37,7 @@ const StreamIndex: NextPage = () => {
     <>
       {
         url ? (
-          <StreamPage isTwitcasting={false} streamUrl={url} textLogs={textLogs} updateFileDuration={updateFileDuration} />
+          <StreamPage isTwitcasting={false} originalUrl={url} streamUrl={url} textLogs={textLogs} updateFileDuration={updateFileDuration} />
         ) : (
           <p>LOADING</p>
         )

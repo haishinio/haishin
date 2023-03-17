@@ -9,7 +9,7 @@ import StreamPage from '../../components/stream-page'
 
 import type { TextLog } from '../../types/Textlog'
 
-const StreamUrl: NextPage = () => {
+const StreamUrlPage: NextPage = () => {
   const router = useRouter()
   const { url } = router.query
 
@@ -18,7 +18,7 @@ const StreamUrl: NextPage = () => {
   const [ streamFile, updateStreamFile ] = useState('')
   const [ streamUrl, updateStreamUrl ] = useState(url)
   const [ startTime, updateStartTime ] = useState('0')
-  const [ duration, updateDuration ] = useState('10')
+  const [ splitTime, updateSplit ] = useState('10')
 
   // Transcriptions
   const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])
@@ -27,31 +27,43 @@ const StreamUrl: NextPage = () => {
   // Starts capturing the stream
   useEffect(() => {
     async function startStream() {
-      const response = await fetch('/api/stream', {
+      const startStreamRes = await fetch('/api/stream', {
         method: 'POST',
         body: JSON.stringify({
           url: url
         })
       })
-      const data = await response.json()
+      const startStreamData = await startStreamRes.json()
 
-      updateStreamFile(data.file)
-
+      updateStreamFile(startStreamData.file)
       if (url?.includes('showroom')) {
         // For showroom we can use the actual streamUrl in react-video
-        updateStreamUrl(data.streamUrl)
+        updateStreamUrl(startStreamData.streamUrl)
       }
+
+      const streamDurationRes = await fetch('/api/stream/duration', {
+        method: 'POST',
+        body: JSON.stringify({
+          streamFile: startStreamData.file
+        })
+      })
+      const streamDurationData = await streamDurationRes.json()
+      updateStartTime(streamDurationData.duration)
     }
 
-    if (url) {
-      updateStreamUrl(url)
-      startStream()
-    }
+    const startTimeout = setTimeout(() => {
+      if (url) {
+        updateStreamUrl(url)
+        startStream()
+      }
+  
+      // We need to use the twitcasting embed rather than react-video
+      if (url?.includes('twitcasting')) {
+        setIsTwitcasting(true)
+      }
+    }, 1000)
 
-    // We need to use the twitcasting embed rather than react-video
-    if (url?.includes('twitcasting')) {
-      setIsTwitcasting(true)
-    }
+    return () => clearTimeout(startTimeout)
   }, [url])
 
   // Starts transcribing+translating the stream
@@ -62,7 +74,7 @@ const StreamUrl: NextPage = () => {
         body: JSON.stringify({
           streamFile,
           startTime,
-          duration,
+          splitTime,
           prompt
         })
       })
@@ -79,18 +91,20 @@ const StreamUrl: NextPage = () => {
         }, ...state])
         updatePrompt(data.transcription)
   
-        const newStartTime = parseInt(startTime) + parseInt(duration)
+        const newStartTime = parseInt(startTime) + parseInt(splitTime)
         updateStartTime(newStartTime.toString())
       }
     }
 
     // Thinking when the variables change it should rerun this and so waits another 10seconds automatically
-    setTimeout(() => {
+    const transcribeTimeout = setTimeout(() => {
       if (streamFile && startTime) {
         transcribeTranslate()
       }
-    }, parseInt(duration) * 1000)
-  }, [duration, prompt, startTime, streamFile])
+    }, parseInt(splitTime) * 1000)
+
+    return () => clearTimeout(transcribeTimeout)
+  }, [splitTime, prompt, startTime, streamFile])
 
   return (
     <>
@@ -105,4 +119,4 @@ const StreamUrl: NextPage = () => {
   )
 }
 
-export default StreamUrl
+export default StreamUrlPage
