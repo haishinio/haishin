@@ -1,9 +1,6 @@
-RESOURCES:
-  - https://blog.logrocket.com/build-video-streaming-server-node/ to send the stream to the videoJS with the /api/start
-  - https://videojs.com/guides/live/
+## TODOs
 
-## Next steps
-
+- Investigate why twitcasting embeds no longer work
 - How to handle when stream is finish? Can /transcribe/live say done?
 - How to stop streams when you move away from the page
 - Can we not use the best preset so we can save on filesize
