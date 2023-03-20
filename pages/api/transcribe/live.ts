@@ -2,9 +2,6 @@
 import splitTranscribeTranslate from '../../../utils/split-transcribe-translate'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
-import { faker as fakerJP } from '@faker-js/faker/locale/ja'
-
 type Query = {
   streamFile: string
   startTime: string
@@ -27,13 +24,6 @@ export default async function handler(
     splitTime,
     prompt,
   }: Query = JSON.parse(req.body)
-
-  if (process.env.APP_ENV === 'faker') {
-    return res.status(200).json({
-      transcription: fakerJP.lorem.words(10),
-      translation: fakerGB.lorem.words(10),
-    })
-  }
 
   const data = await splitTranscribeTranslate(streamFile, startTime, splitTime, prompt)
 

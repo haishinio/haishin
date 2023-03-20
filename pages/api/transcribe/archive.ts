@@ -2,9 +2,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import splitTranscribeTranslate from '../../../utils/split-transcribe-translate'
 
-import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
-import { faker as fakerJP } from '@faker-js/faker/locale/ja'
-
 import type { NextApiRequest, NextApiResponse } from 'next'
 import type { TextLog } from '../../../types/Textlog'
 
@@ -32,21 +29,12 @@ export default async function handler(
   // For every 10s, split the file and send to whisper and then deepl
   for (let i = 0; i < numOfParts; i++) {
     const startTime = partDuration * i
-
-    let data = { transcription: '', translation: '' }
-    if (process.env.APP_ENV !== 'faker') {
-      data = await splitTranscribeTranslate(
-        streamFile,
-        startTime.toString(),
-        '10', 
-        textLogArray.at(-1)?.transcription ?? ''
-      )
-    } else {
-      data = {
-        transcription: fakerJP.lorem.words(10),
-        translation: fakerGB.lorem.words(10),
-      }
-    }
+    const data = await splitTranscribeTranslate(
+      streamFile,
+      startTime.toString(),
+      '10', 
+      textLogArray.at(-1)?.transcription ?? ''
+    )
 
     textLogArray.push({
       id: uuidv4(),

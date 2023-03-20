@@ -4,6 +4,9 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
 import { Configuration, OpenAIApi } from "openai"
 import * as deepl from 'deepl-node'
 
+import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
+import { faker as fakerJP } from '@faker-js/faker/locale/ja'
+
 const openAiConfig = new Configuration({
   apiKey: process.env.OPENAI_API_KEY
 })
@@ -30,6 +33,14 @@ export default async function splitTranscribeTranslate(
   ffmpeg.FS('writeFile', 'stream.mp4', await fetchFile(pathToFile))
   await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime, '-t', durationOfPart, '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
   await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
+
+  if (process.env.APP_ENV === 'faker') {
+    fs.unlinkSync(partFileName)
+    return {
+      transcription: fakerJP.lorem.words(10),
+      translation: fakerGB.lorem.words(10),
+    }
+  }
   
   // Transcribe into JP text
   let transcriptionText = ''
@@ -42,6 +53,7 @@ export default async function splitTranscribeTranslate(
       0,
       'ja'
     )
+    console.log({transcription})
     transcriptionText = transcription.data.text
   } catch {}
   
@@ -49,10 +61,13 @@ export default async function splitTranscribeTranslate(
   let translation = { text: '' }
   try {
     translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
+    console.log({translation})
   } catch{}
 
   // Delete the stream part as we shouldn't need it anymore
   fs.unlinkSync(partFileName)
+
+  // Maybe we should return a new start time here so we the next time we can send it as a duration to go from last startTime to duration
 
   return {
     transcription: transcriptionText,
