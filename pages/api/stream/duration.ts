@@ -23,7 +23,7 @@ export default async function handler(
   const probeData = await probe(pathToFile)
 
   if (probeData.error) {
-    return res.status(500).json({
+    return res.status(200).json({
       duration: 0
     });
   }
