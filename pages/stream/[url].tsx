@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from 'uuid'
-import { format } from 'date-fns'
+import { differenceInSeconds, format } from 'date-fns'
 
 import StreamPage from '../../components/stream-page'
 
@@ -69,6 +69,14 @@ const StreamUrlPage: NextPage = () => {
   // Starts transcribing+translating the stream
   useEffect(() => {
     async function transcribeTranslate() {
+      console.log({
+        streamFile,
+        startTime,
+        splitTime,
+        prompt
+      })
+
+      const startResTime = new Date()
       const response = await fetch('/api/transcribe/live', {
         method: 'POST',
         body: JSON.stringify({
@@ -80,6 +88,8 @@ const StreamUrlPage: NextPage = () => {
       })
 
       const data = await response.json()
+      const endResTime = new Date()
+      const resTime = differenceInSeconds(endResTime, startResTime)
 
       // If we get no transcription and no translation back then presume the stream has ended and don't update
       if (data.transcription !== '' && data.translation !== '') {
@@ -93,6 +103,7 @@ const StreamUrlPage: NextPage = () => {
   
         const newStartTime = parseInt(startTime) + parseInt(splitTime)
         updateStartTime(newStartTime.toString())
+        updateSplit(resTime.toString())
       }
     }
 
