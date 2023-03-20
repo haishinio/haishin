@@ -36,10 +36,15 @@ export default async function splitTranscribeTranslate(
 
   if (process.env.APP_ENV === 'faker') {
     fs.unlinkSync(partFileName)
-    return {
-      transcription: fakerJP.lorem.words(10),
-      translation: fakerGB.lorem.words(10),
-    }
+    const fakeResult = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          transcription: fakerJP.lorem.words(10),
+          translation: fakerGB.lorem.words(10),
+        })
+      }, 2000)
+    })
+    return fakeResult
   }
   
   // Transcribe into JP text
