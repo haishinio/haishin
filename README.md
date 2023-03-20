@@ -1,6 +1,9 @@
 ## TODOs
 
-- Can we speed up the duration to reduce lag?
+#### Prio
+- We should add a button to start/stop transcribe+translations (Pause). It might also help with ^^
+
+#### Future
 - Can we not use the best preset so we can save on filesize
 - Deployment?
 - Can we move whisper offline? (ie rather than call openai and the live whisper, we download the model ourselves? whisper-cpp?)

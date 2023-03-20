@@ -48,7 +48,7 @@ const StreamUrlPage: NextPage = () => {
         })
       })
       const streamDurationData = await streamDurationRes.json()
-      updateStartTime(streamDurationData.duration)
+      updateStartTime(streamDurationData.duration.toString())
     }
 
     const startTimeout = setTimeout(() => {
@@ -69,13 +69,6 @@ const StreamUrlPage: NextPage = () => {
   // Starts transcribing+translating the stream
   useEffect(() => {
     async function transcribeTranslate() {
-      console.log({
-        streamFile,
-        startTime,
-        splitTime,
-        prompt
-      })
-
       const startResTime = new Date()
       const response = await fetch('/api/transcribe/live', {
         method: 'POST',
