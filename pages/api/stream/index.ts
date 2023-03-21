@@ -17,22 +17,29 @@ type Data = {
   url: string
 }
 
-function setFileName(url: string): string {
+function getPathsByUrl(url: string) {
   const paths = url
     .replace('https://', '')
     .replace('c:', '')
     .split('/')
-  const path = `${paths[0]}--${paths[1]}.mp4`
+  const site = paths.shift()
+  
+  return {
+    site, 
+    user: paths.join('-')
+  }
+}
+
+function setFileName(url: string): string {
+  const paths = getPathsByUrl(url)
+  const path = `${paths.site}--${paths.user}.mp4`
   return path
 }
 
 function setArchivedFileName(url: string): string {
   const dateTimeStart = format(new Date(), 'y-MM-dd_HH-mm-ss')
-  const paths = url
-    .replace('https://', '')
-    .replace('c:', '')
-    .split('/')
-  const path = `${paths[0]}--${paths[1]}--${dateTimeStart}.mp4`
+  const paths = getPathsByUrl(url)
+  const path = `${paths.site}--${paths.user}--${dateTimeStart}.mp4`
   return path
 }
 
@@ -44,13 +51,13 @@ export default async function handler(
   const originalUrl = query.url
   const file = `./public/streams/${setFileName(originalUrl)}`
 
-  if (process.env.APP_ENV === 'faker') {
-    return res.status(200).json({
-      file,
-      streamUrl: faker.internet.url(),
-      url: originalUrl,
-    })
-  }
+  // if (process.env.APP_ENV === 'faker') {
+  //   return res.status(200).json({
+  //     file,
+  //     streamUrl: faker.internet.url(),
+  //     url: originalUrl,
+  //   })
+  // }
 
   // Get the streamUrl
   let {stdout: streamUrl} = await exec(`streamlink "${originalUrl}" best --stream-url`)

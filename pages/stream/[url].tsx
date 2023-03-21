@@ -100,14 +100,19 @@ const StreamUrlPage: NextPage = () => {
       }
     }
 
-    // Thinking when the variables change it should rerun this and so waits another 10seconds automatically
-    const transcribeTimeout = setTimeout(() => {
-      if (streamFile && startTime) {
+    // Check we have a streamFile and startTime first
+    if (streamFile && startTime) {
+      // Check wether we need to wait 10 seconds before calling because we just started the archive
+      if (startTime === '0') {
+        const transcribeTimeout = setTimeout(() => {
+          transcribeTranslate()
+        }, parseInt(splitTime) * 1000)
+    
+        return () => clearTimeout(transcribeTimeout)
+      } else {
         transcribeTranslate()
       }
-    }, parseInt(splitTime) * 1000)
-
-    return () => clearTimeout(transcribeTimeout)
+    }
   }, [splitTime, prompt, startTime, streamFile])
 
   return (

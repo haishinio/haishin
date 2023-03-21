@@ -58,7 +58,6 @@ export default async function splitTranscribeTranslate(
       0,
       'ja'
     )
-    console.log({transcription})
     transcriptionText = transcription.data.text
   } catch {}
   
@@ -66,7 +65,6 @@ export default async function splitTranscribeTranslate(
   let translation = { text: '' }
   try {
     translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
-    console.log({translation})
   } catch{}
 
   // Delete the stream part as we shouldn't need it anymore
