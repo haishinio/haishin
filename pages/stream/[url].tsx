@@ -82,7 +82,7 @@ const StreamUrlPage: NextPage = () => {
 
       const data = await response.json()
       const endResTime = new Date()
-      const resTime = differenceInSeconds(endResTime, startResTime)
+      const resTime = differenceInSeconds(endResTime, startResTime, { roundingMethod: 'ceil' })
 
       if (data.transcription !== '' && data.translation !== '') {
         updateTextLogs(state => [{
