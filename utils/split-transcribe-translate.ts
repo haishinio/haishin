@@ -42,7 +42,7 @@ export default async function splitTranscribeTranslate(
           transcription: fakerJP.lorem.words(10),
           translation: fakerGB.lorem.words(10),
         })
-      }, 2000)
+      }, fakerGB.datatype.number({ min: 1000, max: 10000 }))
     })
     return fakeResult
   }
@@ -59,13 +59,21 @@ export default async function splitTranscribeTranslate(
       'ja'
     )
     transcriptionText = transcription.data.text
-  } catch {}
+  } catch (error) {
+    console.log('There was an error in transcription')
+    console.log({ error })
+  }
   
   // Translate the JP text
   let translation = { text: '' }
-  try {
-    translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
-  } catch{}
+  if (transcriptionText !== '') {
+    try {
+      translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
+    } catch (error) {
+      console.log('There was an error in translation')
+      console.log({ error })
+    }
+  }
 
   // Delete the stream part as we shouldn't need it anymore
   fs.unlinkSync(partFileName)
