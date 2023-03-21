@@ -87,7 +87,7 @@ const StreamUrlPage: NextPage = () => {
       if (data.transcription !== '' && data.translation !== '') {
         updateTextLogs(state => [{
           id: uuidv4(),
-          time: format(new Date(), 'H:mm:s'),
+          time: format(new Date(), 'H:mm:ss'),
           transcription: data.transcription,
           translation: data.translation,
         }, ...state])
@@ -104,7 +104,9 @@ const StreamUrlPage: NextPage = () => {
     // Check we have a streamFile and startTime first
     if (streamFile && startTime) {
       // Check wether we need to wait 10 seconds before calling because we just started the archive
-      if (startTime === '0') {
+      if (splitTime === '0') {
+        updateSplit('10')
+      } else if (startTime === '0') {
         const transcribeTimeout = setTimeout(() => {
           transcribeTranslate()
         }, parseInt(splitTime) * 1000)
