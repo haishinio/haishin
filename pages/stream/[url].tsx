@@ -84,20 +84,21 @@ const StreamUrlPage: NextPage = () => {
       const endResTime = new Date()
       const resTime = differenceInSeconds(endResTime, startResTime)
 
-      // If we get no transcription and no translation back then presume the stream has ended and don't update
       if (data.transcription !== '' && data.translation !== '') {
         updateTextLogs(state => [{
           id: uuidv4(),
-          time: format(new Date(), 'H:mm'),
+          time: format(new Date(), 'H:mm:s'),
           transcription: data.transcription,
           translation: data.translation,
         }, ...state])
         updatePrompt(data.transcription)
-  
-        const newStartTime = parseInt(startTime) + parseInt(splitTime)
-        updateStartTime(newStartTime.toString())
-        updateSplit(resTime.toString())
+      } else {
+        console.log('No transcription+translation made...')
       }
+
+      const newStartTime = parseInt(startTime) + parseInt(splitTime)
+      updateStartTime(newStartTime.toString())
+      updateSplit(resTime.toString())
     }
 
     // Check we have a streamFile and startTime first
