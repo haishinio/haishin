@@ -16,6 +16,11 @@ const ffmpeg = createFFmpeg({
   // log: true,
 })
 
+interface Response {
+  transcription: string
+  translation: string
+}
+
 export default async function splitTranscribeTranslate(
   streamFile = './public/stream.mp4',
   startTime = '0',
@@ -36,7 +41,7 @@ export default async function splitTranscribeTranslate(
 
   if (process.env.APP_ENV === 'faker') {
     fs.unlinkSync(partFileName)
-    const fakeResult = await new Promise((resolve) => {
+    const fakeResult = await new Promise<Response>((resolve) => {
       setTimeout(() => {
         resolve({
           transcription: fakerJP.lorem.words(10),
@@ -83,5 +88,5 @@ export default async function splitTranscribeTranslate(
   return {
     transcription: transcriptionText,
     translation: translation.text
-  }
+  } as Response
 }

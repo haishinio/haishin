@@ -5,10 +5,11 @@ import { useRouter } from 'next/router'
 import StreamPage from '../../components/stream-page'
 
 import type { TextLog } from '../../types/Textlog'
+import type { UrlQuery } from '../../types/UrlQuery'
 
 const StreamIndex: NextPage = () => {
   const router = useRouter()
-  const { url } = router.query
+  const { url } = router.query as UrlQuery
 
   const [ fileDuration, updateFileDuration ] = useState(0)
   const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])

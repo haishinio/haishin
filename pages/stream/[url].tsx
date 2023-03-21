@@ -8,10 +8,11 @@ import { differenceInSeconds, format } from 'date-fns'
 import StreamPage from '../../components/stream-page'
 
 import type { TextLog } from '../../types/Textlog'
+import type { UrlQuery } from '../../types/UrlQuery'
 
 const StreamUrlPage: NextPage = () => {
   const router = useRouter()
-  const { url } = router.query
+  const { url } = router.query as UrlQuery
 
   // Setup Stream
   const [ isTwitcasting, setIsTwitcasting ] = useState(false)

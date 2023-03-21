@@ -11,8 +11,8 @@ type Props = {
   controlTranscription: Function
   isTranscribing: boolean
   isTwitcasting: boolean
-  originalUrl: string | string[] | undefined
-  streamUrl: string | string[] | undefined
+  originalUrl: string
+  streamUrl: string
   textLogs: TextLog[]
   updateFileDuration: Function
 }
@@ -22,10 +22,10 @@ const StreamPage = (props: Props) => {
 
   // Set logHeight
   const size = useWindowDimension()
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null)
   const [logHeight, setLogHeight] = useState(0)
   useEffect(() => {
-    if (ref.current.clientHeight) {
+    if (ref.current && ref.current.clientHeight) {
       const videoHeight = ref.current.clientHeight
       setLogHeight(window.screen.availHeight - videoHeight - 80)
     }
