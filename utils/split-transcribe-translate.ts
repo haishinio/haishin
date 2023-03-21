@@ -42,7 +42,7 @@ export default async function splitTranscribeTranslate(
           transcription: fakerJP.lorem.words(10),
           translation: fakerGB.lorem.words(10),
         })
-      }, fakerGB.datatype.number({ min: 1000, max: 10000 }))
+      }, fakerGB.datatype.number({ min: 1000, max: 5000 }))
     })
     return fakeResult
   }

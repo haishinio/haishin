@@ -8,6 +8,8 @@ import useWindowDimension from '../hooks/useWindowHeight'
 import type { TextLog } from '../types/Textlog'
 
 type Props = {
+  controlTranscription: Function
+  isTranscribing: boolean
   isTwitcasting: boolean
   originalUrl: string | string[] | undefined
   streamUrl: string | string[] | undefined
@@ -16,7 +18,7 @@ type Props = {
 }
 
 const StreamPage = (props: Props) => {
-  const { isTwitcasting, originalUrl, streamUrl, textLogs, updateFileDuration } = props
+  const { controlTranscription, isTranscribing, isTwitcasting, originalUrl, streamUrl, textLogs, updateFileDuration } = props
 
   // Set logHeight
   const size = useWindowDimension()
@@ -45,12 +47,23 @@ const StreamPage = (props: Props) => {
               </div>
             )
           }
+
+          <div
+            className="bg-zinc-700 text-white cursor-pointer px-2 py-1 text-center"
+            onClick={() => controlTranscription()}
+          >
+            {
+              isTranscribing ?
+              'Pause transcribing+translating' :
+              'Start transcribing+translating'
+            }
+          </div>
         </div>
 
         <div className={`col-span-12 xl:col-span-4 xl:!max-h-screen overflow-auto`} style={{maxHeight: `${logHeight}px`}}>
           <table className="w-full">
             <tbody>
-            {textLogs.map((textLog: TextLog) => (
+              {textLogs.map((textLog: TextLog) => (
                 <tr key={textLog.id} className="odd:bg-white even:bg-slate-100">
                   <TextLogRow textLog={textLog} />
                 </tr>

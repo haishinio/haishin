@@ -37,7 +37,15 @@ const StreamIndex: NextPage = () => {
     <>
       {
         url ? (
-          <StreamPage isTwitcasting={false} originalUrl={url} streamUrl={url} textLogs={textLogs} updateFileDuration={updateFileDuration} />
+          <StreamPage
+            controlTranscription={() => {}}
+            isTranscribing={true}
+            isTwitcasting={false}
+            originalUrl={url}
+            streamUrl={url}
+            textLogs={textLogs}
+            updateFileDuration={updateFileDuration}
+          />
         ) : (
           <p>LOADING</p>
         )

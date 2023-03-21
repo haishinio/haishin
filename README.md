@@ -1,8 +1,5 @@
 ## TODOs
 
-#### Prio
-- We should add a button to start/stop transcribe+translations (Pause). It might also help with ^^
-
 #### Future
 - Can we not use the best preset so we can save on filesize
 - Deployment?

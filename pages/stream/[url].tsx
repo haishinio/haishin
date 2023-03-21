@@ -21,6 +21,7 @@ const StreamUrlPage: NextPage = () => {
   const [ splitTime, updateSplit ] = useState('10')
 
   // Transcriptions
+  const [ isTranscribing, setIsTranscribing ] = useState(true)
   const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])
   const [ prompt, updatePrompt ] = useState('')
 
@@ -66,7 +67,7 @@ const StreamUrlPage: NextPage = () => {
     return () => clearTimeout(startTimeout)
   }, [url])
 
-  // Starts transcribing+translating the stream
+  // Transcribing+translating the stream effect
   useEffect(() => {
     async function transcribeTranslate() {
       const startResTime = new Date()
@@ -102,7 +103,7 @@ const StreamUrlPage: NextPage = () => {
     }
 
     // Check we have a streamFile and startTime first
-    if (streamFile && startTime) {
+    if (isTranscribing && streamFile && startTime) {
       // Check wether we need to wait 10 seconds before calling because we just started the archive
       if (splitTime === '0') {
         updateSplit('10')
@@ -116,13 +117,42 @@ const StreamUrlPage: NextPage = () => {
         transcribeTranslate()
       }
     }
-  }, [splitTime, prompt, startTime, streamFile])
+  }, [isTranscribing, splitTime, prompt, startTime, streamFile])
+
+  // Start/Stop transcribing the stream
+  const controlTranscription = async () => {
+    const nextState = !isTranscribing
+
+    // If we're going to be starting again we need to get the latest duration
+    if (nextState) {
+      const streamDurationRes = await fetch('/api/stream/duration', {
+        method: 'POST',
+        body: JSON.stringify({
+          streamFile: streamFile
+        })
+      })
+      const streamDurationData = await streamDurationRes.json()
+      updateStartTime(streamDurationData.duration.toString())
+    }
+
+    setIsTranscribing(nextState)
+  }
+
+  console.log({ isTranscribing })
 
   return (
     <>
       {
         streamUrl ? (
-          <StreamPage isTwitcasting={isTwitcasting} originalUrl={url} streamUrl={streamUrl} textLogs={textLogs} updateFileDuration={() => {}} />
+          <StreamPage
+            controlTranscription={controlTranscription}
+            isTranscribing={isTranscribing}
+            isTwitcasting={isTwitcasting}
+            originalUrl={url}
+            streamUrl={streamUrl}
+            textLogs={textLogs}
+            updateFileDuration={() => {}}
+          />
         ) : (
           <p>LOADING</p>
         )
