@@ -38,9 +38,12 @@ export default async function splitTranscribeTranslate(
   if (!duration) {
     probe.sync = true
     const probeData = await probe(pathToFile)
-    const currentStreamLength = probeData.format.duration
-    nextStartTime = currentStreamLength
-    durationOfPart = (currentStreamLength - startTime)
+
+    if (!probeData.error) {
+      const currentStreamLength = probeData.format.duration
+      nextStartTime = currentStreamLength
+      durationOfPart = (currentStreamLength - startTime)
+    }
   }
 
   const part = uuidv4()
@@ -80,7 +83,7 @@ export default async function splitTranscribeTranslate(
       'ja'
     )
     transcriptionText = transcription.data.text
-  } catch (error) {
+  } catch (error: any) {
     console.log('There was an error in transcription')
     console.log({ errResponse: error.response.data.error })
   }
