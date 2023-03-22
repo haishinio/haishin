@@ -4,9 +4,11 @@ This website is able to take a stream url or an mp4 file and then transcribe wha
 
 It's certainly not perfect but hopefully it's enough for English speakers to understand the context around streams.
 
+## In Progress
+- Deployment, probably going to use Dockerfile so please wait for now!
+
 ## TODOs
 
-- Deployment?
 - Can we not use the best preset so we can save on filesize
 - Can we pull in comments + gifts from livestreams?
 - Can we add auth so you could comment directly from here?
