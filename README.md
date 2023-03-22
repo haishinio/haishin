@@ -15,7 +15,7 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 
 ## Local Use
 
-1. You'll need [nodejs](https://nodejs.org/en), [ffmpeg](https://ffmpeg.org/download.html), [streamlink](https://streamlink.github.io/install.html) and api keys for OpenAi and DeepL.
+1. You'll need [nodejs](https://nodejs.org/en), [ffmpeg](https://ffmpeg.org/download.html), [streamlink](https://streamlink.github.io/install.html) to be available in your command line and api keys for [OpenAi](https://platform.openai.com/) + [DeepL](https://www.deepl.com/pro-api).
 2. Download/clone the repo, navigate to it in your command line and run `npm i` to install more dependencies.
 3. Copy `.env.example` to `.env` and fill it out with your OpenAi and DeepL api keys.
 4. Now you should be able to run `npm run dev` to start the dev server which is enough to get started. Once started you should be able to go to http://localhost:3000 to see the site.
