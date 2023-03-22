@@ -56,8 +56,9 @@ const Home: NextPage = () => {
         </form>
       </section>
 
-      <footer className="absolute bottom-1 left-0 w-full text-center text-xs">
-        <p>Built by Thomas (tomouchuu)</p>
+      <footer className="absolute bottom-1 left-0 w-full text-center text-sm">
+        <p><a href="https://github.com/tomouchuu/haishin">Github</a></p>
+        <p className="text-xs">Built by <a href="https://tomo.uchuu.io">Thomas(tomouchuu)</a></p>
       </footer>
     </div>
   )
