@@ -14,7 +14,10 @@ const Home: NextPage = () => {
 
   return (
     <div className="max-w-screen-md px-2 mx-auto">
-      <h1 className="text-4xl text-center my-8">Streams-EN</h1>
+      <h1 className="text-4xl text-center my-8">
+        Haishin
+        <small className="block text-xl">- 配信 -</small>
+      </h1>
       <p>This tool is able to take a stream url or an mp4 file and then transcribe what was said in Japanese and then translate it into English. It does this by splitting the file or stream into chunks and sends these to OpenAI&apos;s whisper model for transcribing and then it sends this transcription to DeepL for translation.</p>
       <p className="my-2">Presently you&apos;ll get a new a new transcription and translation every 5seconds for a livestream.</p>
       <p>The tool is not perfect, transcriptions may miss or make mistakes which causes a knock on effect for translations. But it should be good enough for English speakers to understand the gist of streams.</p>
@@ -31,7 +34,7 @@ const Home: NextPage = () => {
 
         <div className="text-center">
           <p>Currently known supported sites: <i>Youtube</i>, <i>Twitch</i>, <i>Twitcasting</i> and <i>Showroom (when under VPN)</i>.</p>
-          <p>Anything supporting <a href="">Streamlink</a> <i>should</i> work</p>
+          <p>Anything supporting <a className="underline" href="https://streamlink.github.io/">Streamlink</a> <i>should</i> work</p>
         </div>
       </section>
 
