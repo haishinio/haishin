@@ -20,4 +20,8 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 3. Copy `.env.example` to `.env` and fill it out with your OpenAi and DeepL api keys.
 4. Now you should be able to run `npm run dev` to start the dev server which is enough to get started. Once started you should be able to go to http://localhost:3000 to see the site.
 
+OpenAI gives you $5 to use for the first few months after signing up. I _think_ you can just keep creating accounts to get more. You'll be spending $0.006 a minute with OpenAI so a 1 hour stream will cost you ~$0.36 meaning you can watch just under 14 hours of streams with the free $5 you are given.
+
+DeepL has a free allowance of 500,000 characters a month. It seems plenty fine!
+
 If developing you might want to use `npm run dev:faker` instead so you don't use your OpenAI or DeepL tokens.
