@@ -1,5 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { v4 as uuidv4 } from 'uuid'
+import { secondsToDuration } from '../../../utils/seconds-to-duration'
 import splitTranscribeTranslate from '../../../utils/split-transcribe-translate'
 
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -31,14 +32,14 @@ export default async function handler(
     const startTime = partDuration * i
     const data = await splitTranscribeTranslate(
       streamFile,
-      startTime.toString(),
-      '10', 
-      textLogArray.at(-1)?.transcription ?? ''
+      startTime,
+      textLogArray.at(-1)?.transcription ?? '',
+      partDuration, 
     )
 
     textLogArray.push({
       id: uuidv4(),
-      time: startTime.toString(),
+      time: secondsToDuration(startTime),
       transcription: data.transcription,
       translation: data.translation
     })

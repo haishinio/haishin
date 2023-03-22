@@ -63,6 +63,13 @@ const StreamPage = (props: Props) => {
         <div className={`col-span-12 xl:col-span-4 xl:!max-h-screen overflow-auto`} style={{maxHeight: `${logHeight}px`}}>
           <table className="w-full">
             <tbody>
+              {
+                textLogs.length < 1 && (
+                  <tr>
+                    <td colSpan={3} className="text-center p-4">Loading...</td>
+                  </tr>
+                )
+              }
               {textLogs.map((textLog: TextLog) => (
                 <tr key={textLog.id} className="odd:bg-white even:bg-slate-100">
                   <TextLogRow textLog={textLog} />
