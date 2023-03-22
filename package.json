@@ -1,5 +1,6 @@
 {
-  "name": "streams-en",
+  "name": "haishin",
+  "description": "A website that transcribes+translates Japanese streams into English with OpenAI+DeepL",
   "version": "0.1.0",
   "private": true,
   "scripts": {
