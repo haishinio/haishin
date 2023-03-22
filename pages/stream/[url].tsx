@@ -3,7 +3,7 @@ import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from 'uuid'
-import { differenceInSeconds, format } from 'date-fns'
+import { secondsToDuration } from '../../utils/seconds-to-duration'
 
 import StreamPage from '../../components/stream-page'
 
@@ -18,8 +18,8 @@ const StreamUrlPage: NextPage = () => {
   const [ isTwitcasting, setIsTwitcasting ] = useState(false)
   const [ streamFile, updateStreamFile ] = useState('')
   const [ streamUrl, updateStreamUrl ] = useState(url)
-  const [ startTime, updateStartTime ] = useState('0')
-  const [ splitTime, updateSplit ] = useState('10')
+  const [ startTime, updateStartTime ] = useState(0)
+  const [ splitTime, updateSplit ] = useState(5)
 
   // Transcriptions
   const [ isTranscribing, setIsTranscribing ] = useState(true)
@@ -50,7 +50,7 @@ const StreamUrlPage: NextPage = () => {
         })
       })
       const streamDurationData = await streamDurationRes.json()
-      updateStartTime(streamDurationData.duration.toString())
+      updateStartTime(streamDurationData.duration)
     }
 
     const startTimeout = setTimeout(() => {
@@ -71,25 +71,20 @@ const StreamUrlPage: NextPage = () => {
   // Transcribing+translating the stream effect
   useEffect(() => {
     async function transcribeTranslate() {
-      const startResTime = new Date()
       const response = await fetch('/api/transcribe/live', {
         method: 'POST',
         body: JSON.stringify({
           streamFile,
           startTime,
-          splitTime,
           prompt
         })
       })
 
       const data = await response.json()
-      const endResTime = new Date()
-      const resTime = differenceInSeconds(endResTime, startResTime, { roundingMethod: 'ceil' })
-
       if (data.transcription !== '' && data.translation !== '') {
         updateTextLogs(state => [{
           id: uuidv4(),
-          time: format(new Date(), 'H:mm:ss'),
+          time: secondsToDuration(startTime),
           transcription: data.transcription,
           translation: data.translation,
         }, ...state])
@@ -98,25 +93,17 @@ const StreamUrlPage: NextPage = () => {
         console.log('No transcription+translation made...')
       }
 
-      const newStartTime = parseInt(startTime) + parseInt(splitTime)
-      updateStartTime(newStartTime.toString())
-      updateSplit(resTime.toString())
+      updateStartTime(data.nextStartTime)
     }
-
-    // Check we have a streamFile and startTime first
-    if (isTranscribing && streamFile && startTime) {
-      // Check wether we need to wait 10 seconds before calling because we just started the archive
-      if (splitTime === '0') {
-        updateSplit('10')
-      } else if (startTime === '0') {
-        const transcribeTimeout = setTimeout(() => {
-          transcribeTranslate()
-        }, parseInt(splitTime) * 1000)
     
-        return () => clearTimeout(transcribeTimeout)
-      } else {
+    // Check we have a streamFile and startTime first
+    if (isTranscribing && streamFile) {
+      // Ping the api every 5 seconds
+      const transcribeTimeout = setTimeout(() => {
         transcribeTranslate()
-      }
+      }, splitTime * 1000)
+  
+      return () => clearTimeout(transcribeTimeout)
     }
   }, [isTranscribing, splitTime, prompt, startTime, streamFile])
 
@@ -138,8 +125,6 @@ const StreamUrlPage: NextPage = () => {
 
     setIsTranscribing(nextState)
   }
-
-  console.log({ isTranscribing })
 
   return (
     <>

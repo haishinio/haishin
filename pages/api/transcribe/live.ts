@@ -4,12 +4,12 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Query = {
   streamFile: string
-  startTime: string
-  splitTime: string
+  startTime: number
   prompt: string
 }
 
 type Data = {
+  nextStartTime: number
   transcription: string
   translation: string
 }
@@ -21,14 +21,14 @@ export default async function handler(
   const {
     streamFile,
     startTime,
-    splitTime,
     prompt,
   }: Query = JSON.parse(req.body)
 
-  const data = await splitTranscribeTranslate(streamFile, startTime, splitTime, prompt)
+  const data = await splitTranscribeTranslate(streamFile, startTime, prompt)
 
   // Stream the JP and EN text?
   res.status(200).json({
+    nextStartTime: data.nextStartTime,
     transcription: data.transcription,
     translation: data.translation
   })

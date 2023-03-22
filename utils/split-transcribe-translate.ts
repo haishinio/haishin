@@ -1,6 +1,9 @@
 import fs from 'fs'
 import path from 'path'
+import { v4 as uuidv4 } from 'uuid'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
+import probe from 'node-ffprobe'
+
 import { Configuration, OpenAIApi } from "openai"
 import * as deepl from 'deepl-node'
 
@@ -17,26 +20,38 @@ const ffmpeg = createFFmpeg({
 })
 
 interface Response {
+  nextStartTime: number
   transcription: string
   translation: string
 }
 
 export default async function splitTranscribeTranslate(
   streamFile = './public/stream.mp4',
-  startTime = '0',
-  durationOfPart = '10',
-  prompt = ''
+  startTime = 0,
+  prompt = '',
+  duration = 0
 ) {
-  const part = parseInt(startTime) / parseInt(durationOfPart)
-  const partFileName = `./public/stream-part${part}.wav`
   const pathToFile = path.join(".", streamFile)
+
+  let durationOfPart = duration
+  let nextStartTime = startTime + duration
+  if (!duration) {
+    probe.sync = true
+    const probeData = await probe(pathToFile)
+    const currentStreamLength = probeData.format.duration
+    nextStartTime = currentStreamLength
+    durationOfPart = (currentStreamLength - startTime)
+  }
+
+  const part = uuidv4()
+  const partFileName = `./public/stream-part-${part}.wav`
 
   // Get the 10s wav part from the mp4
   if (!ffmpeg.isLoaded()) {
     await ffmpeg.load()
   }
   ffmpeg.FS('writeFile', 'stream.mp4', await fetchFile(pathToFile))
-  await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime, '-t', durationOfPart, '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
+  await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime.toString(), '-t', durationOfPart.toString(), '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
   await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
 
   if (process.env.APP_ENV === 'faker') {
@@ -44,6 +59,7 @@ export default async function splitTranscribeTranslate(
     const fakeResult = await new Promise<Response>((resolve) => {
       setTimeout(() => {
         resolve({
+          nextStartTime: nextStartTime,
           transcription: fakerJP.lorem.words(10),
           translation: fakerGB.lorem.words(10),
         })
@@ -66,7 +82,7 @@ export default async function splitTranscribeTranslate(
     transcriptionText = transcription.data.text
   } catch (error) {
     console.log('There was an error in transcription')
-    console.log({ error })
+    console.log({ errResponse: error.response.data.error })
   }
   
   // Translate the JP text
@@ -83,9 +99,8 @@ export default async function splitTranscribeTranslate(
   // Delete the stream part as we shouldn't need it anymore
   fs.unlinkSync(partFileName)
 
-  // Maybe we should return a new start time here so we the next time we can send it as a duration to go from last startTime to duration
-
   return {
+    nextStartTime: nextStartTime,
     transcription: transcriptionText,
     translation: translation.text
   } as Response
