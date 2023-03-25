@@ -7,12 +7,6 @@ const moduleExports = {
   output: 'standalone',
   reactStrictMode: true,
   swcMinify: true,
-  outputFileTracingIncludes: {
-    '/api/stream': ['./utils/split-transcribe-translate.ts'],
-    '/api/stream/duration': ['./utils/split-transcribe-translate.ts'],
-    '/api/transcribe/archive': ['./utils/split-transcribe-translate.ts'],
-    '/api/transcribe/live': ['./utils/split-transcribe-translate.ts'],
-  },
 };
 
 const sentryWebpackPluginOptions = {

@@ -34,6 +34,9 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
+# These need to be in here so they are included at runtime
+RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
+RUN pip install streamlink
 WORKDIR /app
 
 ENV NODE_ENV production
