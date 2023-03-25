@@ -5,6 +5,8 @@ import TextLogRow from './textlog-row'
 
 import useWindowDimension from '../hooks/useWindowHeight'
 
+import * as Sentry from "@sentry/nextjs"
+
 import type { TextLog } from '../types/Textlog'
 
 type Props = {
@@ -31,6 +33,25 @@ const StreamPage = (props: Props) => {
     }
   }, [size])
 
+  // Passes duration back up if we have it
+  const updateDuration = (duration: number | undefined) => {
+    if (duration === undefined) {
+      throw new Error('No duration for file/stream')
+    }
+    
+    return updateFileDuration(duration)
+  }
+
+  // Error handler
+  const onErrors = (error: any, data?: any) => {
+    Sentry.captureException(new Error('ReactPlayer error'), scope => {
+      scope.clear()
+      scope.setExtra('errorObj', error)
+      scope.setExtra('streamData', data)
+      return scope
+    })
+  }
+
   return (
     <div className="h-screen overflow-hidden">
       <div className="grid grid-cols-12 content-start">
@@ -43,7 +64,7 @@ const StreamPage = (props: Props) => {
               </div>
             ) : (
               <div className="aspect-w-16 aspect-h-9">
-                <ReactPlayer url={streamUrl} controls playing width='100%' height='100%' onDuration={(duration) => updateFileDuration(duration)} />
+                <ReactPlayer url={streamUrl} controls playing width='100%' height='100%' onDuration={updateDuration} onError={onErrors} />
               </div>
             )
           }
