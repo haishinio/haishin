@@ -7,6 +7,7 @@ import probe from 'node-ffprobe'
 import { Configuration, OpenAIApi } from "openai"
 import * as deepl from 'deepl-node'
 
+import * as Sentry from "@sentry/nextjs"
 import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
@@ -84,8 +85,18 @@ export default async function splitTranscribeTranslate(
     )
     transcriptionText = transcription.data.text
   } catch (error: any) {
-    console.log('There was an error in transcription')
-    console.log({ errResponse: error.response.data.error })
+    Sentry.captureException(new Error("Transcription failed"), scope => {
+      scope.clear()
+      scope.setExtra('streamData', {
+        streamFile,
+        startTime,
+        duration,
+        nextStartTime,
+        prompt,
+        partFileName
+      })
+      return scope
+    });
   }
   
   // Translate the JP text
@@ -94,8 +105,18 @@ export default async function splitTranscribeTranslate(
     try {
       translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
     } catch (error) {
-      console.log('There was an error in translation')
-      console.log({ error })
+      Sentry.captureException(new Error("Translation failed"), scope => {
+        scope.clear()
+        scope.setExtra('streamData', {
+          streamFile,
+          startTime,
+          duration,
+          nextStartTime,
+          prompt,
+          partFileName
+        })
+        return scope
+      });
     }
   }
 

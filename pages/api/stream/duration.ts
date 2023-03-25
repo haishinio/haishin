@@ -1,6 +1,8 @@
 import path from 'path'
 import probe from 'node-ffprobe'
 
+import * as Sentry from "@sentry/nextjs"
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Query = {
@@ -23,6 +25,12 @@ export default async function handler(
   const probeData = await probe(pathToFile)
 
   if (probeData.error) {
+    Sentry.captureException(new Error("Could not get a duration"), scope => {
+      scope.clear()
+      scope.setExtra('streamFile', streamFile)
+      return scope
+    });
+
     return res.status(200).json({
       duration: 0
     });

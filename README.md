@@ -7,8 +7,14 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 ## In Progress
 - Deployment, probably going to use Dockerfile so please wait for now!
 
+## Issues
+- Better handle stream ends, maybe return something?
+- Occasionally the transcription will table-cell will collapse making the the row very high and the translation cell very wide
+
 ## TODOs
 
+- Can we improve translations? I think we can do something about the sentences etc. sent to deepL
+- Should it be possible to save the textLog for the user (They could just copy and paste I guess.)
 - Can we not use the best preset so we can save on filesize
 - Can we pull in comments + gifts from livestreams?
 - Can we add auth so you could comment directly from here?
