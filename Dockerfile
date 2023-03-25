@@ -44,9 +44,7 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Grab our public folder and set permissions
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-RUN chmod 777 /app/public
+COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing

@@ -9,4 +9,8 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 3000:3000
+      - 3000:80
+    volumes:
+      - /root/haishin/backups:/app/public/backups
+      - /root/haishin/streams:/app/public/streams
+      - /root/haishin/uploads:/app/public/uploads
