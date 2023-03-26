@@ -40,8 +40,10 @@ next-env.d.ts
 /public/backup/*
 /public/streams/*
 /public/uploads/*
-# Sentry
-.sentryclirc
+
+# Digital Ocean
+/for-server
 
 # Sentry
+.sentryclirc
 next.config.original.js

@@ -5,9 +5,10 @@ This website is able to take a stream url or an mp4 file and then transcribe wha
 It's certainly not perfect but hopefully it's enough for English speakers to understand the context around streams.
 
 ## In Progress
-- Deployment, probably going to use Dockerfile so please wait for now!
+- Deployment, currently with beta testers so please wait for now
 
 ## Issues
+- Mutliple users watching the same stream can cause issues?
 - How to handle twitcasts that require account
 - Better handle stream ends, maybe return something?
 - Occasionally the transcription will table-cell will collapse making the the row very high and the translation cell very wide
@@ -21,6 +22,10 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 - Can we add auth so you could comment directly from here?
 
 ## Local Use
+
+If using [Docker](https://www.docker.com/), you _should_ be able to run `docker build -t haishin .` within the folder and then `docker run haishin -p 3000:3000 --env-file=.env haishin` to start.
+
+If not using Docker then the instructions below are for you!
 
 1. You'll need [nodejs](https://nodejs.org/en), [ffmpeg](https://ffmpeg.org/download.html), [streamlink](https://streamlink.github.io/install.html) to be available in your command line and api keys for [OpenAi](https://platform.openai.com/) + [DeepL](https://www.deepl.com/pro-api).
 2. Download/clone the repo, navigate to it in your command line and run `npm i` to install more dependencies.
