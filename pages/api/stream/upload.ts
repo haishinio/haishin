@@ -17,7 +17,7 @@ export default async function handler(
   const form = new formidable.IncomingForm()
   form.parse(req, async function (err, fields, files: Files) {
     const streamUrl = await saveFile(files.file as File)
-    return res.redirect(`/stream?url=${streamUrl.replace('./public/', '')}`)
+    res.writeHead(302, { Location: `/stream?url=${streamUrl.replace('./public/', '')}` }).end()
   });
 };
 
