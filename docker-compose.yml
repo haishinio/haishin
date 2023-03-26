@@ -12,6 +12,6 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - /root/haishin/backups:/app/public/backups
-      - /root/haishin/streams:/app/public/streams
-      - /root/haishin/uploads:/app/public/uploads
+      - /mnt/haishin-storage/backups:/app/public/backups
+      - /mnt/haishin-storage/streams:/app/public/streams
+      - /mnt/haishin-storage/uploads:/app/public/uploads
