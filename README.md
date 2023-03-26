@@ -7,12 +7,6 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 ## In Progress
 - Deployment, currently with beta testers so please wait for now
 
-## Issues
-- Mutliple users watching the same stream can cause issues?
-- How to handle twitcasts that require account
-- Better handle stream ends, maybe return something?
-- Occasionally the transcription will table-cell will collapse making the the row very high and the translation cell very wide
-
 ## TODOs
 
 - Can we improve translations? I think we can do something about the sentences etc. sent to deepL
