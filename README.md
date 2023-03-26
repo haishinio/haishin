@@ -8,6 +8,7 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 - Deployment, probably going to use Dockerfile so please wait for now!
 
 ## Issues
+- How to handle twitcasts that require account
 - Better handle stream ends, maybe return something?
 - Occasionally the transcription will table-cell will collapse making the the row very high and the translation cell very wide
 
