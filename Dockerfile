@@ -8,11 +8,14 @@ RUN pip install streamlink
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
+COPY patches ./patches
 COPY package.json package-lock.json* ./
 RUN \
-  if [ -f package-lock.json ]; then npm i; \
+  if [ -f package-lock.json ]; then npm ci; \
   else echo "Lockfile not found." && exit 1; \
   fi
+
+RUN npm install postinstall
 
 # Rebuild the source code only when needed
 FROM base AS builder
@@ -46,12 +49,14 @@ ENV NODE_ENV production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Include the patched ffmpeg-core files
 COPY --from=deps /app/node_modules/@ffmpeg/core/dist ./node_modules/@ffmpeg/core/dist
 
 USER nextjs
