@@ -5,6 +5,8 @@ import { Streamlink } from '@dragongoose/streamlink'
 import { format } from 'date-fns'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import * as Sentry from "@sentry/nextjs"
+
 import { faker } from '@faker-js/faker/locale/en_GB'
 
 type Query = {
@@ -87,6 +89,20 @@ export default async function handler(
     client.on('log', data => {
       // console.log('writing to file')
       streamFile.write(data) // puts data into file
+    })
+
+    client.on('error', (error: Error) => {
+      console.log(error)
+      Sentry.captureException(new Error("Streamlink error"), scope => {
+        scope.clear()
+        scope.setExtra('errObj', error)
+        scope.setExtra('streamData', {
+          file,
+          streamUrl,
+          url: originalUrl,
+        })
+        return scope
+      });
     })
   
     client.on('close', () => {
