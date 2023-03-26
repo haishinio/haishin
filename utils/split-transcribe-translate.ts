@@ -18,6 +18,7 @@ const openai = new OpenAIApi(openAiConfig)
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 const ffmpeg = createFFmpeg({
   // log: true,
+  corePath: '@ffmpeg/core',
 })
 
 interface Response {
@@ -32,7 +33,7 @@ export default async function splitTranscribeTranslate(
   prompt = '',
   duration = 0
 ) {
-  const pathToFile = path.join(".", streamFile)
+  const pathToFile = path.join('.', streamFile)
 
   let durationOfPart = duration
   let nextStartTime = startTime + duration
