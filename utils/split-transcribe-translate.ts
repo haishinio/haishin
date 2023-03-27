@@ -48,6 +48,14 @@ export default async function splitTranscribeTranslate(
     }
   }
 
+  if (durationOfPart === 0) {
+    return {
+      nextStartTime: startTime + 1,
+      transcription: '',
+      translation: ''
+    } as Response
+  }
+
   const part = uuidv4()
   const partFileName = `./public/stream-part-${part}.wav`
 
@@ -60,7 +68,6 @@ export default async function splitTranscribeTranslate(
   await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
 
   if (process.env.APP_ENV === 'faker') {
-    fs.unlinkSync(partFileName)
     const fakeResult = await new Promise<Response>((resolve) => {
       setTimeout(() => {
         resolve({
@@ -70,6 +77,7 @@ export default async function splitTranscribeTranslate(
         })
       }, fakerGB.datatype.number({ min: 1000, max: 5000 }))
     })
+    fs.unlinkSync(partFileName)
     return fakeResult
   }
   
