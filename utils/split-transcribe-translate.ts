@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
+import PQueue from 'p-queue'
 import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
 import probe from 'node-ffprobe'
 
@@ -11,6 +12,7 @@ import * as Sentry from "@sentry/nextjs"
 import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
+const queue = new PQueue({concurrency: 1})
 const openAiConfig = new Configuration({
   apiKey: process.env.OPENAI_API_KEY
 })
@@ -63,9 +65,12 @@ export default async function splitTranscribeTranslate(
   if (!ffmpeg.isLoaded()) {
     await ffmpeg.load()
   }
-  ffmpeg.FS('writeFile', 'stream.mp4', await fetchFile(pathToFile))
-  await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime.toString(), '-t', durationOfPart.toString(), '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
-  await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
+
+  await queue.add(async () => {
+    ffmpeg.FS('writeFile', 'stream.mp4', await fetchFile(pathToFile))
+    await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime.toString(), '-t', durationOfPart.toString(), '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
+    await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
+  });
 
   if (process.env.APP_ENV === 'faker') {
     const fakeResult = await new Promise<Response>((resolve) => {

@@ -23,6 +23,7 @@
     "next": "13.2.4",
     "node-ffprobe": "^3.0.0",
     "openai": "^3.2.1",
+    "p-queue": "^7.3.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-player": "^2.12.0",
