@@ -93,7 +93,11 @@ const StreamUrlPage: NextPage = () => {
         console.log('No transcription+translation made...')
       }
 
-      updateStartTime(data.nextStartTime)
+      if (data.nextStartTime === -1) {
+        setIsTranscribing(false)
+      } else {
+        updateStartTime(data.nextStartTime)
+      }
     }
     
     // Check we have a streamFile and startTime first

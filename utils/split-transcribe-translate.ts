@@ -47,6 +47,12 @@ export default async function splitTranscribeTranslate(
       const currentStreamLength = probeData.format.duration
       nextStartTime = currentStreamLength
       durationOfPart = (currentStreamLength - startTime)
+    } else {
+      return {
+        nextStartTime: -1,
+        transcription: '',
+        translation: ''
+      } as Response
     }
   }
 
