@@ -13,8 +13,8 @@ const Home: NextPage = () => {
   }, [streamUrl])
 
   return (
-    <div className="max-w-screen-md px-2 mx-auto">
-      <h1 className="text-4xl text-center my-8">
+    <div className="flex flex-col min-h-screen max-w-screen-md px-2 mx-auto">
+      <h1 className="text-4xl text-center py-8">
         Haishin
         <small className="block text-xl">- 配信 -</small>
       </h1>
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
         </form>
       </section>
 
-      <footer className="absolute bottom-1 left-0 w-full text-center text-sm">
+      <footer className="mt-auto pt-4 py-2 text-center text-sm">
         <p><a href="https://github.com/tomouchuu/haishin">Github</a></p>
         <p className="text-xs">Built by <a href="https://tomo.uchuu.io">Thomas(tomouchuu)</a></p>
       </footer>
