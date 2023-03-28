@@ -11,7 +11,6 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 
 ## TODOs
 
-- Automate deployments
 - Can we improve translations? I think we can do something about the sentences etc. sent to deepL
 - Should it be possible to save the textLog for the user (They could just copy and paste I guess.)
 - Can we not use the best preset so we can save on filesize
