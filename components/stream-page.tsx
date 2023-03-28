@@ -75,7 +75,7 @@ const StreamPage = (props: Props) => {
           >
             {
               isTranscribing ?
-              'Pause transcribing+translating' :
+              'Stop transcribing+translating' :
               'Start transcribing+translating'
             }
           </div>
