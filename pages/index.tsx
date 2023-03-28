@@ -33,7 +33,8 @@ const Home: NextPage = () => {
         </form>
 
         <div className="text-center">
-          <p>Currently known supported sites: <i>Youtube</i>, <i>Twitch</i>, <i>Twitcasting</i> and <i>Showroom (when under VPN)</i>.</p>
+          <p>Currently known supported sites: <i>Youtube</i>, <i>Twitch</i> and <i>Twitcasting</i>.</p>
+          <p className="text-sm"><i className="line-through">Showroom</i> (only works when running Haishin locally under VPN)</p>
           <p>Anything supporting <a className="underline" href="https://streamlink.github.io/">Streamlink</a> <i>should</i> work</p>
         </div>
       </section>
