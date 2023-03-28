@@ -1,5 +1,7 @@
 # Haishin 配信
 
+[![Build docker image](https://github.com/tomouchuu/haishin/actions/workflows/docker.yml/badge.svg)](https://github.com/tomouchuu/haishin/actions/workflows/docker.yml)
+
 This website is able to take a stream url or an mp4 file and then transcribe what was said in Japanese and then translate it into English. It does this by splitting the file or stream into chunks and sends these to OpenAI's whisper model for transcribing and then it sends this transcription to DeepL for translation. Presently it'll send a request at least every 5 seconds to get the latest things that were said.
 
 It's certainly not perfect but hopefully it's enough for English speakers to understand the context around streams.
