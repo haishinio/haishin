@@ -1,5 +1,8 @@
 FROM node:18-alpine AS base
 
+ARG GIT_REVISION
+ENV HAISHIN_VERSION=$GIT_REVISION
+
 # Install dependencies only when needed
 FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
@@ -35,9 +38,6 @@ RUN npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
-
-ARG GIT_REVISION
-ENV HAISHIN_VERSION=$GIT_REVISION
 
 # These need to be in here so they are included at runtime
 RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
