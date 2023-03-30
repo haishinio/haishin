@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
 import { v4 as uuidv4 } from 'uuid'
 import { secondsToDuration } from '../../utils/seconds-to-duration'
@@ -22,6 +22,7 @@ const StreamUrlPage: NextPage = () => {
   const [ splitTime, updateSplit ] = useState(5)
 
   // Transcriptions
+  const isProcessingRef = useRef(false);
   const [ isTranscribing, setIsTranscribing ] = useState(true)
   const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])
   const [ prompt, updatePrompt ] = useState('')
@@ -98,10 +99,16 @@ const StreamUrlPage: NextPage = () => {
       } else {
         updateStartTime(data.nextStartTime)
       }
+
+      isProcessingRef.current = false
     }
+
+    console.log({ isProcessingRef: isProcessingRef.current })
     
     // Check we have a streamFile and startTime first
-    if (isTranscribing && streamFile) {
+    if (isTranscribing && streamFile && !isProcessingRef.current) {
+      // isProcessingRef.current = true
+
       // Ping the api every 5 seconds
       const transcribeTimeout = setTimeout(() => {
         transcribeTranslate()
