@@ -15,6 +15,13 @@ type Data = {
   textLogs: TextLog[]
 }
 
+export const config = {
+  api: {
+    externalResolver: true,
+    responseLimit: false,
+  },
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>

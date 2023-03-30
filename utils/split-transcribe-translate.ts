@@ -1,8 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
-import PQueue from 'p-queue'
-import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg'
+import { Worker } from 'worker_threads'
 import probe from 'node-ffprobe'
 
 import { Configuration, OpenAIApi } from "openai"
@@ -12,16 +11,11 @@ import * as Sentry from "@sentry/nextjs"
 import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
-const queue = new PQueue({concurrency: 1})
 const openAiConfig = new Configuration({
   apiKey: process.env.OPENAI_API_KEY
 })
 const openai = new OpenAIApi(openAiConfig)
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
-const ffmpeg = createFFmpeg({
-  // log: true,
-  corePath: '@ffmpeg/core',
-})
 
 interface Response {
   nextStartTime: number
@@ -67,16 +61,31 @@ export default async function splitTranscribeTranslate(
   const part = uuidv4()
   const partFileName = `./public/stream-part-${part}.wav`
 
-  // Get the 10s wav part from the mp4
-  if (!ffmpeg.isLoaded()) {
-    await ffmpeg.load()
-  }
+  const ffmpegSplitWorker = new Worker('./utils/ffmpeg-splitter-worker.js');
 
-  await queue.add(async () => {
-    ffmpeg.FS('writeFile', 'stream.mp4', await fetchFile(pathToFile))
-    await ffmpeg.run('-y', '-i', 'stream.mp4', '-ss', startTime.toString(), '-t', durationOfPart.toString(), '-ar', '16000', '-ac', '1', '-acodec', 'pcm_s16le', 'stream.wav')
-    await fs.promises.writeFile(partFileName, ffmpeg.FS('readFile', 'stream.wav'))
+  ffmpegSplitWorker.postMessage({ 
+    command: 'run', 
+    pathToFile, startTime, durationOfPart
   });
+
+  const splitFileData = await new Promise((resolve, reject) => {
+    ffmpegSplitWorker.on('message', (message) => {
+      if (message.error) {
+        reject(new Error(message.error));
+      } else {
+        resolve(message.output);
+      }
+    });
+    ffmpegSplitWorker.on('error', reject);
+    ffmpegSplitWorker.on('exit', (code) => {
+      if (code !== 0) {
+        reject(new Error(`Worker stopped with exit code ${code}`));
+      }
+    });
+  });
+
+  await fs.promises.writeFile(partFileName, splitFileData)
+  // const splitFile = await splitFileIntoPart(pathToFile, startTime, durationOfPart, partFileName)
 
   if (process.env.APP_ENV === 'faker') {
     const fakeResult = await new Promise<Response>((resolve) => {
