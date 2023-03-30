@@ -4,6 +4,10 @@ import simpleGit from 'simple-git'
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+interface HomeProps {
+  version: string
+}
+
 export async function getStaticProps() {
   const git = simpleGit();
   const log = await git.log(['-n', '1'])
@@ -11,14 +15,12 @@ export async function getStaticProps() {
 
   return {
     props: {
-      version
+      version: version || 'unknown'
     }
   }
 }
 
-const Home: NextPage = (props) => {
-  console.log({ props })
-
+const Home: NextPage<HomeProps> = (props) => {
   const [streamUrl, updateStreamUrl] = useState('')
   const [cleanStreamUrl, updateCleanStreamUrl] = useState('')
 
@@ -76,7 +78,7 @@ const Home: NextPage = (props) => {
         <p className="flex place-content-center">
           <a className="place-self-end" href="https://github.com/tomouchuu/haishin">Github</a>
           <span className="flex-none mx-2">|</span>
-          <a className="place-self-start" href={`https://github.com/tomouchuu/haishin/${props.version}`}>
+          <a className="place-self-start" href={`https://github.com/tomouchuu/haishin/commit/${props.version}`}>
             {props.version.slice(0, 7)}
           </a>
         </p>
