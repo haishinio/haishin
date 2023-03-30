@@ -32,7 +32,7 @@ export default async function handler(
     });
 
     return res.status(200).json({
-      duration: 0
+      duration: 0.1
     });
   }
 

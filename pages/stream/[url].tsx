@@ -21,8 +21,10 @@ const StreamUrlPage: NextPage = () => {
   const [ startTime, updateStartTime ] = useState(0)
   const [ splitTime, updateSplit ] = useState(5)
 
-  // Transcriptions
+  // Processes
   const isProcessingRef = useRef(false);
+  
+  // Transcriptions
   const [ isTranscribing, setIsTranscribing ] = useState(true)
   const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])
   const [ prompt, updatePrompt ] = useState('')
@@ -103,10 +105,24 @@ const StreamUrlPage: NextPage = () => {
       isProcessingRef.current = false
     }
     
-    // Check we can transcribe, we have a stream file, and we're not already processing
-    if (isTranscribing && streamFile && !isProcessingRef.current) {
-      isProcessingRef.current = true
-      transcribeTranslate()
+    // Check we 
+    if (
+      isTranscribing && // can transcribe
+      streamFile && // we have a stream file
+      startTime && // we've updated the duration
+      !isProcessingRef.current // we're not already processing
+    ) {
+      if (startTime === 0.1) {
+        // This is a hack to get around the fact that the duration isn't updated
+        // before the first transcription is made
+        setTimeout(() => {
+          isProcessingRef.current = true
+          transcribeTranslate()
+        }, 6000)
+      } else {
+        isProcessingRef.current = true
+        transcribeTranslate()
+      }
     }
   }, [isTranscribing, splitTime, prompt, startTime, streamFile])
 
