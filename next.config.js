@@ -1,6 +1,9 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const moduleExports = {
+  env: {
+    HAISHIN_VERSION: process.env.HAISHIN_VERSION
+  },
   sentry: {
     hideSourceMaps: true,
   },
