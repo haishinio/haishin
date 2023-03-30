@@ -68,7 +68,7 @@ export default async function splitTranscribeTranslate(
     pathToFile, startTime, durationOfPart
   });
 
-  const splitFileData = await new Promise((resolve, reject) => {
+  const splitFileData = await new Promise<Buffer>((resolve, reject) => {
     ffmpegSplitWorker.on('message', (message) => {
       if (message.error) {
         reject(new Error(message.error));
@@ -85,6 +85,7 @@ export default async function splitTranscribeTranslate(
   });
 
   await fs.promises.writeFile(partFileName, splitFileData)
+  await ffmpegSplitWorker.terminate();
   // const splitFile = await splitFileIntoPart(pathToFile, startTime, durationOfPart, partFileName)
 
   if (process.env.APP_ENV === 'faker') {
