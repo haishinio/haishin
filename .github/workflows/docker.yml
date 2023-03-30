@@ -43,7 +43,7 @@ jobs:
 
       - name: Get git revision
         id: git_rev
-        run: echo ::set-output name=rev::$(git rev-parse --short HEAD)
+        run: echo "rev::$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
