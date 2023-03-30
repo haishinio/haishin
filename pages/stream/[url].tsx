@@ -102,19 +102,11 @@ const StreamUrlPage: NextPage = () => {
 
       isProcessingRef.current = false
     }
-
-    console.log({ isProcessingRef: isProcessingRef.current })
     
-    // Check we have a streamFile and startTime first
+    // Check we can transcribe, we have a stream file, and we're not already processing
     if (isTranscribing && streamFile && !isProcessingRef.current) {
-      // isProcessingRef.current = true
-
-      // Ping the api every 5 seconds
-      const transcribeTimeout = setTimeout(() => {
-        transcribeTranslate()
-      }, splitTime * 1000)
-  
-      return () => clearTimeout(transcribeTimeout)
+      isProcessingRef.current = true
+      transcribeTranslate()
     }
   }, [isTranscribing, splitTime, prompt, startTime, streamFile])
 
