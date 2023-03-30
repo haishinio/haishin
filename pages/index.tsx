@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 
-import simpleGit from 'simple-git'
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
@@ -9,13 +8,11 @@ interface HomeProps {
 }
 
 export async function getStaticProps() {
-  const git = simpleGit();
-  const log = await git.log(['-n', '1'])
-  const version = log.latest?.hash;
+  const version = process.env.HAISHIN_VERSION ?? 'dev'
 
   return {
     props: {
-      version: version || 'unknown'
+      version: version
     }
   }
 }
@@ -78,9 +75,9 @@ const Home: NextPage<HomeProps> = (props) => {
         <p className="flex place-content-center">
           <a className="place-self-end" href="https://github.com/tomouchuu/haishin">Github</a>
           <span className="flex-none mx-2">|</span>
-          <a className="place-self-start" href={`https://github.com/tomouchuu/haishin/commit/${props.version}`}>
+          <span className="place-self-start">
             {props.version.slice(0, 7)}
-          </a>
+          </span>
         </p>
         <p className="text-xs">Built by <a href="https://tomo.uchuu.io">Thomas(tomouchuu)</a></p>
       </footer>

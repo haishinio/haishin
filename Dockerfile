@@ -36,6 +36,9 @@ RUN npm run build
 # Production image, copy all the files and run next
 FROM base AS runner
 
+ARG GIT_REVISION
+ENV HAISHIN_VERSION=$GIT_REVISION
+
 # These need to be in here so they are included at runtime
 RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
 RUN pip install streamlink
