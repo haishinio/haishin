@@ -21,6 +21,7 @@ type Data = {
 
 function getPathsByUrl(url: string) {
   const paths = url
+    .replace('http://', '')
     .replace('https://', '')
     .replace('c:', '')
     .split('/')
