@@ -118,7 +118,7 @@ const StreamUrlPage: NextPage = () => {
         setTimeout(() => {
           isProcessingRef.current = true
           transcribeTranslate()
-        }, 6000)
+        }, 10000)
       } else {
         isProcessingRef.current = true
         transcribeTranslate()
