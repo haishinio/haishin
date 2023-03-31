@@ -4,6 +4,9 @@ const requiredFiles = [
   './utils/**/*',
   './node_modules/regenerator-runtime/**/*',
   './node_modules/node-fetch/**/*',
+  './node_modules/whatwg-url/**/*',
+  './node_modules/webidl-conversions/**/*',
+  './node_modules/is-url/**/*',
 ]
 
 const moduleExports = {
