@@ -52,7 +52,7 @@ export default async function handler(
 ) {
   const query: Query = JSON.parse(req.body)
   const originalUrl = query.url
-  const file = `./public/streams/${setFileName(originalUrl)}`
+  const file = `./data/streams/${setFileName(originalUrl)}`
 
   // if (process.env.APP_ENV === 'faker') {
   //   return res.status(200).json({

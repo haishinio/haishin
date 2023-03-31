@@ -24,7 +24,7 @@ interface Response {
 }
 
 export default async function splitTranscribeTranslate(
-  streamFile = './public/stream.mp4',
+  streamFile = './data/stream.mp4',
   startTime = 0,
   prompt = '',
   duration = 0
@@ -59,7 +59,7 @@ export default async function splitTranscribeTranslate(
   }
 
   const part = uuidv4()
-  const partFileName = `./public/stream-part-${part}.wav`
+  const partFileName = `./data/stream-part-${part}.wav`
 
   const ffmpegSplitWorker = new Worker('./utils/ffmpeg-splitter-worker.js');
 
@@ -86,7 +86,6 @@ export default async function splitTranscribeTranslate(
 
   await fs.promises.writeFile(partFileName, splitFileData)
   await ffmpegSplitWorker.terminate();
-  // const splitFile = await splitFileIntoPart(pathToFile, startTime, durationOfPart, partFileName)
 
   if (process.env.APP_ENV === 'faker') {
     const fakeResult = await new Promise<Response>((resolve) => {

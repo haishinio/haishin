@@ -37,9 +37,7 @@ yarn-error.log*
 next-env.d.ts
 
 # Streams
-/public/backup/*
-/public/streams/*
-/public/uploads/*
+/data
 
 # Digital Ocean
 /for-server

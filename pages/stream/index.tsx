@@ -11,8 +11,16 @@ const StreamIndex: NextPage = () => {
   const router = useRouter()
   const { url } = router.query as UrlQuery
 
+  const [ streamUrl, setStreamUrl ] = useState('')
   const [ fileDuration, updateFileDuration ] = useState(0)
   const [ textLogs, updateTextLogs ] = useState<TextLog[]>([])
+
+  useEffect(() => {   
+    if (url) {
+      const cleanUrl = encodeURIComponent(url)
+      setStreamUrl(`/api/stream/upload?filename=${cleanUrl}`)
+    }
+  }, [url])
 
   // Starts transcribing+translating the stream
   useEffect(() => {
@@ -20,7 +28,7 @@ const StreamIndex: NextPage = () => {
       const response = await fetch('/api/transcribe/archive', {
         method: 'POST',
         body: JSON.stringify({
-          streamFile: `./public/${url}`,
+          streamFile: `./data/${url}`,
           fileDuration
         })
       })
@@ -43,7 +51,7 @@ const StreamIndex: NextPage = () => {
             isTranscribing={true}
             isTwitcasting={false}
             originalUrl={url}
-            streamUrl={url}
+            streamUrl={streamUrl}
             textLogs={textLogs}
             updateFileDuration={updateFileDuration}
           />
