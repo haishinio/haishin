@@ -25,34 +25,7 @@ async function run(pathToFile, startTime, durationOfPart) {
 }
 
 parentPort.on('message', (message) => {
-  // console.log({ message });
-
   if (message.command === 'run') {
     run(message.pathToFile, message.startTime, message.durationOfPart);
   }
 });
-
-// export default class ffmpegSplitWorker {
-//   onmessage = async ({ data }) => {
-//     const {
-//       pathToFile, startTime, durationOfPart
-//     } = data;
-
-//     const ffmpeg = createFFmpeg({ log: true });
-//     await ffmpeg.load();
-
-//     const input = await fetchFile(pathToFile);
-//     ffmpeg.FS('writeFile', 'input.mp4', input);
-
-//     await ffmpeg.run('-i', 'input.mp4', '-ss', startTime.toString(), '-t', durationOfPart.toString(), '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '1', 'output.wav');
-
-//     const outputData = ffmpeg.FS('readFile', 'output.wav');
-
-//     ffmpeg.FS('unlink', 'input.mp4');
-//     ffmpeg.FS('unlink', 'output.wav');
-
-//     await ffmpeg.exit();
-
-//     postMessage({ output: outputData });
-//   }
-// }
