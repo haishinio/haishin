@@ -12,7 +12,7 @@ export default function TextLogRow({ textLog }: Props) {
         <p>{textLog.transcription}</p>
         <p>{textLog.translation}</p>
       </td>
-      <td className="hidden sm:table-cell xl:hidden p-2">{textLog.transcription}</td>
+      <td className="w-1/2 hidden sm:table-cell xl:hidden p-2">{textLog.transcription}</td>
       <td className="w-1/2 hidden sm:table-cell xl:hidden p-2">{textLog.translation}</td>
     </>
   )
