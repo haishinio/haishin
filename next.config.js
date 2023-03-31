@@ -1,5 +1,10 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
+const requiredFiles = [
+  './utils/**/*',
+  './node_modules/regenerator-runtime/runtime.js',
+]
+
 const moduleExports = {
   env: {
     HAISHIN_VERSION: process.env.HAISHIN_VERSION
@@ -10,8 +15,8 @@ const moduleExports = {
   output: 'standalone',
   experimental: {
     outputFileTracingIncludes: {
-      '/api/transcribe/live': ['./utils/**/*'],
-      '/api/transcribe/archive': ['./utils/**/*'],
+      '/api/transcribe/live': requiredFiles,
+      '/api/transcribe/archive': requiredFiles,
     },
   },
   reactStrictMode: true,

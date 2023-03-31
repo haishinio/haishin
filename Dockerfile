@@ -61,8 +61,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # Include the patched ffmpeg files
 COPY --from=deps /app/node_modules/@ffmpeg ./node_modules/@ffmpeg
-# Include the split worker
-COPY ./utils/ffmpeg-splitter-worker.js ./utils/ffmpeg-splitter-worker.js
 
 USER nextjs
 
