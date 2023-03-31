@@ -6,6 +6,7 @@ const requiredFiles = [
   './node_modules/node-fetch/**/*',
   './node_modules/whatwg-url/**/*',
   './node_modules/webidl-conversions/**/*',
+  './node_modules/tr46/**/*',
   './node_modules/is-url/**/*',
 ]
 
