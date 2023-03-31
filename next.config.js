@@ -2,7 +2,8 @@ const { withSentryConfig } = require("@sentry/nextjs");
 
 const requiredFiles = [
   './utils/**/*',
-  './node_modules/regenerator-runtime/runtime.js',
+  './node_modules/regenerator-runtime/**/*',
+  './node_modules/node-fetch/**/*',
 ]
 
 const moduleExports = {
