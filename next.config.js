@@ -8,9 +8,11 @@ const moduleExports = {
     hideSourceMaps: true,
   },
   output: 'standalone',
-  outputFileTracingIncludes: {
-    '/api/transcribe/live': ['./utils/**/*'],
-    '/api/transcribe/archive': ['./utils/**/*'],
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/transcribe/live': ['./utils/**/*'],
+      '/api/transcribe/archive': ['./utils/**/*'],
+    },
   },
   reactStrictMode: true,
   swcMinify: true,
