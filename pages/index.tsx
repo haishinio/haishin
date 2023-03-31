@@ -33,7 +33,7 @@ const Home: NextPage<HomeProps> = (props) => {
         <small className="block text-xl">- 配信 -</small>
       </h1>
       <p>This tool is able to take a stream url or an mp4 file and then transcribe what was said in Japanese and then translate it into English. It does this by splitting the file or stream into chunks and sends these to OpenAI&apos;s whisper model for transcribing and then it sends this transcription to DeepL for translation.</p>
-      <p className="my-2">Presently you&apos;ll get a new a new transcription and translation every 5seconds for a livestream.</p>
+      <p className="my-2">Presently you&apos;ll get a new a new transcription and translation every few seconds for a livestream.</p>
       <p>The tool is not perfect, transcriptions may miss or make mistakes which causes a knock on effect for translations. But it should be good enough for English speakers to understand the gist of streams.</p>
 
       <section className="mt-6">
