@@ -110,7 +110,7 @@ export default async function handler(
       streamFile.close() // closes the file when the stream ends or is closed
   
       // Move completed file to backups
-      fs.copyFileSync(file, `./public/backup/${setArchivedFileName(originalUrl)}`)
+      fs.copyFileSync(file, `./data/backup/${setArchivedFileName(originalUrl)}`)
 
       // Delete file in streams
       fs.unlinkSync(file)
