@@ -37,7 +37,12 @@ yarn-error.log*
 next-env.d.ts
 
 # Streams
-/data
+/data/backups/**/*
+/data/streams/**/*
+/data/uploads/**/*
+!/data/backups/.gitkeep
+!/data/streams/.gitkeep
+!/data/uploads/.gitkeep
 
 # Digital Ocean
 /for-server
