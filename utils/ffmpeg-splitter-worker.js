@@ -28,4 +28,9 @@ parentPort.on('message', (message) => {
   if (message.command === 'run') {
     run(message.pathToFile, message.startTime, message.durationOfPart);
   }
+
+  if (message.command === 'shutdown') {
+    // Clean up resources and exit gracefully
+    process.exit(0);
+  }
 });

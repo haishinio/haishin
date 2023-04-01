@@ -85,7 +85,6 @@ export default async function splitTranscribeTranslate(
   });
 
   await fs.promises.writeFile(partFileName, splitFileData)
-  await ffmpegSplitWorker.terminate();
 
   if (process.env.APP_ENV === 'faker') {
     const fakeResult = await new Promise<Response>((resolve) => {
@@ -151,6 +150,10 @@ export default async function splitTranscribeTranslate(
 
   // Delete the stream part as we shouldn't need it anymore
   fs.unlinkSync(partFileName)
+  
+  ffmpegSplitWorker.postMessage({ 
+    command: 'shutdown',
+  });
 
   return {
     nextStartTime: nextStartTime,
