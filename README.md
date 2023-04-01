@@ -2,7 +2,7 @@
 
 [![Build docker image](https://github.com/tomouchuu/haishin/actions/workflows/docker.yml/badge.svg)](https://github.com/tomouchuu/haishin/actions/workflows/docker.yml)
 
-This website is able to take a stream url or an mp4 file and then transcribe what was said in Japanese and then translate it into English. It does this by splitting the file or stream into chunks and sends these to OpenAI's whisper model for transcribing and then it sends this transcription to DeepL for translation. Presently it'll send a request at least every 5 seconds to get the latest things that were said.
+This website is able to take a stream url or an mp4 file and then transcribe what was said in Japanese and then translate it into English. It does this by splitting the file or stream into chunks and sends these to OpenAI's whisper model for transcribing and then it sends this transcription to DeepL for translation. Presently it'll send a request at every few seconds to get the latest things that were said after an initial short buffer period.
 
 It's certainly not perfect but hopefully it's enough for English speakers to understand the context around streams.
 
@@ -15,7 +15,7 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 - Should it be possible to save the textLog for the user (They could just copy and paste I guess.)
 - Can we not use the best preset so we can save on filesize
 - Can we pull in comments + gifts from livestreams?
-- Can we add auth so you could comment directly from here?
+- Can we add auth so you could comment directly from here? Also might handle [#3 Twitcasts that require an account](https://github.com/tomouchuu/haishin/issues/3)
 
 ## Local Use
 
@@ -33,4 +33,4 @@ OpenAI gives you $5 to use for the first few months after signing up. I _think_ 
 
 DeepL has a free allowance of 500,000 characters a month. It seems plenty fine!
 
-If developing you might want to use `npm run dev:faker` instead so you don't use your OpenAI or DeepL tokens.
+If developing you might want to use `npm run dev:faker` or pass `APP_ENV=faker` in the `.env` instead so you don't use your OpenAI or DeepL tokens.
