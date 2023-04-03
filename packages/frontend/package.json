@@ -1,11 +1,11 @@
 {
-  "name": "frontend",
+  "name": "haishin-fe",
   "description": "A website that transcribes+translates Japanese streams into English with OpenAI+DeepL",
   "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:faker": "cross-env APP_ENV=faker next dev",
+    "faker": "cross-env APP_ENV=faker next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

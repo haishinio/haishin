@@ -27,7 +27,7 @@ If not using Docker then the instructions below are for you!
 
 1. You'll also need [nodejs](https://nodejs.org/en), [ffmpeg](https://ffmpeg.org/download.html), [streamlink](https://streamlink.github.io/install.html) and [pnpm](https://pnpm.io/installation) to be available in your command line.
 2. Run `pnpm i` within the repo folder to install more dependencies.
-3. Now you should be able to run `npx lerna run dev:faker` to start the dev servers which is enough to get started. Once started you should be able to go to http://localhost:3000 to see the site.
+3. Now you should be able to run `npx lerna run faker --stream` to start the dev servers which is enough to get started. Once started you should be able to go to http://localhost:3000 to see the site.
 4. If you wish to run the site with actual transcriptions and translations then run `npx lerna run dev`.
 
 OpenAI gives you $5 to use for the first few months after signing up. I _think_ you can just keep creating accounts to get more. You'll be spending $0.006 a minute with OpenAI so a 1 hour stream will cost you ~$0.36 meaning you can watch just under 14 hours of streams with the free $5 you are given.
