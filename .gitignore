@@ -7,9 +7,11 @@
 
 # Streams
 /data/backups/**/*
+/data/stream-parts/**/*
 /data/streams/**/*
 /data/uploads/**/*
 !/data/backups/.gitkeep
+!/data/stream-parts/.gitkeep
 !/data/streams/.gitkeep
 !/data/uploads/.gitkeep
 

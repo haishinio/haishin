@@ -11,13 +11,18 @@ export const config = {
   },
 };
 
+const pathToData = (restOfFilePath: string): string => {
+  return path.join(process.cwd(), '../../', restOfFilePath)
+}
+
 // Function to save the file
 const saveFile = async (file: File) => {
-  const destinationPath = `./data/uploads/${file.originalFilename}`
+  const servePath = `./data/uploads/${file.originalFilename}`
+  const destinationPath = pathToData(servePath)
   const data = fs.readFileSync(file.filepath)
   fs.writeFileSync(destinationPath, data)
   await fs.unlinkSync(file.filepath)
-  return destinationPath;
+  return servePath;
 };
 
 // Function to handle file upload
@@ -38,7 +43,7 @@ const uploadFile = async (req: NextApiRequest): Promise<string> => {
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'GET') {
     const fileName = req.query.filename as string; // Get filename from query parameter
-    const filePath = path.join(process.cwd(), 'data', fileName); // Set file path
+    const filePath = pathToData(`./data/${fileName}`); // Set file path
 
     // Check if the file exists
     if (fs.existsSync(filePath)) {

@@ -1,2 +1,2 @@
-declare const pathToData: (restOfFilePath: string) => string;
+export declare const pathToData: (restOfFilePath: string) => string;
 export default pathToData;

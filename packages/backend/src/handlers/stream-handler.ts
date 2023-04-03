@@ -9,6 +9,8 @@ function isUrl(str) {
 
 export default function (io, socket) {
   io.of('/').adapter.on('create-room', async (room) => {    
+    console.log({ createRoom: room });
+
     if (isUrl(room)) {
       // Get the initial stream data
       const streamData = await setupStream(room);
