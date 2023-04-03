@@ -5,20 +5,17 @@ import * as deepl from 'deepl-node'
 import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
+import { TranscriberResponse } from '../types/responses'
+
 const openAiConfig = new Configuration({
   apiKey: process.env.OPENAI_API_KEY
 })
 const openai = new OpenAIApi(openAiConfig)
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 
-interface Response {
-  transcription: string
-  translation: string
-}
-
-const transcribeTranslatePart = async function (filename: string, prompt: string) {
+const transcribeTranslatePart = async function (filename: string, prompt: string): Promise<TranscriberResponse> {
   if (process.env.APP_ENV === 'faker') {
-    const fakeResult = await new Promise<Response>((resolve) => {
+    const fakeResult = await new Promise<TranscriberResponse>((resolve) => {
       setTimeout(() => {
         resolve({
           transcription: fakerJP.lorem.words(10),
@@ -59,7 +56,7 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
   return {
     transcription: transcriptionText,
     translation: translation.text
-  } as Response
+  }
 }
 
 export default transcribeTranslatePart;

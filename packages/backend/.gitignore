@@ -3,11 +3,3 @@
 
 # Built files
 dist/
-
-# Streams
-/data/backups/**/*
-/data/streams/**/*
-/data/uploads/**/*
-!/data/backups/.gitkeep
-!/data/streams/.gitkeep
-!/data/uploads/.gitkeep

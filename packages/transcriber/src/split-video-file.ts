@@ -4,7 +4,11 @@ import { v4 as uuidv4 } from 'uuid'
 import { Worker } from 'worker_threads'
 import probe from 'node-ffprobe'
 
-const splitVideoFile = async function (filename: string, startTime: number) {
+import pathToData from './utils/path-to-data'
+
+import { SplitVideoFileResponse } from '../types/responses'
+
+const splitVideoFile = async function (filename: string, startTime: number): Promise<SplitVideoFileResponse> {
   const pathToFile = path.join('.', filename)
 
   let durationOfPart = 0
@@ -25,8 +29,8 @@ const splitVideoFile = async function (filename: string, startTime: number) {
     // TODO: Handle error, ie do nothing and wait for the next attempt
   }
 
-  const part = uuidv4()
-  const partFileName = `./data/stream-part-${part}.wav`
+  const part = uuidv4()  
+  const partFileName = pathToData(`stream-part-${part}.wav`)
 
   const workerPath = path.join(__dirname, 'utils/ffmpeg-splitter-worker.js');
   const ffmpegSplitWorker = new Worker(workerPath);

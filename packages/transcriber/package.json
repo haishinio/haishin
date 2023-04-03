@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "private": true,
   "main": "dist/index.js",
-  "types": "./index.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "build": "tsc -p tsconfig.json"
@@ -12,8 +12,11 @@
   "keywords": [],
   "author": "",
   "dependencies": {
+    "@dragongoose/streamlink": "^1.1.1",
     "@ffmpeg/core": "^0.11.0",
     "@ffmpeg/ffmpeg": "^0.11.6",
+    "await-exec": "^0.1.2",
+    "date-fns": "^2.29.3",
     "deepl-node": "^1.9.0",
     "node-ffprobe": "^3.0.0",
     "openai": "^3.2.1",

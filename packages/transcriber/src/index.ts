@@ -1,9 +1,11 @@
+import setupStream from "./setup-stream";
 import splitVideoFile from "./split-video-file";
 import transcribeTranslatePart from "./transcribe-translate-part";
 
-export { splitVideoFile, transcribeTranslatePart };
+export { setupStream, splitVideoFile, transcribeTranslatePart };
 
 const transcriber = {
+  setupStream,
   splitVideoFile,
   transcribeTranslatePart,
 }
