@@ -1,6 +1,5 @@
-/* eslint-disable */
-const { parentPort } = require('worker_threads');
-const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
+import { parentPort } from 'worker_threads';
+import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
 const ffmpeg = createFFmpeg({ log: false, corePath: '@ffmpeg/core', });
 

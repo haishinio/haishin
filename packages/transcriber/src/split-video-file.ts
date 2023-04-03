@@ -28,7 +28,8 @@ const splitVideoFile = async function (filename: string, startTime: number) {
   const part = uuidv4()
   const partFileName = `./data/stream-part-${part}.wav`
 
-  const ffmpegSplitWorker = new Worker('./utils/ffmpeg-splitter-worker.js');
+  const workerPath = path.join(__dirname, 'utils/ffmpeg-splitter-worker.js');
+  const ffmpegSplitWorker = new Worker(workerPath);
 
   ffmpegSplitWorker.postMessage({ 
     command: 'run', 

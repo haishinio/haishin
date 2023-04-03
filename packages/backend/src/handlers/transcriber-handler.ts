@@ -1,8 +1,7 @@
 import fs from 'fs'
 import { v4 as uuidv4 } from 'uuid'
 
-import splitVideoFile from '../helpers/split-video-file'
-import transcribeTranslatePart from '../helpers/transcribe-translate-part'
+import { splitVideoFile, transcribeTranslatePart } from '@haishin/transcriber'
 
 interface TranscriberData {
   url: string
