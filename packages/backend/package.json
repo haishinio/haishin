@@ -23,7 +23,6 @@
     "http": "^0.0.1-security",
     "node-ffprobe": "^3.0.0",
     "openai": "^3.2.1",
-    "patch-package": "^6.5.1",
     "socket.io": "^4.6.1",
     "uuid": "^9.0.0"
   },
