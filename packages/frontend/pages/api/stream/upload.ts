@@ -64,29 +64,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(405).end();
   }
 };
-
-
-
-// import fs from "fs"
-// import formidable, { Files } from "formidable"
-
-// import type { File } from "formidable"
-// import type { NextApiRequest, NextApiResponse } from 'next'
-
-// export const config = {
-//   api: {
-//     bodyParser: false
-//   }
-// };
-
-// export default async function handler(
-//   req: NextApiRequest,
-//   res: NextApiResponse
-// ) {
-//   const form = new formidable.IncomingForm()
-//   form.parse(req, async function (err, fields, files: Files) {
-//     const streamUrl = await saveFile(files.file as File)
-//     
-//   });
-// };
-

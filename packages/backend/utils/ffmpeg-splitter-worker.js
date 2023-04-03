@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { parentPort } = require('worker_threads');
 const { createFFmpeg, fetchFile } = require('@ffmpeg/ffmpeg');
 

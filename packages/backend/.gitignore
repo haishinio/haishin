@@ -1,9 +1,8 @@
 # dependencies
 /node_modules
 
-# local env files
-.env*.local
-.env
+# Built files
+dist/
 
 # Streams
 /data/backups/**/*
@@ -12,6 +11,3 @@
 !/data/backups/.gitkeep
 !/data/streams/.gitkeep
 !/data/uploads/.gitkeep
-
-# Digital Ocean
-/for-server

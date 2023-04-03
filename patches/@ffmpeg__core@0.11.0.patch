@@ -1,7 +1,7 @@
-diff --git a/node_modules/@ffmpeg/core/dist/ffmpeg-core.js b/node_modules/@ffmpeg/core/dist/ffmpeg-core.js
-index a81e2fd..caefc4c 100644
---- a/node_modules/@ffmpeg/core/dist/ffmpeg-core.js
-+++ b/node_modules/@ffmpeg/core/dist/ffmpeg-core.js
+diff --git a/dist/ffmpeg-core.js b/dist/ffmpeg-core.js
+index a81e2fdb0e3f79bb7e5187db062036aaf61db9b6..caefc4c35523ed84dd1f2aed7ded29f2849d1af2 100644
+--- a/dist/ffmpeg-core.js
++++ b/dist/ffmpeg-core.js
 @@ -211,7 +211,7 @@ for(var t in q)c=c.replace(new RegExp(t,"g"),q[t]);var w="Sunday Monday Tuesday
  7},"%U":function(p){var x=new Date(p.rf+1900,0,1),z=0===x.getDay()?x:ce(x,7-x.getDay());p=new Date(p.rf+1900,p.dg,p.pg);return 0>k(z,p)?g(Math.ceil((31-z.getDate()+($d(Zd(p.getFullYear())?ae:be,p.getMonth()-1)-31)+p.getDate())/7),2):0===k(z,x)?"01":"00"},"%V":function(p){var x=new Date(p.rf+1901,0,4),z=m(new Date(p.rf+1900,0,4));x=m(x);var I=ce(new Date(p.rf+1900,0,1),p.Gg);return 0>k(I,z)?"53":0>=k(x,I)?"01":g(Math.ceil((z.getFullYear()<p.rf+1900?p.Gg+32-z.getDate():p.Gg+1-z.getDate())/7),2)},"%w":function(p){return p.Fg},
  "%W":function(p){var x=new Date(p.rf,0,1),z=1===x.getDay()?x:ce(x,0===x.getDay()?1:7-x.getDay()+1);p=new Date(p.rf+1900,p.dg,p.pg);return 0>k(z,p)?g(Math.ceil((31-z.getDate()+($d(Zd(p.getFullYear())?ae:be,p.getMonth()-1)-31)+p.getDate())/7),2):0===k(z,x)?"01":"00"},"%y":function(p){return(p.rf+1900).toString().substring(2)},"%Y":function(p){return p.rf+1900},"%z":function(p){p=p.Ri;var x=0<=p;p=Math.abs(p)/60;return(x?"+":"-")+String("0000"+(p/60*100+p%60)).slice(-4)},"%Z":function(p){return p.Ui},
