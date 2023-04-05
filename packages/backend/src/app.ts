@@ -30,6 +30,14 @@ io.on("connection", (socket) => {
       socket.join(streamUrl);
     }
   }
+
+  socket.on("join-room", (room) => {
+    socket.join(room);
+  });
+
+  socket.on("leave-room", (room) => {
+    socket.leave(room);
+  });
 });
 
 console.log("Websocket Server listening on port 8080");

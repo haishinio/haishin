@@ -12,6 +12,8 @@ import type { Socket } from 'socket.io-client'
 import type { TextLog } from '../../types/Textlog'
 import type { UrlQuery } from '../../types/UrlQuery'
 
+let socket: Socket;
+
 const StreamUrlPage: NextPage = () => {
   const router = useRouter()
   const { url } = router.query as UrlQuery
@@ -26,8 +28,6 @@ const StreamUrlPage: NextPage = () => {
 
   // Starts capturing the stream
   useEffect(() => {
-    let socket: Socket;
-
     socket = io(`http://localhost:8080`, {
       autoConnect: false,
       query: {
@@ -37,6 +37,10 @@ const StreamUrlPage: NextPage = () => {
 
     socket.on('connect', () => {
       console.log('connected')
+    })
+
+    socket.on('started-archiving', () => {
+      setIsTranscribing(true)
     })
 
     socket.on('transcription-translation', (data) => {
@@ -75,24 +79,19 @@ const StreamUrlPage: NextPage = () => {
   }, [url])
 
   // Start/Stop transcribing the stream
-  const controlTranscription = async () => {}
-  // const controlTranscription = async () => {
-  //   const nextState = !isTranscribing
+  const controlTranscription = async () => {
+    const nextState = !isTranscribing
 
-  //   // If we're going to be starting again we need to get the latest duration
-  //   if (nextState) {
-  //     const streamDurationRes = await fetch('/api/stream/duration', {
-  //       method: 'POST',
-  //       body: JSON.stringify({
-  //         streamFile: streamFile
-  //       })
-  //     })
-  //     const streamDurationData = await streamDurationRes.json()
-  //     updateStartTime(streamDurationData.duration.toString())
-  //   }
+    if (nextState) {
+      // Leave the room
+      socket.emit('leave-room', { room: url })
+    } else {
+      // Join the room
+      socket.emit('join-room', { room: url })
+    }
 
-  //   setIsTranscribing(nextState)
-  // }
+    setIsTranscribing(nextState)
+  }
 
   return (
     <>
