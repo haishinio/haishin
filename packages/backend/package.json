@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@haishin/transcriber": "workspace:*",
+    "@sentry/node": "^7.46.0",
     "express": "^4.18.2",
     "socket.io": "^4.6.1",
     "uuid": "^9.0.0"

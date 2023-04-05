@@ -1,6 +1,7 @@
 import fs from 'fs'
 import { Configuration, OpenAIApi } from "openai"
 import * as deepl from 'deepl-node'
+import * as Sentry from "@sentry/node"
 
 import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 import { faker as fakerJP } from '@faker-js/faker/locale/ja'
@@ -40,7 +41,7 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
     transcriptionText = transcription.data.text
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error(error)
+    Sentry.captureException(error);
   }
   
   // Translate the JP text
@@ -49,7 +50,7 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
     try {
       translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
     } catch (error) {
-      console.error(error)
+      Sentry.captureException(error);
     }
   }
 

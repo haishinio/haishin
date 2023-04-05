@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import { Worker } from 'worker_threads'
+import * as Sentry from "@sentry/node"
 
 import { SplitVideoFileResponse } from '../types/responses'
 
@@ -22,6 +23,7 @@ const splitVideoFile = async function (filename: string, startTime: number, work
       durationOfPart = (currentStreamLength - startTime)
     } else {
       // TODO: Handle error, ie do nothing and wait for the next attempt
+      Sentry.captureException('Could not get duration of stream');
     }
   }
 
@@ -39,6 +41,7 @@ const splitVideoFile = async function (filename: string, startTime: number, work
     ffmpegSplitWorker.on('message', (message) => {
       if (message.error) {
         // We might have already moved the file to backup as stream ended
+        Sentry.captureException(message.error);
         reject(new Error(message.error));
       } else {
         resolve(message.output);

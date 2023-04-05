@@ -2,6 +2,7 @@ import fs from 'fs'
 import exec from 'await-exec'
 import { Streamlink } from '@dragongoose/streamlink'
 import { format } from 'date-fns'
+import * as Sentry from "@sentry/node"
 
 import pathToData from './utils/path-to-data'
 
@@ -62,7 +63,7 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
     })
 
     client.on('error', (error: Error) => {
-      console.log(error)
+      Sentry.captureException(error);
     })
   
     client.on('close', () => {
