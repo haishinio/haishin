@@ -8,6 +8,7 @@
     "lint": "eslint . --ext .ts",
     "build": "tsc -p tsconfig.json",
     "faker": "cross-env APP_ENV=faker node dist/app.js",
+    "dev": "node dist/app.js",
     "start": "node dist/app.js"
   },
   "dependencies": {
@@ -35,6 +36,11 @@
         ]
       },
       "faker": {
+        "dependsOn": [
+          "build"
+        ]
+      },
+      "dev": {
         "dependsOn": [
           "build"
         ]
