@@ -82,7 +82,7 @@ const StreamPage = (props: Props) => {
         </div>
 
         <div className={`col-span-12 xl:col-span-4 xl:!max-h-screen overflow-auto`} style={{maxHeight: `${logHeight}px`}}>
-          <table className="w-full">
+          <table className="w-full table-fixed">
             <tbody>
               {
                 textLogs.length < 1 && (
