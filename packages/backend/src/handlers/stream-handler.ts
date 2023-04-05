@@ -19,6 +19,7 @@ export default function (io, socket) {
       if (streamData.newStream) {
         // If it's a new stream start the transcriber after 10 seconds
         setTimeout(() => {
+          console.log('Start transcribing')
           transcriberHandler(io, {
             url: streamData.originalUrl,
             filename: streamData.file,

@@ -38,6 +38,7 @@ const splitVideoFile = async function (filename: string, startTime: number, work
   const splitFileData = await new Promise<Buffer>((resolve, reject) => {
     ffmpegSplitWorker.on('message', (message) => {
       if (message.error) {
+        // We might have already moved the file to backup as stream ended
         reject(new Error(message.error));
       } else {
         resolve(message.output);

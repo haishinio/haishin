@@ -51,6 +51,7 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
     };
     // DO SOMETHING
   } catch {
+    console.log('Start archiving stream')
     const client = new Streamlink(originalUrl, { outputStdout: true })
     const streamFile = fs.createWriteStream(file)
 
@@ -70,7 +71,7 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
       // Move completed file to backups
       fs.copyFileSync(
         file,
-        pathToData(`/data/backups/${setArchivedFileName(originalUrl)}`)
+        pathToData(`/backups/${setArchivedFileName(originalUrl)}`)
       )
 
       // Delete file in streams
