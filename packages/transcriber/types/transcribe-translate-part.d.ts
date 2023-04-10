@@ -1,3 +1,3 @@
-import { TranscriberResponse } from '../types/responses';
+import { TranscriberResponse } from './responses';
 declare const transcribeTranslatePart: (filename: string, prompt: string) => Promise<TranscriberResponse>;
 export default transcribeTranslatePart;
