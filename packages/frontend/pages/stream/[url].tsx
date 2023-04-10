@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 
-import io from 'Socket.IO-client'
+import io from 'socket.io-client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
