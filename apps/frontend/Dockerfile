@@ -1,71 +1,58 @@
-FROM node:18-alpine AS base
+FROM node:18-alpine AS builder
 
-ARG GIT_REVISION
-ENV HAISHIN_VERSION=$GIT_REVISION
+RUN apk add --no-cache libc6-compat
+RUN apk update
 
-# Install dependencies only when needed
-FROM base AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
-RUN pip install streamlink
 WORKDIR /app
-
-# Install dependencies based on the preferred package manager
-COPY patches ./patches
-COPY package.json package-lock.json* ./
-RUN \
-  if [ -f package-lock.json ]; then npm ci; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
-
-RUN npm install postinstall
-
-# Rebuild the source code only when needed
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+RUN npm install -g turbo
 COPY . .
+RUN turbo prune --scope @haishin/frontend --docker
 
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
+# Add lockfile and package.json's of isolated subworkspace
+FROM node:18-alpine AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+RUN npm install -g pnpm turbo
 
-# RUN yarn build
+# First install the dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+RUN pnpm install
 
-# If using npm comment out above and use below instead
-RUN npm run build
+# Build the project
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
 
-# Production image, copy all the files and run next
-FROM base AS runner
+# Uncomment and use build args to enable remote caching
+# ARG TURBO_TEAM
+# ENV TURBO_TEAM=$TURBO_TEAM
 
-# These need to be in here so they are included at runtime
-RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
-RUN pip install streamlink
+# ARG TURBO_TOKEN
+# ENV TURBO_TOKEN=$TURBO_TOKEN
+
+RUN pnpm turbo run build --filter=frontend...
+
+FROM node:18-alpine AS runner
+
+RUN apk add --no-cache g++ make py3-pip ffmpeg
+RUN apk update
 
 WORKDIR /app
 
-ENV NODE_ENV production
-# Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
+# Don't run production as root
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+USER nextjs
 
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=installer /app/apps/frontend/next.config.js .
+COPY --from=installer /app/apps/frontend/package.json .
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/frontend/public
 
-# Include the patched ffmpeg files
-COPY --from=deps /app/node_modules/@ffmpeg ./node_modules/@ffmpeg
-
-USER nextjs
-
-EXPOSE 3000
-
-ENV PORT 3000
-
-CMD ["node", "server.js"]
+CMD node apps/frontend/server.js
