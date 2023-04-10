@@ -82,7 +82,7 @@ const StreamUrlPage: NextPage = () => {
   const controlTranscription = async () => {
     const nextState = !isTranscribing
 
-    if (nextState) {
+    if (!nextState) {
       // Leave the room
       socket.emit('leave-room', { room: url })
     } else {
