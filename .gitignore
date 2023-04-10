@@ -5,6 +5,9 @@
 .env*.local
 .env
 
+# Turbo
+.turbo
+
 # Streams
 /data/backups/**/*
 /data/stream-parts/**/*

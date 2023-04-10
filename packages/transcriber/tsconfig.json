@@ -7,7 +7,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "declaration": true,
-    "declarationDir": "./types"
+    "declarationDir": "./dist/types"
   },
   "lib": ["es2015"],
   "include": ["**/*.ts"],
