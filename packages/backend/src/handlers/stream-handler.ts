@@ -35,12 +35,14 @@ export default function (io, socket) {
     console.log({ deleteRoom: room });
   });
   
-  io.of('/').adapter.on('join-room', async (room) => {
+  io.of('/').adapter.on('join-room', (room) => {
     console.log({ joinRoom: room });
     if (isUrl(room)) {
       // We just want to join in progress so let's get the streamSetup only
-      const streamData = await setupStream(room);
-      socket.emit('started-archiving', streamData)
+      setTimeout(async () => {
+        const streamData = await setupStream(room);
+        socket.emit('started-archiving', streamData)
+      }, 5000);
     }
   });
   
