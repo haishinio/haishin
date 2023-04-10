@@ -57,9 +57,7 @@ const splitVideoFile = async function (filename: string, startTime: number, work
 
   await fs.promises.writeFile(partFileName, splitFileData)
 
-  ffmpegSplitWorker.postMessage({ 
-    command: 'shutdown',
-  });
+  ffmpegSplitWorker.terminate();
 
   return {
     partFileName,
