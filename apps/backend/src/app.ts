@@ -7,6 +7,8 @@ import registerStreamHandlers from "./handlers/stream-handler";
 
 Sentry.init({ dsn: process.env.SENTRY_DSN });
 
+process.chdir('../../');
+
 const app = express();
 
 // The request handler must be the first middleware on the app

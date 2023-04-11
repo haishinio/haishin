@@ -34,15 +34,16 @@ export default async function handler(
   // Get length of file uploaded if available
   const numOfParts = (fileDuration / partDuration)
 
-  const uploadPath = path.join(process.cwd(), '../..', `${streamFile}`)
-  const workerPath = path.join(process.cwd(), '../', 'transcriber', 'dist', 'utils', 'ffmpeg-splitter-worker.js')
+  const cwd = process.cwd()
+  const uploadPath = path.join(cwd, '../..', `${streamFile}`)
+  const workerPath = path.join(cwd, '../..', 'packages', 'transcriber', 'dist', 'worker.js')
 
   let textLogArray = [] as TextLog[]
   // For every 10s, split the file and send to whisper and then deepl
   for (let i = 0; i < numOfParts; i++) {
     const startTime = partDuration * i
 
-    const { partFileName } = await splitVideoFile(uploadPath, startTime, workerPath, partDuration)
+    const { partFileName } = await splitVideoFile(uploadPath, startTime, partDuration, workerPath)
 
     const { transcription, translation } = await transcribeTranslatePart(partFileName, textLogArray.at(-1)?.transcription ?? '')
 
