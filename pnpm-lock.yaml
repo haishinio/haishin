@@ -4,6 +4,9 @@ patchedDependencies:
   '@ffmpeg/core@0.11.0':
     hash: ld7rzfw7iozpndvzizlt4sbpaa
     path: patches/@ffmpeg__core@0.11.0.patch
+  node-ffprobe@3.0.0:
+    hash: mhkbpzp5mvsndy2wn6zppl26ii
+    path: patches/node-ffprobe@3.0.0.patch
 
 importers:
 
@@ -167,7 +170,7 @@ importers:
         version: 1.9.0
       node-ffprobe:
         specifier: ^3.0.0
-        version: 3.0.0
+        version: 3.0.0(patch_hash=mhkbpzp5mvsndy2wn6zppl26ii)
       openai:
         specifier: ^3.2.1
         version: 3.2.1
@@ -190,6 +193,9 @@ importers:
       '@rollup/plugin-sucrase':
         specifier: ^5.0.1
         version: 5.0.1(rollup@3.20.2)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.0
+        version: 11.1.0(rollup@3.20.2)(tslib@2.5.0)(typescript@5.0.3)
       '@types/node':
         specifier: ^18.15.11
         version: 18.15.11
@@ -208,6 +214,12 @@ importers:
       rollup:
         specifier: ^3.20.2
         version: 3.20.2
+      rollup-plugin-cleaner:
+        specifier: ^1.0.0
+        version: 1.0.0(rollup@3.20.2)
+      tslib:
+        specifier: ^2.5.0
+        version: 2.5.0
       typescript:
         specifier: ^5.0.3
         version: 5.0.3
@@ -594,6 +606,26 @@ packages:
       '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
       rollup: 3.20.2
       sucrase: 3.32.0
+    dev: true
+
+  /@rollup/plugin-typescript@11.1.0(rollup@3.20.2)(tslib@2.5.0)(typescript@5.0.3):
+    resolution: {integrity: sha512-86flrfE+bSHB69znnTV6kVjkncs2LBMhcTCyxWgRxLyfXfQrxg4UwlAqENnjrrxnSNS/XKCDJCl8EkdFJVHOxw==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^2.14.0||^3.0.0
+      tslib: '*'
+      typescript: '>=3.7.0'
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+      tslib:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 5.0.2(rollup@3.20.2)
+      resolve: 1.22.2
+      rollup: 3.20.2
+      tslib: 2.5.0
+      typescript: 5.0.3
     dev: true
 
   /@rollup/pluginutils@5.0.2(rollup@2.78.0):
@@ -3277,10 +3309,11 @@ packages:
       whatwg-url: 5.0.0
     dev: false
 
-  /node-ffprobe@3.0.0:
+  /node-ffprobe@3.0.0(patch_hash=mhkbpzp5mvsndy2wn6zppl26ii):
     resolution: {integrity: sha512-2LNTLStz2hw/urwo4xJ00TIOvthgepcl3tF4HB8BWnhJ4nhJ7S08YThapBHkGLYV+GUuY9pML/kX76+dqY2iUg==}
     engines: {node: '>= 10'}
     dev: false
+    patched: true
 
   /node-gyp-build@4.6.0:
     resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
@@ -3740,11 +3773,28 @@ packages:
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
     dev: true
 
+  /rimraf@2.7.1:
+    resolution: {integrity: sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==}
+    hasBin: true
+    dependencies:
+      glob: 7.2.3
+    dev: true
+
   /rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rollup-plugin-cleaner@1.0.0(rollup@3.20.2):
+    resolution: {integrity: sha512-q+Zf9estkFwGede9QzmbkhKeuXzlliOvcICVNzBHAs5xYPPs1XLtfin5TMU2tC2EYjmfaF97saY9MnQM6Og4eA==}
+    engines: {node: '>= 8.0'}
+    peerDependencies:
+      rollup: '> 1.0'
+    dependencies:
+      rimraf: 2.7.1
+      rollup: 3.20.2
     dev: true
 
   /rollup@2.78.0:

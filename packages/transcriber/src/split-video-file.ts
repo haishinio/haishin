@@ -1,12 +1,14 @@
 import fs from 'fs'
 import path from 'path'
+import crypto from 'crypto'
+import ffprobe from 'node-ffprobe'
 import { v4 as uuidv4 } from 'uuid'
 import { Worker } from 'worker_threads'
 import * as Sentry from "@sentry/node"
 
 import { SplitVideoFileResponse } from '../types/responses'
 
-const splitVideoFile = async function (filename: string, startTime: number, workerPath = path.join(__dirname, 'utils/ffmpeg-splitter-worker.js'), duration = 0): Promise<SplitVideoFileResponse> {
+const splitVideoFile = async function (filename: string, startTime: number, duration = 0, workerPath = path.join(__dirname, './worker.js')): Promise<SplitVideoFileResponse> {
   const pathToFile = path.join('.', filename)
 
   let durationOfPart = duration
@@ -14,8 +16,7 @@ const splitVideoFile = async function (filename: string, startTime: number, work
 
   if (durationOfPart === 0) {
     // ie. We don't know the duration of the part yet
-    const { default: probe } = await import('node-ffprobe');
-    const probeData = await probe(pathToFile)
+    const probeData = await ffprobe(pathToFile)
   
     if (!probeData.error) {
       const currentStreamLength = parseInt(probeData.format.duration)
@@ -27,7 +28,9 @@ const splitVideoFile = async function (filename: string, startTime: number, work
     }
   }
 
-  const part = uuidv4()  
+  const part = uuidv4({
+    random: crypto.getRandomValues(new Uint8Array(16))
+  })  
   const partFileName = path.join(pathToFile, '../../', `stream-parts/${part}.wav`)
 
   const ffmpegSplitWorker = new Worker(workerPath);

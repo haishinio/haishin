@@ -3,13 +3,14 @@
   "description": "A website that transcribes+translates Japanese streams into English with OpenAI+DeepL",
   "version": "2.0.0",
   "private": true,
+  "type": "commonjs",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/types/index.d.ts",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "build:types": "tsc -p tsconfig.json",
-    "build:package": "rollup -c --bundleConfigAsCjs",
-    "build": "npm run build:types && npm run build:package"
+    "build": "rollup -c --bundleConfigAsCjs",
+    "watch": "npm run build -- --watch"
   },
   "keywords": [],
   "author": "",
@@ -31,12 +32,15 @@
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-sucrase": "^5.0.1",
+    "@rollup/plugin-typescript": "^11.1.0",
     "@types/node": "^18.15.11",
     "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.57.0",
     "eslint": "^8.37.0",
     "rollup": "^3.20.2",
+    "rollup-plugin-cleaner": "^1.0.0",
+    "tslib": "^2.5.0",
     "typescript": "^5.0.3"
   }
 }

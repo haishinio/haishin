@@ -1,16 +1,47 @@
+import cleaner from 'rollup-plugin-cleaner';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import sucrase from '@rollup/plugin-sucrase';
+import typescript from '@rollup/plugin-typescript';
+
+const sharedOutputSettings = {
+  exports: "named",
+  interop: "auto",
+}
 
 export default {
-  input: 'src/index.ts',
-  output: {
-    dir: 'dist',
-    format: 'cjs'
+  input: {
+    index: 'src/index.ts',
+    worker: 'src/utils/ffmpeg-splitter-worker.ts'
   },
+  output: [
+		{
+      ...sharedOutputSettings,
+			dir: 'dist',
+			format: 'cjs',
+      chunkFileNames: '[name]-[hash].js',
+      entryFileNames: '[name].js',
+		},
+		{
+      ...sharedOutputSettings,
+			dir: 'dist',
+      format: 'es',
+      chunkFileNames: '[name]-[hash].mjs',
+      entryFileNames: '[name].mjs'
+		}
+	],
   plugins: [
-    commonjs(),
+    cleaner({
+      targets: [
+        './dist/'
+      ]
+    }),
+    typescript({ outDir: 'dist/types' }),
+    commonjs({
+      dynamicRequireRoot: '../../',
+      ignoreDynamicRequires: true,
+    }),
     resolve({
       extensions: ['.js', '.ts']
     }),

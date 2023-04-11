@@ -3,7 +3,8 @@
   "private": true,
   "pnpm": {
     "patchedDependencies": {
-      "@ffmpeg/core@0.11.0": "patches/@ffmpeg__core@0.11.0.patch"
+      "@ffmpeg/core@0.11.0": "patches/@ffmpeg__core@0.11.0.patch",
+      "node-ffprobe@3.0.0": "patches/node-ffprobe@3.0.0.patch"
     }
   },
   "scripts": {

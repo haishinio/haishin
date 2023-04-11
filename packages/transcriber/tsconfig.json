@@ -8,4 +8,5 @@
     "declarationMap": true
   },
   "include": ["**/*.ts"],
+  "rootDir": "src"
 }

@@ -1,0 +1,12 @@
+diff --git a/lib/ffprobe.js b/lib/ffprobe.js
+index d2245a0d34d4adb331633a553e25af221287d3c9..e0e5604e99c6d001551322af0d9c48448505bae2 100644
+--- a/lib/ffprobe.js
++++ b/lib/ffprobe.js
+@@ -24,6 +24,7 @@ module.exports = (function () {
+ 			let proc = spawn(module.exports.FFPROBE_PATH || 'ffprobe', ['-hide_banner', '-loglevel', 'fatal', '-show_error', '-show_format', '-show_streams', '-show_programs', '-show_chapters', '-show_private_data', '-print_format', 'json', file])
+ 			let probeData = []
+ 			let errData = []
++			let exitCode = null
+ 	
+ 			proc.stdout.setEncoding('utf8')
+ 			proc.stderr.setEncoding('utf8')
