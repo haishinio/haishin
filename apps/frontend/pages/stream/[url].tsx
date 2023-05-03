@@ -28,7 +28,9 @@ const StreamUrlPage: NextPage = () => {
 
   // Starts capturing the stream
   useEffect(() => {
-    socket = io(`http://localhost:8080`, {
+    const socketUrl = process.env.WS_URL || `http://localhost:8080`
+
+    socket = io(socketUrl, {
       autoConnect: false,
       query: {
         'streamUrl': url
@@ -44,7 +46,6 @@ const StreamUrlPage: NextPage = () => {
     })
 
     socket.on('transcription-translation', (data) => {
-      console.log({ data })
       if (data.transcription !== '' && data.translation !== '') {
         updateTextLogs(state => [{
           id: data.id,

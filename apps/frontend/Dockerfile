@@ -25,6 +25,12 @@ RUN pnpm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
+ARG GIT_REVISION
+ENV HAISHIN_VERSION=$GIT_REVISION
+
+ARG WS_URL
+ENV WS_URL=$WS_URL
+
 # Uncomment and use build args to enable remote caching
 # ARG TURBO_TEAM
 # ENV TURBO_TEAM=$TURBO_TEAM
