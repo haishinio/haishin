@@ -25,7 +25,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - haishin-storage:/app/data
+      - haishin-storage:/data
     networks:
       - app-network
 
