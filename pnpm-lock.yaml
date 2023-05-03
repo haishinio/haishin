@@ -77,6 +77,9 @@ importers:
 
   apps/frontend:
     dependencies:
+      '@ffmpeg/core':
+        specifier: ^0.11.0
+        version: 0.11.0(patch_hash=ld7rzfw7iozpndvzizlt4sbpaa)
       '@haishin/transcriber':
         specifier: workspace:^
         version: link:../../packages/transcriber

@@ -9,7 +9,7 @@ import * as Sentry from "@sentry/node"
 import { SplitVideoFileResponse } from '../types/responses'
 
 const splitVideoFile = async function (filename: string, startTime: number, duration = 0, workerPath = path.join(__dirname, './worker.js')): Promise<SplitVideoFileResponse> {
-  const pathToFile = path.join('.', filename)
+  const pathToFile = filename
 
   let durationOfPart = duration
   let nextStartTime = startTime
