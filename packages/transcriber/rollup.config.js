@@ -1,5 +1,6 @@
 import cleaner from 'rollup-plugin-cleaner';
 import commonjs from '@rollup/plugin-commonjs';
+import copy from 'rollup-plugin-copy'
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import sucrase from '@rollup/plugin-sucrase';
@@ -38,6 +39,11 @@ export default {
       ]
     }),
     typescript({ outDir: 'dist/types' }),
+    copy({
+      targets: [
+        { src: 'types/responses.d.ts', dest: 'dist/types' }
+      ]
+    }),
     commonjs({
       dynamicRequireRoot: '../../',
       ignoreDynamicRequires: true,
