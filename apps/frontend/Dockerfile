@@ -51,11 +51,12 @@ COPY --from=installer /app/apps/frontend/package.json .
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
-COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/node_modules/@ffmpeg ./apps/frontend/node_modules/@ffmpeg
-COPY --from=installer /app/apps/frontend/node_modules/@ffmpeg ./packages/transcriber/node_modules/@ffmpeg
 COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/frontend/public
+
+# Ideally we'd just copy the @ffmpeg folder but since it's got the version+patch it seems a little difficult
+COPY --from=installer --chown=nextjs:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
+COPY --from=installer /app/packages/transcriber/node_modules/@ffmpeg ./packages/transcriber/node_modules/@ffmpeg
 
 CMD node apps/frontend/server.js
