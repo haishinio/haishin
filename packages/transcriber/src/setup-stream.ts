@@ -38,8 +38,14 @@ function setArchivedFileName(url: string): string {
 const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
   const file = pathToData(`/streams/${setFileName(originalUrl)}`);
 
-  let {stdout: streamUrl} = await exec(`streamlink "${originalUrl}" best --stream-url`);
-  streamUrl = streamUrl.replace('\r\n', '');
+  let streamUrl = ''
+  try {
+    streamUrl = await exec(`streamlink "${originalUrl}" best --stream-url`).stdout;
+    streamUrl = streamUrl.replace('\r\n', '');
+  } catch (error) {
+    // Could not get the actual streamUrl (Only really needed for SHOWROOM)
+    Sentry.captureException(error);
+  }
 
   try {
     fs.accessSync(file, fs.constants.R_OK)

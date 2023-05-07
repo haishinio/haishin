@@ -38,7 +38,7 @@ FROM node:18-alpine AS runner
 
 RUN apk add --no-cache g++ make py3-pip ffmpeg
 RUN apk update
-RUN pip install streamlink
+RUN pip3 install streamlink
 
 WORKDIR /app
 
