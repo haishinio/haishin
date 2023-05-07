@@ -35,30 +35,34 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
 
   const ffmpegSplitWorker = new Worker(workerPath);
 
-  ffmpegSplitWorker.postMessage({ 
-    command: 'run', 
-    pathToFile, startTime, durationOfPart
-  });
-
-  const splitFileData = await new Promise<Buffer>((resolve, reject) => {
-    ffmpegSplitWorker.on('message', (message) => {
-      if (message.error) {
-        // We might have already moved the file to backup as stream ended
-        Sentry.captureException(message.error);
-        reject(new Error(message.error));
-      } else {
-        resolve(message.output);
-      }
+  try {
+    ffmpegSplitWorker.postMessage({ 
+      command: 'run', 
+      pathToFile, startTime, durationOfPart
     });
-    ffmpegSplitWorker.on('error', reject);
-    ffmpegSplitWorker.on('exit', (code) => {
-      if (code !== 0) {
-        reject(new Error(`Worker stopped with exit code ${code}`));
-      }
+  
+    const splitFileData = await new Promise<Buffer>((resolve, reject) => {
+      ffmpegSplitWorker.on('message', (message) => {
+        if (message.error) {
+          // We might have already moved the file to backup as stream ended
+          Sentry.captureException(message.error);
+          reject(new Error(message.error));
+        } else {
+          resolve(message.output);
+        }
+      });
+      ffmpegSplitWorker.on('error', reject);
+      ffmpegSplitWorker.on('exit', (code) => {
+        if (code !== 0) {
+          reject(new Error(`Worker stopped with exit code ${code}`));
+        }
+      });
     });
-  });
-
-  await fs.promises.writeFile(partFileName, splitFileData)
+  
+    await fs.promises.writeFile(partFileName, splitFileData)
+  } catch (error) {
+    Sentry.captureException(error);
+  }
 
   ffmpegSplitWorker.terminate();
 
