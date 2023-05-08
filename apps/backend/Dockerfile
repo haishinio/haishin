@@ -48,4 +48,4 @@ RUN adduser --system --uid 1001 expressjs
 USER expressjs
 COPY --from=installer /app .
 
-CMD node --trace-warnings apps/backend/dist/app.js
+CMD node --inspect-brk=0.0.0.0:9229 apps/backend/dist/app.js
