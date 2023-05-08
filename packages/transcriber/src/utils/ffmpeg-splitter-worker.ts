@@ -21,6 +21,8 @@ async function run(pathToFile, startTime, durationOfPart) {
     ffmpeg.FS('unlink', 'input.mp4');
     ffmpeg.FS('unlink', 'output.wav');
     await ffmpeg.exit();
+
+    parentPort.close();
   }
 }
 

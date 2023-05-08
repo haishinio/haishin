@@ -64,7 +64,7 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
     Sentry.captureException(error);
   }
 
-  ffmpegSplitWorker.terminate();
+  await ffmpegSplitWorker.terminate();
 
   return {
     partFileName,
