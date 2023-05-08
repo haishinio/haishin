@@ -8,6 +8,14 @@ import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
 import { TranscriberResponse } from '../types/responses'
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
+
 const openAiConfig = new Configuration({
   apiKey: process.env.OPENAI_API_KEY
 })

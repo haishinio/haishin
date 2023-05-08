@@ -8,6 +8,14 @@ import pathToData from './utils/path-to-data'
 
 import type { StreamDataResponse } from '../types/responses.js'
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
+
 function getPathsByUrl(url: string) {
   const paths = url
     .replace('http://', '')

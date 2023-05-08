@@ -8,6 +8,14 @@ import * as Sentry from "@sentry/node"
 
 import { SplitVideoFileResponse } from '../types/responses'
 
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
+
 const splitVideoFile = async function (filename: string, startTime: number, duration = 0, workerPath = path.join(__dirname, './worker.js')): Promise<SplitVideoFileResponse> {
   const pathToFile = filename
 
