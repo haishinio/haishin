@@ -49,7 +49,6 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
   let streamUrl = ''
   try {
     streamUrl = await exec(`streamlink "${originalUrl}" best --stream-url`).stdout;
-    console.log('Actual stream URL: ', streamUrl)
     streamUrl = streamUrl.replace('\r\n', '');
   } catch (error) {
     // Could not get the actual streamUrl (Only really needed for SHOWROOM)
@@ -65,7 +64,6 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
       originalUrl,
       streamUrl,
     };
-    // DO SOMETHING
   } catch {
     console.log('Start archiving stream')
     const client = new Streamlink(originalUrl, { outputStdout: true })

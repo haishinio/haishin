@@ -42,9 +42,7 @@ io.on("connection", (socket) => {
     // new or unrecoverable session
     registerStreamHandlers(io, socket);
   
-    const {streamUrl} = socket.handshake.query;
-    console.log({ streamUrl });
-  
+    const {streamUrl} = socket.handshake.query;  
     if (streamUrl) {
       socket.join(streamUrl);
     }
