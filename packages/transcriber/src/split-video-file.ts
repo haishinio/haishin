@@ -33,6 +33,7 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
     } else {
       // TODO: Handle error, ie do nothing and wait for the next attempt
       Sentry.captureException('Could not get duration of stream');
+      console.log('Could not get duration of stream');
 
       return {
         partFileName: '',
@@ -41,11 +42,16 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
     }
   }
 
+  console.log('Got duration of stream, setting up part');
+
   const part = uuidv4({
     random: crypto.getRandomValues(new Uint8Array(16))
   })  
   const partFileName = path.join(pathToFile, '../../', `stream-parts/${part}.wav`)
 
+  console.log(`Part: ${partFileName}`);
+  
+  console.log('Starting worker');
   const ffmpegSplitWorker = new Worker(workerPath);
 
   try {
@@ -53,6 +59,7 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
       command: 'run', 
       pathToFile, startTime, durationOfPart
     });
+    console.log('Posted message to worker');
   
     const splitFileData = await new Promise<Buffer>((resolve, reject) => {
       ffmpegSplitWorker.on('message', (message) => {
@@ -71,11 +78,16 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
         }
       });
     });
+
+    console.log('Got split file data');
   
     await fs.promises.writeFile(partFileName, splitFileData)
+
+    console.log('Wrote split file data');
   } catch (error) {
     Sentry.captureException(error);
   } finally {
+    console.log('Terminating worker');
     ffmpegSplitWorker.terminate();
   }
 

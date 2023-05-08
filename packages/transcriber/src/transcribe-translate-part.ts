@@ -24,6 +24,7 @@ const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 
 const transcribeTranslatePart = async function (filename: string, prompt: string): Promise<TranscriberResponse> {
   if (process.env.APP_ENV === 'faker') {
+    console.log('Starting to faker transcribe translate part')
     const fakeResult = await new Promise<TranscriberResponse>((resolve) => {
       setTimeout(() => {
         resolve({
@@ -32,6 +33,7 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
         })
       }, fakerGB.datatype.number({ min: 1000, max: 5000 }))
     })
+    console.log(fakeResult)
     return fakeResult
   }
 

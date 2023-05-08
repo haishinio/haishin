@@ -49,6 +49,7 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
   let streamUrl = ''
   try {
     streamUrl = await exec(`streamlink "${originalUrl}" best --stream-url`).stdout;
+    console.log('Actual stream URL: ', streamUrl)
     streamUrl = streamUrl.replace('\r\n', '');
   } catch (error) {
     // Could not get the actual streamUrl (Only really needed for SHOWROOM)
