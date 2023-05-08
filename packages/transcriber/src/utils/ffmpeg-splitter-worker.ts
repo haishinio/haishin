@@ -37,7 +37,8 @@ async function run(pathToFile, startTime, durationOfPart) {
     
     console.log('Start closing ffmpeg')
     ffmpeg.exit();
-    console.log('Closed ffmpeg')
+    console.log('Closed ffmpeg');
+    parentPort.close();
   }
 }
 

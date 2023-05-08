@@ -86,10 +86,11 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
     console.log('Wrote split file data');
   } catch (error) {
     Sentry.captureException(error);
-  } finally {
-    console.log('Terminating worker');
-    ffmpegSplitWorker.terminate();
   }
+  // } finally {
+  //   console.log('Terminating worker');
+  //   ffmpegSplitWorker.terminate();
+  // }
 
   return {
     partFileName,
