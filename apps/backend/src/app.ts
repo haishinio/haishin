@@ -17,6 +17,7 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.errorHandler());
 
 // Optional fallthrough error handler
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use(function onError(err, req, res, next) {
   // The error id is attached to `res.sentry` to be returned
   // and optionally displayed to the user for support.
