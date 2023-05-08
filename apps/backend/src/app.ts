@@ -3,6 +3,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as Sentry from "@sentry/node";
 
+import { getStreamInfo } from "@haishin/transcriber"
 import registerStreamHandlers from "./handlers/stream-handler";
 
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -34,23 +35,34 @@ const io = new Server(httpServer, {
       process.env.PRODUCTION_URL ?? '',
     ],
   },
+  connectionStateRecovery: {
+    // the backup duration of the sessions and the packets
+    maxDisconnectionDuration: 2 * 60 * 1000,
+    // whether to skip middlewares upon successful recovery
+    skipMiddlewares: true,
+  }
 });
 
-io.on("connection", (socket) => {
+// Register handlers
+registerStreamHandlers(io);
+
+io.on("connection", async (socket) => {
   if (socket.recovered) {
     // recovery was successful: socket.id, socket.rooms and socket.data were restored
   } else {
-    // new or unrecoverable session
-    registerStreamHandlers(io, socket);
-  
+    // new or unrecoverable session  
     const {streamUrl} = socket.handshake.query;  
     if (streamUrl) {
       socket.join(streamUrl);
+
+      const streamData = await getStreamInfo(streamUrl as string);
+      socket.emit("started-archiving", streamData);
     }
   }
 
-  socket.on("join-room", ({room}) => {
-    socket.join(room);
+  socket.on("join-room", async ({room}) => {
+    const streamData = await getStreamInfo(room);
+    socket.emit("started-archiving", streamData);
   });
 
   socket.on("leave-room", ({room}) => {

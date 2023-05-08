@@ -1,5 +1,11 @@
 export interface StreamDataResponse {
   file: string
+  originalUrl: string
+  streamUrl: string
+}
+
+export interface NewStreamDataResponse {
+  file: string
   newStream: boolean
   originalUrl: string
   streamUrl: string

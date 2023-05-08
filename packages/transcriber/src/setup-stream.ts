@@ -6,7 +6,7 @@ import * as Sentry from "@sentry/node"
 
 import pathToData from './utils/path-to-data'
 
-import type { StreamDataResponse } from '../types/responses.js'
+import type { NewStreamDataResponse, StreamDataResponse } from '../types/responses.js'
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -43,7 +43,7 @@ function setArchivedFileName(url: string): string {
   return path;
 }
 
-const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
+export const getStreamInfo = async function (originalUrl: string): Promise<StreamDataResponse> {
   const file = pathToData(`/streams/${setFileName(originalUrl)}`);
 
   let streamUrl = ''
@@ -55,19 +55,29 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
     Sentry.captureException(error);
   }
 
+  return {
+    file,
+    originalUrl,
+    streamUrl,
+  };
+}
+
+export const setupStream = async function (originalUrl: string): Promise<NewStreamDataResponse> {
+  const streamData = await getStreamInfo(originalUrl);
+
   try {
-    fs.accessSync(file, fs.constants.R_OK)
-    // If it exists then return the output
+    // If it exists then continue on!
+    fs.accessSync(streamData.file, fs.constants.R_OK)
+
     return {
+      ...streamData,
       newStream: false,
-      file,
-      originalUrl,
-      streamUrl,
     };
   } catch {
+    // If it doesn't exist then start the archiving process
     console.log('Start archiving stream')
     const client = new Streamlink(originalUrl, { outputStdout: true })
-    const streamFile = fs.createWriteStream(file)
+    const streamFile = fs.createWriteStream(streamData.file)
 
     client.begin()
     client.on('log', data => {
@@ -84,19 +94,17 @@ const setupStream = async function (originalUrl: string): Promise<StreamDataResp
   
       // Move completed file to backups
       fs.copyFileSync(
-        file,
+        streamData.file,
         pathToData(`/backups/${setArchivedFileName(originalUrl)}`)
       )
 
       // Delete file in streams
-      fs.unlinkSync(file)
+      fs.unlinkSync(streamData.file)
     })
 
     return {
+      ...streamData,
       newStream: true,
-      file,
-      originalUrl,
-      streamUrl,
     };
   }
 }

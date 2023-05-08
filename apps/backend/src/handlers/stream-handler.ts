@@ -7,14 +7,13 @@ function isUrl(str) {
   return urlRegex.test(str);
 }
 
-export default function (io, socket) {
+export default function (io) {
   io.of('/').adapter.on('create-room', async (room) => {    
     console.log({ createRoom: room });
 
     if (isUrl(room)) {
       // Get the initial stream data
       const streamData = await setupStream(room);
-      socket.emit('started-archiving', streamData)
 
       if (streamData.newStream) {
         // If it's a new stream start the transcriber after 10 seconds
@@ -28,6 +27,8 @@ export default function (io, socket) {
           })
         }, 10000);
       }
+
+      return streamData;
     }
   });
   
@@ -41,7 +42,7 @@ export default function (io, socket) {
       // We just want to join in progress so let's get the streamSetup only
       setTimeout(async () => {
         const streamData = await setupStream(room);
-        socket.emit('started-archiving', streamData)
+        return streamData;
       }, 5000);
     }
   });
