@@ -29,7 +29,7 @@ const StreamPage = (props: Props) => {
   useEffect(() => {
     if (ref.current && ref.current.clientHeight) {
       const videoHeight = ref.current.clientHeight
-      setLogHeight(window.screen.availHeight - videoHeight - 110)
+      setLogHeight(window.screen.availHeight - videoHeight)
     }
   }, [size])
 
