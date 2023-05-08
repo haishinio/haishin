@@ -62,9 +62,9 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
     await fs.promises.writeFile(partFileName, splitFileData)
   } catch (error) {
     Sentry.captureException(error);
+  } finally {
+    ffmpegSplitWorker.terminate();
   }
-
-  await ffmpegSplitWorker.terminate();
 
   return {
     partFileName,

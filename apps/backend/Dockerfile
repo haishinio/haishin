@@ -48,4 +48,4 @@ RUN adduser --system --uid 1001 expressjs
 USER expressjs
 COPY --from=installer /app .
 
-CMD node apps/backend/dist/app.js
+CMD node --trace-warnings apps/backend/dist/app.js
