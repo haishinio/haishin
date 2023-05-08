@@ -33,6 +33,11 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
     } else {
       // TODO: Handle error, ie do nothing and wait for the next attempt
       Sentry.captureException('Could not get duration of stream');
+
+      return {
+        partFileName: '',
+        nextStartTime: startTime
+      }
     }
   }
 

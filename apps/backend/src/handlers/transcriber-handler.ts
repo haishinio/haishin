@@ -17,20 +17,27 @@ const transcriberHandler = async function (io, data: TranscriberData) {
   if (connectedClients) {
     const { partFileName, nextStartTime } = await splitVideoFile(filename, startTime)
 
-    const { transcription, translation } = await transcribeTranslatePart(partFileName, prompt)
+    if (partFileName !== '') {
+      const { transcription, translation } = await transcribeTranslatePart(partFileName, prompt)
 
-    io.to(url).emit('transcription-translation', {
-      id: uuidv4(),
-      startTime,
-      transcription,
-      translation,
-    })
+      io.to(url).emit('transcription-translation', {
+        id: uuidv4(),
+        startTime,
+        transcription,
+        translation,
+      })
 
-    fs.unlinkSync(partFileName)
+      fs.unlinkSync(partFileName)
 
-    transcriberHandler(io, {
-      url, filename, startTime: nextStartTime, prompt: transcription
-    })
+      transcriberHandler(io, {
+        url, filename, startTime: nextStartTime, prompt: transcription
+      })
+    } else {
+      // Just try again
+      transcriberHandler(io, {
+        url, filename, startTime: nextStartTime, prompt
+      })
+    }
   } else {
     console.log(`No connected clients for ${url}, skipping transcription and translation`)
     setTimeout(() => {

@@ -65,4 +65,4 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/fro
 COPY --from=installer --chown=nextjs:nodejs /app/node_modules/.pnpm ./node_modules/.pnpm
 COPY --from=installer /app/packages/transcriber/node_modules/@ffmpeg ./packages/transcriber/node_modules/@ffmpeg
 
-CMD node --trace-warnings apps/frontend/server.js
+CMD node apps/frontend/server.js
