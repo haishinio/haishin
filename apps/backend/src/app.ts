@@ -53,19 +53,17 @@ io.on("connection", async (socket) => {
     // new or unrecoverable session  
     const {streamUrl} = socket.handshake.query;  
     if (streamUrl) {
-      socket.join(streamUrl);
-
-      const streamData = await getStreamInfo(streamUrl as string);
-      socket.emit("started-archiving", streamData);
+      const streamData = await socket.join(streamUrl);
+      socket.emit("start-transcribing", streamData);
     }
   }
 
-  socket.on("join-room", async ({room}) => {
-    const streamData = await getStreamInfo(room);
-    socket.emit("started-archiving", streamData);
+  socket.on("join-stream-transcription", async ({room}) => {
+    const streamData = await socket.join(room);
+    socket.emit("start-transcribing", streamData);
   });
 
-  socket.on("leave-room", ({room}) => {
+  socket.on("leave-stream-transcription", ({room}) => {
     socket.leave(room);
   });
 });
