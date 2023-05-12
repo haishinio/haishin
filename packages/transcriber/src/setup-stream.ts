@@ -99,7 +99,9 @@ export const setupStream = async function (originalUrl: string): Promise<NewStre
       )
 
       // Delete file in streams
-      fs.unlinkSync(streamData.file)
+      setTimeout(() => {
+        fs.unlinkSync(streamData.file)
+      }, 1000 * 60 * 5) // 5 minutes after stream ends delete the file
     })
 
     return {
