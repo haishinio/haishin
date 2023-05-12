@@ -41,7 +41,7 @@ const StreamUrlPage: NextPage = () => {
       console.log('connected')
     })
 
-    socket.on('started-archiving', () => {
+    socket.on('start-transcribing', () => {
       setIsTranscribing(true)
     })
 
@@ -85,10 +85,10 @@ const StreamUrlPage: NextPage = () => {
 
     if (!nextState) {
       // Leave the room
-      socket.emit('leave-room', { room: url })
+      socket.emit('leave-stream-transcription', { room: url })
     } else {
       // Join the room
-      socket.emit('join-room', { room: url })
+      socket.emit('join-stream-transcription', { room: url })
     }
 
     setIsTranscribing(nextState)
