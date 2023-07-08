@@ -30,7 +30,7 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
           transcription: fakerJP.lorem.words(10),
           translation: fakerGB.lorem.words(10),
         })
-      }, fakerGB.datatype.number({ min: 1000, max: 5000 }))
+      }, fakerGB.number.int({ min: 1000, max: 5000 }))
     })
     return fakeResult
   }

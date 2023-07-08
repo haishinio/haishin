@@ -1,15 +1,16 @@
+'use client';
+
 import type { NextPage } from 'next'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useSearchParams } from 'next/navigation'
 import StreamPage from '../../components/stream-page'
 
 import type { TextLog } from '../../types/Textlog'
-import type { UrlQuery } from '../../types/UrlQuery'
 
 const StreamIndex: NextPage = () => {
-  const router = useRouter()
-  const { url } = router.query as UrlQuery
+  const searchParams = useSearchParams()
+  const url = searchParams?.get('url') as string
 
   const [ streamUrl, setStreamUrl ] = useState('')
   const [ fileDuration, updateFileDuration ] = useState(0)
@@ -17,15 +18,15 @@ const StreamIndex: NextPage = () => {
 
   useEffect(() => {   
     if (url) {
-      const cleanUrl = encodeURIComponent(url)
-      setStreamUrl(`/api/stream/upload?filename=${cleanUrl}`)
+      const cleanUrl = encodeURIComponent(url);
+      setStreamUrl(`/api/stream/${cleanUrl}`)
     }
   }, [url])
 
   // Starts transcribing+translating the stream
   useEffect(() => {
     async function transcribeTranslate() {
-      const response = await fetch('/api/transcribe/archive', {
+      const response = await fetch('/api/transcribe', {
         method: 'POST',
         body: JSON.stringify({
           streamFile: `./data/${url}`,

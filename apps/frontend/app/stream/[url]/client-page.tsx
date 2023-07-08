@@ -1,22 +1,24 @@
+'use client';
+
 import type { NextPage } from 'next'
 
 import io from 'socket.io-client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import { secondsToDuration } from '../../utils/seconds-to-duration'
+import { usePathname } from 'next/navigation'
+import { secondsToDuration } from '../../../utils/seconds-to-duration'
 
-import StreamPage from '../../components/stream-page'
+import StreamPage from '../../../components/stream-page'
 
 import type { Socket } from 'socket.io-client'
-import type { TextLog } from '../../types/Textlog'
-import type { UrlQuery } from '../../types/UrlQuery'
+import type { TextLog } from '../../../types/Textlog'
 
 let socket: Socket;
 
 const StreamUrlPage: NextPage = () => {
-  const router = useRouter()
-  const { url } = router.query as UrlQuery
+  const pathName = usePathname();
+  const encodedUrl = pathName?.replace('/stream/', '') as string;
+  const url = decodeURIComponent(encodedUrl);
 
   // Setup Stream
   const [ isTwitcasting, setIsTwitcasting ] = useState(false)

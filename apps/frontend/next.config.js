@@ -12,6 +12,7 @@ const moduleExports = {
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
+    serverActions: true,
   },
   reactStrictMode: true,
   swcMinify: true,

@@ -50,7 +50,7 @@ const TopMenu = (props: Props) => {
         </form>
       </div>
 
-      <form action="/api/stream/upload" method="post" encType="multipart/form-data" className="flex" ref={formRef}>
+      <form action="/api/upload" method="post" encType="multipart/form-data" className="flex" ref={formRef}>
         <input ref={uploadRef} type="file" name="file" hidden onChange={() => onFileUpload} />
         <label className="relative flex-1">
           <span className="sr-only">File</span>
