@@ -1,5 +1,4 @@
 import fs from 'fs'
-import exec from 'await-exec'
 import { Streamlink } from '@dragongoose/streamlink'
 import { format } from 'date-fns'
 import * as Sentry from "@sentry/node"
@@ -44,16 +43,8 @@ function setArchivedFileName(url: string): string {
 }
 
 export const getStreamInfo = async function (originalUrl: string): Promise<StreamDataResponse> {
-  const file = pathToData(`/streams/${setFileName(originalUrl)}`);
-
-  let streamUrl = ''
-  try {
-    streamUrl = await exec(`streamlink "${originalUrl}" best --stream-url`).stdout;
-    streamUrl = streamUrl.replace('\r\n', '');
-  } catch (error) {
-    // Could not get the actual streamUrl (Only really needed for SHOWROOM)
-    Sentry.captureException(error);
-  }
+  const streamUrl = `streams/${setFileName(originalUrl)}`;
+  const file = pathToData(streamUrl);
 
   return {
     file,
@@ -106,6 +97,7 @@ export const setupStream = async function (originalUrl: string): Promise<NewStre
 
     return {
       ...streamData,
+      streamLinkClient: client,
       newStream: true,
     };
   }

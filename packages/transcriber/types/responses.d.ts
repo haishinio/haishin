@@ -1,3 +1,5 @@
+import type { Streamlink } from '@dragongoose/streamlink';
+
 export interface StreamDataResponse {
   file: string
   originalUrl: string
@@ -9,6 +11,7 @@ export interface NewStreamDataResponse {
   newStream: boolean
   originalUrl: string
   streamUrl: string
+  streamLinkClient?: Streamlink
 }
 
 export interface SplitVideoFileResponse {
