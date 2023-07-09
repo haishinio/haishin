@@ -27,7 +27,11 @@ const transcriberHandler = async function (io, data: TranscriberData) {
         translation,
       })
 
-      fs.unlinkSync(partFileName)
+      try {
+        fs.unlinkSync(partFileName)
+      } catch (error) {
+        console.log('Could not delete part file', partFileName)
+      }
 
       transcriberHandler(io, {
         url, filename, startTime: nextStartTime, prompt: transcription

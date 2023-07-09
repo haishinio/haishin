@@ -43,7 +43,7 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
 
   const part = uuidv4({
     random: crypto.getRandomValues(new Uint8Array(16))
-  })  
+  })
   const partFileName = path.join(pathToFile, '../../', `stream-parts/${part}.wav`)
 
   const ffmpegSplitWorker = new Worker(workerPath);
