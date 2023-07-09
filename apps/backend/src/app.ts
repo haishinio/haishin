@@ -3,7 +3,6 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import * as Sentry from "@sentry/node";
 
-import { getStreamInfo } from "@haishin/transcriber"
 import registerStreamHandlers from "./handlers/stream-handler";
 
 Sentry.init({ dsn: process.env.SENTRY_DSN });
@@ -53,14 +52,13 @@ io.on("connection", async (socket) => {
     // new or unrecoverable session  
     const {streamUrl} = socket.handshake.query;  
     if (streamUrl) {
-      const streamData = await socket.join(streamUrl);
-      socket.emit("start-transcribing", streamData);
+      socket.join(streamUrl);
+      socket.emit('start-transcribing');
     }
   }
 
   socket.on("join-stream-transcription", async ({room}) => {
-    const streamData = await socket.join(room);
-    socket.emit("start-transcribing", streamData);
+    socket.join(room);
   });
 
   socket.on("leave-stream-transcription", ({room}) => {
