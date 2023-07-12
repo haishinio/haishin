@@ -1,13 +1,14 @@
 import fs from 'fs'
-import { Streamlink } from '@dragongoose/streamlink'
+import { spawn } from "child_process";
 import { format } from 'date-fns'
+import { Streamlink } from '@dragongoose/streamlink';
 import * as Sentry from "@sentry/node"
 
-import streamToUI from "./stream-to-client"
+// import streamToUI from "./stream-to-client"
 import { getPathsByUrl, setFileName } from "@haishin/transcriber-utils"
 import pathToData from './utils/path-to-data'
 
-import type { NewStreamDataResponse, StreamDataResponse } from '../types/responses.js'
+import type { StreamDataResponse } from '../types/responses.js'
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -24,79 +25,81 @@ function setArchivedFileName(url: string): string {
   return path;
 }
 
-export const getStreamInfo = async function (originalUrl: string): Promise<StreamDataResponse> {
-  const streamUrl = `streams/${setFileName(originalUrl)}`;
+export const getStreamInfo = function (originalUrl: string): StreamDataResponse {
+  const streamsDir = pathToData('streams');
+  const streamBaseName = setFileName(originalUrl);
+
+  const files = fs.readdirSync(streamsDir);
+
+  let port = '25565';
+  let newStream = true;
+  const [filteredFile] = files.filter(file => file.includes(streamBaseName));
+
+  // If we have filteredFile then it's not a newStream
+  if (filteredFile) {
+    port = filteredFile.split('__')[0];
+    newStream = false;
+  }
+
+  const streamUrl = `streams/${port}__${streamBaseName}`;
   const file = pathToData(streamUrl);
 
   return {
+    newStream,
+    port,
     file,
     originalUrl,
     streamUrl,
   };
 }
 
-export const setupStream = async function (originalUrl: string): Promise<NewStreamDataResponse> {
-  const streamData = await getStreamInfo(originalUrl);
+export const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
+  const streamData = getStreamInfo(originalUrl);
 
-  try {
-    // If it exists then continue on!
-    fs.accessSync(streamData.file, fs.constants.R_OK)
+  // It exists so return the streamData
+  if (!streamData.newStream) return streamData;
 
-    return {
-      ...streamData,
-      newStream: false,
-    };
-  } catch {
-    // If it doesn't exist then start the archiving process
-    console.log('Start archiving stream')
-    const client = new Streamlink(originalUrl, { outputStdout: true })
-    const streamFile = fs.createWriteStream(streamData.file)
+  // If it doesn't exist then start the archiving process
+  console.log('Start restreaming');
+  spawn('streamlink', [
+    originalUrl,
+    'best',
+    '--player-external-http',
+    '--player-external-http-port', streamData.port,
+    '--player-external-http-continuous', 'false'
+  ]);
 
-    client.begin()
-    client.on('log', data => {
-      // console.log('writing to file')
-      streamFile.write(data) // puts data into file
-    })
+  // If it doesn't exist then start the archiving process
+  console.log('Start archiving stream');
+  const streamFile = fs.createWriteStream(streamData.file);
+  const client = new Streamlink(originalUrl, {outputStdout: true});
+  client.begin();
+  client.on('log', data => {
+    // console.log('writing to file')
+    streamFile.write(data) // puts data into file
+  });
 
-    client.on('error', (error: Error) => {
-      Sentry.captureException(error);
-    })
+  client.on('error', (error: Error) => {
+    Sentry.captureException(error);
+  });
 
-    // Will need to find a way to kill this exec later...
-    const streamToUITimeout = setTimeout(() => {
-      // Send stream to rtmp server
-      try {
-        const streamKey = setFileName(originalUrl).replace('.mp4', '');
-        streamToUI(streamData.file, streamKey);
-        // exec(`ffmpeg -re -stream_loop -1 -i ${streamData.file} -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -f flv rtmp://localhost/live/${streamKey}`);
-        // exec(`ffmpeg -re -i ${streamBuffer} -c:v copy -c:a copy -f flv rtmp://localhost/live/${streamKey}`);
-      } catch (error) {
-        Sentry.captureException(error);
-      }
-    }, 15000);
-  
-    client.on('close', () => {
-      streamFile.close() // closes the file when the stream ends or is closed
-  
-      // Move completed file to backups
-      fs.copyFileSync(
-        streamData.file,
-        pathToData(`/backups/${setArchivedFileName(originalUrl)}`)
-      )
+  client.on('close', () => {
+    // Close the file when the stream ends or is closed
+    streamFile.close();
 
-      // Delete file in streams
-      setTimeout(() => {
-        clearTimeout(streamToUITimeout);
-        fs.unlinkSync(streamData.file)
-      }, 1000 * 60 * 2) // 2 minutes after stream ends delete the file
-    })
+    // Move completed file to backups
+    fs.copyFileSync(
+      streamData.file,
+      pathToData(`/backups/${setArchivedFileName(originalUrl)}`)
+    );
 
-    return {
-      ...streamData,
-      streamLinkClient: client,
-      newStream: true,
-    };
-  }
+    // Delete file in streams
+    setTimeout(() => {
+      fs.unlinkSync(streamData.file)
+    }, 1000 * 60 * 2) // 2 minutes after stream ends delete the file
+  });
+
+  return streamData;
 }
 
 export default setupStream;

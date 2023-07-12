@@ -50,7 +50,6 @@ const StreamIndex: NextPage = () => {
           <StreamPage
             controlTranscription={() => {}}
             isTranscribing={true}
-            isTwitcasting={false}
             originalUrl={url}
             streamUrl={streamUrl}
             textLogs={textLogs}

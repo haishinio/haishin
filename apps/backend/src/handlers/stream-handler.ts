@@ -15,6 +15,8 @@ export default function (io) {
       // Get the initial stream data
       const streamData = await setupStream(room);
 
+      // Need to probably send the streamData to the client here or at least have the socket.emit from app.ts do it
+
       if (streamData.newStream) {
         setTimeout(() => {
           console.log('Start transcribing')

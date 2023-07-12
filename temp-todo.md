@@ -1,7 +1,4 @@
 // TODO:
-Current issue is to stop the rtmp-publish from closing the stream, which then unpublishes the stream and stops new data going to it.
-If we can fix that I believe the video player should handle getting updates and the stream should display and keep getting updates.
-
-OR
-
-Need to fix it where it is not not stopping the stream but is only loading the first X seconds over and over again. At least the video player works (need to handle when leaving the page to stop the MediaErrors)
+1. The streamUrl needs to get passed back in streamData for sockets to pass back to the UI so we can load that streamUrl into the video
+2. We need to randomise the port in setupStream
+3. Start deploying on production and see if need any more work (I imaging a bit with the ports situation)

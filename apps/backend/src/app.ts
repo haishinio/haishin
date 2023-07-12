@@ -1,5 +1,4 @@
 import express from "express";
-import NodeMediaServer from "node-media-server";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import * as Sentry from "@sentry/node";
@@ -27,41 +26,6 @@ app.use(function onError(err, req, res, next) {
 });
 
 const httpServer = createServer(app);
-
-// Set up the NodeMediaServer
-const config = {
-  logType: 3,
-
-  rtmp: {
-    port: 1935,
-    chunk_size: 60000,
-    gop_cache: true,
-    ping: 30,
-    ping_timeout: 60,
-  },
-  http: {
-    port: 8000,
-    allow_origin: '*'
-  },
-};
-
-const nms = new NodeMediaServer(config);
-
-// Event handler for the 'prePublish' event
-nms.on('prePublish', (id, StreamPath, args) => {
-  // Handle the pre-publish event, e.g., start streaming to the RTMP endpoint
-  console.log('A new stream is about to be published:', StreamPath);
-});
-
-// Event handler for the 'donePublish' event
-nms.on('donePublish', (id, StreamPath, args) => {
-  // Handle the done-publish event, e.g., stop streaming to the RTMP endpoint
-  console.log('A stream has been unpublished:', StreamPath);
-});
-
-// Attach the NodeMediaServer to the Express.js server
-nms.run({ httpServer });
-
 
 const io = new Server(httpServer, {
   cors: {
