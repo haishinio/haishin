@@ -1,6 +1,6 @@
 {
-  "name": "@haishin/transcriber",
-  "description": "A website that transcribes+translates Japanese streams into English with OpenAI+DeepL",
+  "name": "@haishin/transcriber-utils",
+  "description": "Transcriber utils",
   "version": "2.0.0",
   "private": true,
   "type": "commonjs",
@@ -14,21 +14,8 @@
   },
   "keywords": [],
   "author": "",
-  "dependencies": {
-    "@dragongoose/streamlink": "^1.1.1",
-    "@ffmpeg/core": "^0.11.0",
-    "@ffmpeg/ffmpeg": "^0.11.6",
-    "@haishin/transcriber-utils": "workspace:^",
-    "@sentry/node": "^7.57.0",
-    "await-exec": "^0.1.2",
-    "date-fns": "^2.30.0",
-    "deepl-node": "^1.10.2",
-    "node-ffprobe": "^3.0.0",
-    "openai": "^3.3.0",
-    "uuid": "^9.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "@faker-js/faker": "^8.0.2",
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.1.0",

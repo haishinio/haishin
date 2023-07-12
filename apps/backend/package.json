@@ -14,7 +14,9 @@
   "dependencies": {
     "@haishin/transcriber": "workspace:*",
     "@sentry/node": "^7.57.0",
+    "await-exec": "^0.1.2",
     "express": "^4.18.2",
+    "node-media-server": "^2.6.2",
     "socket.io": "^4.7.1",
     "uuid": "^9.0.0"
   },

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@haishin/transcriber": "workspace:^",
+    "@haishin/transcriber-utils": "workspace:^",
     "@sentry/nextjs": "^7.57.0",
     "formidable": "^3.5.0",
     "next": "13.4.9",

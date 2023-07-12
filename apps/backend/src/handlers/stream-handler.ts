@@ -16,7 +16,6 @@ export default function (io) {
       const streamData = await setupStream(room);
 
       if (streamData.newStream) {
-        // If it's a new stream start the transcriber after 10 seconds
         setTimeout(() => {
           console.log('Start transcribing')
           transcriberHandler(io, {

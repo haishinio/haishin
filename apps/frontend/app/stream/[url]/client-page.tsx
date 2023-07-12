@@ -4,12 +4,14 @@ import type { NextPage } from 'next'
 
 import io from 'socket.io-client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { secondsToDuration } from '../../../utils/seconds-to-duration'
+import { setFileName } from '@haishin/transcriber-utils';
 
 import StreamPage from '../../../components/stream-page'
 
+import ReactPlayer from 'react-player'
 import type { Socket } from 'socket.io-client'
 import type { TextLog } from '../../../types/Textlog'
 
@@ -19,6 +21,8 @@ const StreamUrlPage: NextPage = () => {
   const pathName = usePathname();
   const encodedUrl = pathName?.replace('/stream/', '') as string;
   const url = decodeURIComponent(encodedUrl);
+
+  const videoRef = useRef<ReactPlayer>(null);
 
   // Setup Stream
   const [ isTwitcasting, setIsTwitcasting ] = useState(false)
@@ -43,8 +47,16 @@ const StreamUrlPage: NextPage = () => {
       console.log('connected')
     })
 
-    socket.on('start-transcribing', () => {
+    socket.on('start-transcribing', (data) => {
       setIsTranscribing(true)
+
+      console.log({ data });
+
+      setTimeout(() => {
+        const cleanUrl = setFileName(url).replace('.mp4', '');
+        updateStreamUrl(`http://localhost:8000/live/${cleanUrl}.flv`)
+        setIsTwitcasting(false);
+      }, 20000);
     })
 
     socket.on('transcription-translation', (data) => {
@@ -108,6 +120,7 @@ const StreamUrlPage: NextPage = () => {
             streamUrl={streamUrl}
             textLogs={textLogs}
             updateFileDuration={() => {}}
+            videoRef={videoRef}
           />
         ) : (
           <p>LOADING</p>

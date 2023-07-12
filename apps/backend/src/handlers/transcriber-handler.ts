@@ -1,6 +1,5 @@
 import fs from 'fs'
 import { v4 as uuidv4 } from 'uuid'
-
 import { splitVideoFile, transcribeTranslatePart } from '@haishin/transcriber'
 
 interface TranscriberData {

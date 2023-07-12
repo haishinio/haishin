@@ -20,10 +20,11 @@ export async function GET(request: Request, { params }: { params: { url: string 
       console.log({ range, videoSize });
 
       const [start, end] = range.replace(/bytes=/, '').split('-');
-      const startByte = parseInt(start);
+      let startByte = parseInt(start);
       const endByte = end ? parseInt(end) : Math.min(startByte + CHUNK_SIZE, videoSize - 1);
+      if (startByte > endByte) startByte = 0;
+      
       const chunkSize = (endByte - startByte) + 1;
-
       console.log({ startByte, endByte, chunkSize });
 
       const stream = fs.createReadStream(filePath, { start: startByte, end: endByte });

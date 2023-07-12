@@ -3,6 +3,8 @@ import { Streamlink } from '@dragongoose/streamlink'
 import { format } from 'date-fns'
 import * as Sentry from "@sentry/node"
 
+import streamToUI from "./stream-to-client"
+import { getPathsByUrl, setFileName } from "@haishin/transcriber-utils"
 import pathToData from './utils/path-to-data'
 
 import type { NewStreamDataResponse, StreamDataResponse } from '../types/responses.js'
@@ -14,26 +16,6 @@ Sentry.init({
   // for finer control
   tracesSampleRate: 1.0,
 })
-
-function getPathsByUrl(url: string) {
-  const paths = url
-    .replace('http://', '')
-    .replace('https://', '')
-    .replace('c:', '')
-    .split('/')
-  const site = paths.shift()
-  
-  return {
-    site, 
-    user: paths.join('-')
-  }
-}
-
-function setFileName(url: string): string {
-  const paths = getPathsByUrl(url);
-  const path = `${paths.site}--${paths.user}.mp4`;
-  return path;
-}
 
 function setArchivedFileName(url: string): string {
   const dateTimeStart = format(new Date(), 'y-MM-dd_HH-mm-ss');
@@ -79,6 +61,19 @@ export const setupStream = async function (originalUrl: string): Promise<NewStre
     client.on('error', (error: Error) => {
       Sentry.captureException(error);
     })
+
+    // Will need to find a way to kill this exec later...
+    const streamToUITimeout = setTimeout(() => {
+      // Send stream to rtmp server
+      try {
+        const streamKey = setFileName(originalUrl).replace('.mp4', '');
+        streamToUI(streamData.file, streamKey);
+        // exec(`ffmpeg -re -stream_loop -1 -i ${streamData.file} -c:v libx264 -preset veryfast -tune zerolatency -c:a aac -ar 44100 -f flv rtmp://localhost/live/${streamKey}`);
+        // exec(`ffmpeg -re -i ${streamBuffer} -c:v copy -c:a copy -f flv rtmp://localhost/live/${streamKey}`);
+      } catch (error) {
+        Sentry.captureException(error);
+      }
+    }, 15000);
   
     client.on('close', () => {
       streamFile.close() // closes the file when the stream ends or is closed
@@ -91,8 +86,9 @@ export const setupStream = async function (originalUrl: string): Promise<NewStre
 
       // Delete file in streams
       setTimeout(() => {
+        clearTimeout(streamToUITimeout);
         fs.unlinkSync(streamData.file)
-      }, 1000 * 60 * 5) // 5 minutes after stream ends delete the file
+      }, 1000 * 60 * 2) // 2 minutes after stream ends delete the file
     })
 
     return {
