@@ -17,8 +17,6 @@ export async function GET(request: Request, { params }: { params: { url: string 
     const CHUNK_SIZE = 10 ** 6;
 
     if (range) {
-      console.log({ range, videoSize });
-
       const [start, end] = range.replace(/bytes=/, '').split('-');
       let startByte = parseInt(start);
       const endByte = end ? parseInt(end) : Math.min(startByte + CHUNK_SIZE, videoSize - 1);
@@ -40,7 +38,6 @@ export async function GET(request: Request, { params }: { params: { url: string 
       return new NextResponse(stream, { headers, status: 206 });
     }
 
-    console.log('No range');
     const stream = fs.createReadStream(filePath);
     return new NextResponse(stream, { headers: { 'Content-Length': videoSize, 'Content-Type': 'video/mp4' }, status: 200 });
   } else {
