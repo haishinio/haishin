@@ -1,7 +1,7 @@
 import fs from 'fs'
+import exec from 'await-exec'
 import { spawn } from "child_process";
 import { format } from 'date-fns'
-import { Streamlink } from '@dragongoose/streamlink';
 import * as Sentry from "@sentry/node"
 
 // import streamToUI from "./stream-to-client"
@@ -25,68 +25,63 @@ function setArchivedFileName(url: string): string {
   return path;
 }
 
-export const getStreamInfo = function (originalUrl: string): StreamDataResponse {
+export const getStreamInfo = async function (originalUrl: string): Promise<StreamDataResponse> {
+  // Should check if we can play the stream at all (ie. use streamlink)
+  const canPlay = await exec(`streamlink --can-handle-url ${originalUrl}`);
+
+  console.log({ canPlay });
+
   const streamsDir = pathToData('streams');
   const streamBaseName = setFileName(originalUrl);
 
   const files = fs.readdirSync(streamsDir);
 
-  let port = '25565';
   let newStream = true;
   const [filteredFile] = files.filter(file => file.includes(streamBaseName));
 
   // If we have filteredFile then it's not a newStream
   if (filteredFile) {
-    port = filteredFile.split('__')[0];
     newStream = false;
   }
 
-  const streamUrl = `streams/${port}__${streamBaseName}`;
-  const file = pathToData(streamUrl);
+  const streamUrl = `http://localhost:8000/live/${streamBaseName}.flv`;
+  const file = pathToData(`streams/${streamBaseName}.mp4`);
 
   return {
+    canPlay,
     newStream,
-    port,
-    file,
     originalUrl,
+    baseName: streamBaseName,
     streamUrl,
+    file,
   };
 }
 
 export const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
-  const streamData = getStreamInfo(originalUrl);
+  const streamData = await getStreamInfo(originalUrl);
 
   // It exists so return the streamData
   if (!streamData.newStream) return streamData;
 
-  // If it doesn't exist then start the archiving process
-  console.log('Start restreaming');
-  spawn('streamlink', [
-    originalUrl,
-    'best',
-    '--player-external-http',
-    '--player-external-http-port', streamData.port,
-    '--player-external-http-continuous', 'false'
-  ]);
+  console.log({ streamData });
 
   // If it doesn't exist then start the archiving process
-  console.log('Start archiving stream');
-  const streamFile = fs.createWriteStream(streamData.file);
-  const client = new Streamlink(originalUrl, {outputStdout: true});
-  client.begin();
-  client.on('log', data => {
-    // console.log('writing to file')
-    streamFile.write(data) // puts data into file
+  const streamlinkArgs = [originalUrl, 'best', '-R', streamData.file, '-f'];
+  const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', `rtmp://localhost/live/${streamData.baseName}`]
+
+  const streamlinkProcess = spawn('streamlink', streamlinkArgs);
+  const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
+
+  streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
+
+  streamlinkProcess.on('error', (err) => {
+    console.error('Streamlink error:', err);
+  });
+  ffmpegProcess.on('error', (err) => {
+    console.error('FFmpeg error:', err);
   });
 
-  client.on('error', (error: Error) => {
-    Sentry.captureException(error);
-  });
-
-  client.on('close', () => {
-    // Close the file when the stream ends or is closed
-    streamFile.close();
-
+  streamlinkProcess.on('close', (code) => {
     // Move completed file to backups
     fs.copyFileSync(
       streamData.file,
@@ -97,6 +92,11 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
     setTimeout(() => {
       fs.unlinkSync(streamData.file)
     }, 1000 * 60 * 2) // 2 minutes after stream ends delete the file
+
+    console.log(`Streamlink process exited with code ${code}`);
+  });
+  ffmpegProcess.on('close', (code) => {
+    console.log(`FFmpeg process exited with code ${code}`);
   });
 
   return streamData;

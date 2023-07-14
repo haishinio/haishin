@@ -37,13 +37,12 @@ export default function (io) {
     console.log({ deleteRoom: room });
   });
   
-  io.of('/').adapter.on('join-room', (room) => {
-    console.log({ joinRoom: room });
+  io.of('/').adapter.on('join-room', (room, userId) => {
     if (isUrl(room)) {
       // We just want to join in progress so let's get the streamSetup only
       setTimeout(async () => {
         const streamData = await setupStream(room);
-        return streamData;
+        io.to(userId).emit('start-transcribing', streamData);
       }, 5000);
     }
   });

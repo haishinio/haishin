@@ -25,7 +25,7 @@ const StreamUrlPage: NextPage = () => {
   const videoRef = useRef<ReactPlayer>(null);
 
   // Setup Stream
-  const [ streamUrl, updateStreamUrl ] = useState(url);
+  const [ streamUrl, updateStreamUrl ] = useState('');
   
   // Transcriptions
   const [ isTranscribing, setIsTranscribing ] = useState(false)
@@ -47,10 +47,8 @@ const StreamUrlPage: NextPage = () => {
     })
 
     socket.on('start-transcribing', (data) => {
-      setIsTranscribing(true)
-
-      console.log({ data });
-      // Need to get the streamUrl here 'http://127.0.0.1:${port}'
+      setIsTranscribing(true);
+      updateStreamUrl(data.streamUrl);
     })
 
     socket.on('transcription-translation', (data) => {
@@ -75,13 +73,7 @@ const StreamUrlPage: NextPage = () => {
         socket.disconnect()
       }
     }
-  }, [url])
-
-  useEffect(() => {
-    if (url) {
-      updateStreamUrl(url)
-    }
-  }, [url])
+  }, [url]);
 
   // Start/Stop transcribing the stream
   const controlTranscription = async () => {

@@ -16,7 +16,7 @@ export function getPathsByUrl(url: string) {
 
 export function setFileName(url: string): string {
   const paths = getPathsByUrl(url);
-  const path = `${paths.site}--${paths.user}.mp4`;
+  const path = `${paths.site}--${paths.user}`;
   return path;
 }
 
