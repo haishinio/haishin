@@ -52,6 +52,7 @@ jobs:
           file: ./apps/frontend/Dockerfile
           build-args: |
             GIT_REVISION=${{ steps.git_rev.outputs.rev }}
+            DEEPL_API_KEY=${{ secrets.DEEPL_API_KEY }}
             WS_URL=${{ secrets.WS_URL }}
           push: true
           labels: ${{ steps.meta.outputs.labels }}
