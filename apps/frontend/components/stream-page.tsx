@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { lazy, useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import TopMenu from './top-menu';
-import FlvVideoPlayer from "./flv-video-player";
 import TextLogRow from './textlog-row';
 
 import useWindowDimension from '../hooks/useWindowHeight';
@@ -55,7 +54,7 @@ const StreamPage = (props: Props) => {
           <div className="aspect-w-16 aspect-h-9">
             {
               isRtmp ? (
-                <FlvVideoPlayer url={streamUrl} />
+                lazy(() => import('./flv-video-player'))({url: streamUrl})
               ) : (
                 <ReactPlayer
                   url={streamUrl}
