@@ -80,8 +80,9 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
   const streamlinkArgs = [originalUrl, 'best', streamLinkMode, streamData.file, '-f'];
   const streamlinkProcess = spawn('streamlink', streamlinkArgs);
 
-  streamlinkProcess.on('error', (err) => {
-    console.error('Streamlink error:', err);
+  streamlinkProcess.stderr.on('data', (data) => {
+    // Handle the error output, if any
+    console.error('Streamlink error:', data.toString());
   });
 
   streamlinkProcess.on('close', (code) => {
@@ -112,8 +113,9 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
   
     streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
   
-    ffmpegProcess.on('error', (err) => {
-      console.error('FFmpeg error:', err);
+    ffmpegProcess.stderr.on('data', (data) => {
+      // Handle the error output, if any
+      console.error('FFmpeg error:', data.toString());
     });
   
     ffmpegProcess.on('close', (code) => {
