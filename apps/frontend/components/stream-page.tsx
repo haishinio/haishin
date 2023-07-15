@@ -1,14 +1,14 @@
+'use client';
+
 import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import TopMenu from './top-menu';
 import FlvVideoPlayer from "./flv-video-player";
 import TextLogRow from './textlog-row';
 
-import useWindowDimension from '../hooks/useWindowHeight'
+import useWindowDimension from '../hooks/useWindowHeight';
 
-// import * as Sentry from "@sentry/nextjs"
-
-import type { TextLog } from '../types/Textlog'
+import type { TextLog } from '../types/Textlog';
 
 type Props = {
   controlTranscription: Function
