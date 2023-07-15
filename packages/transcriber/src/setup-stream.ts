@@ -45,7 +45,7 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
 
   let streamUrl = originalUrl;
   if (isRtmpSite(originalUrl)) {
-    streamUrl = `http://localhost:8000/live/${streamBaseName}.flv`;
+    streamUrl = `${process.env.RTMP_CLIENT_URL}${streamBaseName}.flv`;
   }
 
   const file = pathToData(`streams/${streamBaseName}.mp4`);
@@ -104,7 +104,7 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
     console.log('Starting restreamer...');
     console.log(streamData.baseName);
 
-    const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', `rtmp://localhost/live/${streamData.baseName}`]
+    const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', `${process.env.RTMP_SERVER_URL}${streamData.baseName}`]
     
     const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
   
