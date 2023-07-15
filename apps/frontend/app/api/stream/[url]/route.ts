@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server"
-import fs from 'fs'
-import path from 'path'
+import fs from 'fs';
+import path from 'path';
+import { NextResponse } from "next/server";
+import { streamToBuffer } from '@jorgeferrero/stream-to-buffer';
 
 const pathToData = (restOfFilePath: string): string => {
   return path.join(process.cwd(), '../../', restOfFilePath)
@@ -16,6 +17,9 @@ export async function GET(request: Request, { params }: { params: { url: string 
     const range = request.headers.get('Range');
     const CHUNK_SIZE = 10 ** 6;
 
+    const headers = new Headers();
+    headers.set('Content-Type', 'video/mp4');
+
     if (range) {
       const [start, end] = range.replace(/bytes=/, '').split('-');
       let startByte = parseInt(start);
@@ -24,21 +28,22 @@ export async function GET(request: Request, { params }: { params: { url: string 
       
       const chunkSize = (endByte - startByte) + 1;
 
-      const stream = fs.createReadStream(filePath, { start: startByte, end: endByte });
+      const stream = await streamToBuffer(fs.createReadStream(filePath, { start: startByte, end: endByte }));
 
-      const headers = new Headers();
       headers.set('Content-Range', `bytes ${startByte}-${endByte}/${videoSize}`);
       headers.set('Accept-Ranges', 'bytes');
       headers.set('Content-Length', chunkSize.toString());
-      headers.set('Content-Type', 'video/mp4');
       headers.set('Cache-Control', 'no-cache');
       headers.set('Connection', 'keep-alive');
 
       return new NextResponse(stream, { headers, status: 206 });
     }
 
-    const stream = fs.createReadStream(filePath);
-    return new NextResponse(stream, { headers: { 'Content-Length': videoSize, 'Content-Type': 'video/mp4' }, status: 200 });
+    const stream = await streamToBuffer(fs.createReadStream(filePath));
+
+    headers.set('Content-Length', videoSize.toString());
+
+    return new NextResponse(stream, { headers, status: 200 });
   } else {
     return new NextResponse(null, { status: 404 });
   }

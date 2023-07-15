@@ -13,7 +13,7 @@ export default function GlobalError({
   useEffect(() => {
     // Log the error to an error reporting service
     async function logError() {
-      await Sentry.captureUnderscoreErrorException(error);
+      await Sentry.captureException(error);
     }
 
     logError();

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import exec from 'await-exec'
-import { ChildProcessWithoutNullStreams, spawn } from "child_process";
+import { spawn } from "child_process";
 import { format } from 'date-fns'
 import * as Sentry from "@sentry/node"
 

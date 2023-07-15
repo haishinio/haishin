@@ -13,8 +13,8 @@
   "dependencies": {
     "@haishin/transcriber": "workspace:^",
     "@haishin/transcriber-utils": "workspace:^",
+    "@jorgeferrero/stream-to-buffer": "^2.0.6",
     "@sentry/nextjs": "^7.57.0",
-    "formidable": "^3.5.0",
     "mpegts.js": "^1.7.3",
     "next": "13.4.9",
     "react": "18.2.0",
@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
-    "@types/formidable": "^3.4.0",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
