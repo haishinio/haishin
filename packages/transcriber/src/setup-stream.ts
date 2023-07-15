@@ -102,9 +102,11 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
   // We only want to stream if it's a showroom or twitcasting stream
   if (isRtmpSite(originalUrl)) {
     console.log('Starting restreamer...');
-    console.log(streamData.baseName);
+    const rtmpServer = `${process.env.RTMP_SERVER_URL}${streamData.baseName}`;
 
-    const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', `${process.env.RTMP_SERVER_URL}${streamData.baseName}`]
+    console.log({ rtmpServer, streamData });
+
+    const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', rtmpServer]
     
     const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
   
