@@ -1,3 +1,7 @@
+export function msToSeconds(e: number): number {
+  return Math.floor(e / 1000);
+}
+
 export function secondsToDuration(e: number): string {
   const h = Math.floor(e / 3600).toString().padStart(2,'0'),
         m = Math.floor(e % 3600 / 60).toString().padStart(2,'0'),
@@ -5,4 +9,4 @@ export function secondsToDuration(e: number): string {
   return `${h}:${m}:${s}`;
 }
 
-export default secondsToDuration
+export default secondsToDuration;

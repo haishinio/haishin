@@ -23,7 +23,6 @@ export async function GET(request: Request, { params }: { params: { url: string 
       if (startByte > endByte) startByte = 0;
       
       const chunkSize = (endByte - startByte) + 1;
-      console.log({ startByte, endByte, chunkSize });
 
       const stream = fs.createReadStream(filePath, { start: startByte, end: endByte });
 

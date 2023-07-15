@@ -49,6 +49,7 @@ const StreamIndex: NextPage = () => {
         url ? (
           <StreamPage
             controlTranscription={() => {}}
+            isRtmp={false}
             isTranscribing={true}
             originalUrl={url}
             streamUrl={streamUrl}

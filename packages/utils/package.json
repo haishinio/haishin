@@ -1,6 +1,6 @@
 {
   "name": "@haishin/transcriber-utils",
-  "description": "Transcriber utils",
+  "description": "Transcriber Utils for use within @haishin/*",
   "version": "2.0.0",
   "private": true,
   "type": "commonjs",

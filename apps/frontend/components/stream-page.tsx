@@ -1,29 +1,27 @@
-import { useEffect, useRef, useState } from 'react'
-import ReactPlayer from 'react-player'
-import TopMenu from './top-menu'
-import TextLogRow from './textlog-row'
+import { useEffect, useRef, useState } from 'react';
+import ReactPlayer from 'react-player';
+import TopMenu from './top-menu';
+import FlvVideoPlayer from "./flv-video-player";
+import TextLogRow from './textlog-row';
 
 import useWindowDimension from '../hooks/useWindowHeight'
 
-import * as Sentry from "@sentry/nextjs"
+// import * as Sentry from "@sentry/nextjs"
 
 import type { TextLog } from '../types/Textlog'
 
 type Props = {
   controlTranscription: Function
+  isRtmp: boolean
   isTranscribing: boolean
   originalUrl: string
   streamUrl: string
   textLogs: TextLog[]
   updateFileDuration?: Function
-  onBufferEnd?: Function
-  videoRef?: React.RefObject<ReactPlayer>
 }
 
 const StreamPage = (props: Props) => {
-  const { controlTranscription, isTranscribing, originalUrl, streamUrl, textLogs, updateFileDuration, videoRef } = props;
-
-  const [isPlaying, setIsPlaying] = useState(true);
+  const { controlTranscription, isRtmp, isTranscribing, originalUrl, streamUrl, textLogs, updateFileDuration } = props;
 
   // Set logHeight
   const size = useWindowDimension()
@@ -36,7 +34,8 @@ const StreamPage = (props: Props) => {
     }
   }, [size])
 
-  // Passes duration back up if we have it
+  // Passes duration back up if we have it,
+  // Needed for uploads
   const updateDuration = (duration: number | undefined) => {
     if (!updateFileDuration) return;
 
@@ -47,38 +46,29 @@ const StreamPage = (props: Props) => {
     return updateFileDuration(duration)
   }
 
-  // Error handler
-  const onErrors = (error: any, data?: any) => {
-    console.log({ error, data });
-
-    Sentry.captureException(new Error('ReactPlayer error'), scope => {
-      scope.clear()
-      scope.setExtra('errorObj', error)
-      scope.setExtra('streamData', data)
-      return scope
-    })
-  }
-
   return (
     <div className="h-screen overflow-hidden">
       <div className="grid grid-cols-12 content-start">
         <div className="col-span-12 xl:col-span-8" ref={ref}>
           <TopMenu url={originalUrl} />
-          {
-            <div className="aspect-w-16 aspect-h-9">
-              <ReactPlayer
-                url={streamUrl}
-                height='100%'
-                width='100%'
-                controls
-                playing={isPlaying}
-                playsinline
-                onDuration={updateDuration}
-                onError={onErrors}
-                ref={videoRef}
-              />
-            </div>
-          }
+
+          <div className="aspect-w-16 aspect-h-9">
+            {
+              isRtmp ? (
+                <FlvVideoPlayer url={streamUrl} />
+              ) : (
+                <ReactPlayer
+                  url={streamUrl}
+                  height='100%'
+                  width='100%'
+                  controls
+                  playing
+                  playsinline
+                  onDuration={updateDuration}
+                />
+              )
+            }
+          </div>
 
           <div
             className="bg-zinc-700 text-white cursor-pointer px-2 py-1 text-center"

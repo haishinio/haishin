@@ -99,6 +99,9 @@ importers:
       formidable:
         specifier: ^3.5.0
         version: 3.5.0
+      mpegts.js:
+        specifier: ^1.7.3
+        version: 1.7.3
       next:
         specifier: 13.4.9
         version: 13.4.9(react-dom@18.2.0)(react@18.2.0)
@@ -160,9 +163,6 @@ importers:
 
   packages/transcriber:
     dependencies:
-      '@dragongoose/streamlink':
-        specifier: ^1.1.1
-        version: 1.1.1
       '@ffmpeg/core':
         specifier: ^0.11.0
         version: 0.11.0(patch_hash=ld7rzfw7iozpndvzizlt4sbpaa)
@@ -315,10 +315,6 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
-
-  /@dragongoose/streamlink@1.1.1:
-    resolution: {integrity: sha512-LfCWdFCTTg/xGuL24RjfRQYpqP18zfLwp8KgFrIQ7yB6/JQl2grzfQegXpyFwBuIRQgLigOZCuuGlb/GTfYbmw==}
-    dev: false
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.44.0):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}
@@ -1957,6 +1953,10 @@ packages:
       is-symbol: 1.0.4
     dev: true
 
+  /es6-promise@4.2.8:
+    resolution: {integrity: sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==}
+    dev: false
+
   /escalade@3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
@@ -3217,6 +3217,13 @@ packages:
     resolution: {integrity: sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==}
     engines: {node: '>=10'}
     hasBin: true
+    dev: false
+
+  /mpegts.js@1.7.3:
+    resolution: {integrity: sha512-kqZ1C1IsbAQN72cK8vMrzKeM7hwrwSBbFAwVAc7PPweOeoZxCANrc7fAVDKMfYUzxdNkMTnec9tVmlxmKZB0TQ==}
+    dependencies:
+      es6-promise: 4.2.8
+      webworkify-webpack: 2.1.5
     dev: false
 
   /ms@2.0.0:
@@ -4513,6 +4520,10 @@ packages:
   /webpack-sources@3.2.3:
     resolution: {integrity: sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==}
     engines: {node: '>=10.13.0'}
+    dev: false
+
+  /webworkify-webpack@2.1.5:
+    resolution: {integrity: sha512-2akF8FIyUvbiBBdD+RoHpoTbHMQF2HwjcxfDvgztAX5YwbZNyrtfUMgvfgFVsgDhDPVTlkbb5vyasqDHfIDPQw==}
     dev: false
 
   /whatwg-url@5.0.0:

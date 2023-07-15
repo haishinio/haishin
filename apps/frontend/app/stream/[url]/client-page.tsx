@@ -4,14 +4,12 @@ import type { NextPage } from 'next'
 
 import io from 'socket.io-client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { secondsToDuration } from '../../../utils/seconds-to-duration'
-// import { setFileName } from '@haishin/transcriber-utils';
+import { secondsToDuration } from '@haishin/transcriber-utils'
 
 import StreamPage from '../../../components/stream-page'
 
-import ReactPlayer from 'react-player'
 import type { Socket } from 'socket.io-client'
 import type { TextLog } from '../../../types/Textlog'
 
@@ -22,10 +20,9 @@ const StreamUrlPage: NextPage = () => {
   const encodedUrl = pathName?.replace('/stream/', '') as string;
   const url = decodeURIComponent(encodedUrl);
 
-  const videoRef = useRef<ReactPlayer>(null);
-
   // Setup Stream
   const [ streamUrl, updateStreamUrl ] = useState('');
+  const [ isRtmp, setIsRtmp ] = useState(false);
   
   // Transcriptions
   const [ isTranscribing, setIsTranscribing ] = useState(false)
@@ -49,6 +46,10 @@ const StreamUrlPage: NextPage = () => {
     socket.on('start-transcribing', (data) => {
       setIsTranscribing(true);
       updateStreamUrl(data.streamUrl);
+
+      if (data.streamUrl.includes('flv')) {
+        setIsRtmp(true);
+      }
     })
 
     socket.on('transcription-translation', (data) => {
@@ -96,12 +97,12 @@ const StreamUrlPage: NextPage = () => {
         streamUrl ? (
           <StreamPage
             controlTranscription={controlTranscription}
+            isRtmp={isRtmp}
             isTranscribing={isTranscribing}
             originalUrl={url}
             streamUrl={streamUrl}
             textLogs={textLogs}
             updateFileDuration={() => {}}
-            videoRef={videoRef}
           />
         ) : (
           <p>LOADING</p>

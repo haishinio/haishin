@@ -1,6 +1,6 @@
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { secondsToDuration } from '../../../utils/seconds-to-duration';
+import { secondsToDuration } from '@haishin/transcriber-utils';
 import { splitVideoFile, transcribeTranslatePart } from '@haishin/transcriber';
 import { NextResponse } from "next/server";
 

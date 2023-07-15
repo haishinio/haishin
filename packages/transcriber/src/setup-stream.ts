@@ -1,11 +1,10 @@
 import fs from 'fs'
 import exec from 'await-exec'
-import { spawn } from "child_process";
+import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import { format } from 'date-fns'
 import * as Sentry from "@sentry/node"
 
-// import streamToUI from "./stream-to-client"
-import { getPathsByUrl, setFileName } from "@haishin/transcriber-utils"
+import { getPathsByUrl, isRtmpSite, setFileName } from "@haishin/transcriber-utils"
 import pathToData from './utils/path-to-data'
 
 import type { StreamDataResponse } from '../types/responses.js'
@@ -44,7 +43,11 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
     newStream = false;
   }
 
-  const streamUrl = `http://localhost:8000/live/${streamBaseName}.flv`;
+  let streamUrl = originalUrl;
+  if (isRtmpSite(originalUrl)) {
+    streamUrl = `http://localhost:8000/live/${streamBaseName}.flv`;
+  }
+
   const file = pathToData(`streams/${streamBaseName}.mp4`);
 
   return {
@@ -60,25 +63,25 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
 export const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
   const streamData = await getStreamInfo(originalUrl);
 
+  // Need to probably handle if we can't play the stream
+  // if (!streamData.canPlay) {}
+
   // It exists so return the streamData
   if (!streamData.newStream) return streamData;
 
-  console.log({ streamData });
-
   // If it doesn't exist then start the archiving process
-  const streamlinkArgs = [originalUrl, 'best', '-R', streamData.file, '-f'];
-  const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', `rtmp://localhost/live/${streamData.baseName}`]
+  let streamLinkMode = '-o';
+  if (isRtmpSite(originalUrl)) {
+    streamLinkMode = '-R';
+  }
 
+  console.log({streamLinkMode});
+
+  const streamlinkArgs = [originalUrl, 'best', streamLinkMode, streamData.file, '-f'];
   const streamlinkProcess = spawn('streamlink', streamlinkArgs);
-  const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
-
-  streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
 
   streamlinkProcess.on('error', (err) => {
     console.error('Streamlink error:', err);
-  });
-  ffmpegProcess.on('error', (err) => {
-    console.error('FFmpeg error:', err);
   });
 
   streamlinkProcess.on('close', (code) => {
@@ -95,9 +98,27 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
 
     console.log(`Streamlink process exited with code ${code}`);
   });
-  ffmpegProcess.on('close', (code) => {
-    console.log(`FFmpeg process exited with code ${code}`);
-  });
+
+  // We only want to stream if it's a showroom or twitcasting stream
+  if (isRtmpSite(originalUrl)) {
+    console.log('Starting restreamer...');
+    console.log(streamData.baseName);
+
+    const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', `rtmp://localhost/live/${streamData.baseName}`]
+    
+    const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
+  
+    streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
+  
+    ffmpegProcess.on('error', (err) => {
+      console.error('FFmpeg error:', err);
+    });
+  
+    ffmpegProcess.on('close', (code) => {
+      console.log(`FFmpeg process exited with code ${code}`);
+      streamlinkProcess.kill();
+    });
+  }
 
   return streamData;
 }
