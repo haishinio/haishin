@@ -1,6 +1,6 @@
 'use client';
 
-import { lazy, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import TopMenu from './top-menu';
 import TextLogRow from './textlog-row';
@@ -45,6 +45,8 @@ const StreamPage = (props: Props) => {
     return updateFileDuration(duration)
   }
 
+  const FlvVideoPlayer = lazy(() => import('./flv-video-player'));
+
   return (
     <div className="h-screen overflow-hidden">
       <div className="grid grid-cols-12 content-start">
@@ -54,7 +56,9 @@ const StreamPage = (props: Props) => {
           <div className="aspect-w-16 aspect-h-9">
             {
               isRtmp ? (
-                lazy(() => import('./flv-video-player'))({url: streamUrl})
+                <Suspense>
+                  <FlvVideoPlayer url={streamUrl} />
+                </Suspense>
               ) : (
                 <ReactPlayer
                   url={streamUrl}
