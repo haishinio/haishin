@@ -28,7 +28,7 @@ const StreamPage = (props: Props) => {
   const ref = useRef<HTMLDivElement>(null)
   const [logHeight, setLogHeight] = useState(0)
   useEffect(() => {
-    if (ref.current && ref.current.clientHeight) {
+    if (window && ref.current && ref.current.clientHeight) {
       const videoHeight = ref.current.clientHeight
       setLogHeight(window.screen.availHeight - videoHeight)
     }
