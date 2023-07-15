@@ -8,6 +8,9 @@ patchedDependencies:
   '@ffmpeg/core@0.11.0':
     hash: ld7rzfw7iozpndvzizlt4sbpaa
     path: patches/@ffmpeg__core@0.11.0.patch
+  mpegts.js@1.7.3:
+    hash: hbodx7f7pi3642zppunvtma5fi
+    path: patches/mpegts.js@1.7.3.patch
   node-ffprobe@3.0.0:
     hash: mhkbpzp5mvsndy2wn6zppl26ii
     path: patches/node-ffprobe@3.0.0.patch
@@ -101,7 +104,7 @@ importers:
         version: 7.57.0(next@13.4.9)(react@18.2.0)
       mpegts.js:
         specifier: ^1.7.3
-        version: 1.7.3
+        version: 1.7.3(patch_hash=hbodx7f7pi3642zppunvtma5fi)
       next:
         specifier: 13.4.9
         version: 13.4.9(react-dom@18.2.0)(react@18.2.0)
@@ -3197,12 +3200,13 @@ packages:
     hasBin: true
     dev: false
 
-  /mpegts.js@1.7.3:
+  /mpegts.js@1.7.3(patch_hash=hbodx7f7pi3642zppunvtma5fi):
     resolution: {integrity: sha512-kqZ1C1IsbAQN72cK8vMrzKeM7hwrwSBbFAwVAc7PPweOeoZxCANrc7fAVDKMfYUzxdNkMTnec9tVmlxmKZB0TQ==}
     dependencies:
       es6-promise: 4.2.8
       webworkify-webpack: 2.1.5
     dev: false
+    patched: true
 
   /ms@2.0.0:
     resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==}
