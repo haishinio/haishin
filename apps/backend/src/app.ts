@@ -28,6 +28,26 @@ app.use(function onError(err, req, res, next) {
 
 const httpServer = createServer(app);
 
+let productionMediaServerHttps = {};
+let productionCors = [];
+
+if (process.env.PRODUCTION_URL) {
+  const productionDomain = process.env.PRODUCTION_URL.replace('https://', '')
+
+  productionMediaServerHttps = {
+    https: {
+      port: 8443,
+      key: `/etc/letsencrypt/live/${productionDomain}/privkey.pem`,
+      cert: `/etc/letsencrypt/live/${productionDomain}/fullchain.pem`,
+    }
+  }
+
+  productionCors = [
+    `http://${productionDomain}`,
+    `https://${productionDomain}`,
+  ]
+}
+
 // Set up the NodeMediaServer
 const config = {
   logType: 3,
@@ -43,11 +63,7 @@ const config = {
     port: 8000,
     allow_origin: '*'
   },
-  https: {
-    port: 8443,
-    key: `/etc/letsencrypt/live/${process.env.PRODUCTION_URL}/privkey.pem`,
-    cert: `/etc/letsencrypt/live/${process.env.PRODUCTION_URL}/fullchain.pem`,
-  }
+  ...productionMediaServerHttps
 };
 
 const nms = new NodeMediaServer(config);
@@ -70,9 +86,11 @@ nms.run({ httpServer });
 const io = new Server(httpServer, {
   cors: {
     origin: [
+      "http://localhost",
       "http://localhost:3000",
+      "http://localhost:8000",
       "http://localhost:8080",
-      process.env.PRODUCTION_URL ?? '',
+      ...productionCors,
     ],
   },
   connectionStateRecovery: {
