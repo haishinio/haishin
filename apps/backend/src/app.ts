@@ -43,6 +43,11 @@ const config = {
     port: 8000,
     allow_origin: '*'
   },
+  https: {
+    port: 8443,
+    key: `/etc/letsencrypt/live/${process.env.PRODUCTION_URL}/privkey.pem`,
+    cert: `/etc/letsencrypt/live/${process.env.PRODUCTION_URL}/fullchain.pem`,
+  }
 };
 
 const nms = new NodeMediaServer(config);
