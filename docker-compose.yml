@@ -3,6 +3,10 @@ version: '3'
 services:
   frontend:
     build:
+      args:
+        GIT_REVISION: dev
+        DEEPL_API_KEY:
+        WS_URL:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
     env_file: ./.env
@@ -10,26 +14,50 @@ services:
       - 3000:3000
     volumes:
       - haishin-storage:/app/data
-    container_name: haishin-fe
+    container_name: frontend
     restart: unless-stopped
     networks:
       - app-network
 
   backend:
     build:
+      args:
+        GIT_REVISION: dev
       context: .
       dockerfile: ./apps/backend/Dockerfile
     env_file: ./.env
-    container_name: haishin-be
+    container_name: backend
     restart: unless-stopped
     ports:
+      - 1935:1935
+      - 8000:8000
       - 8080:8080
     volumes:
       - haishin-storage:/data
     networks:
       - app-network
 
+  webserver:
+    image: nginx:mainline-alpine
+    container_name: webserver
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - web-root:/var/www/html
+      - ./local-nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - app-network
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+
 volumes:
+  web-root:
   haishin-storage:
     driver: local
     driver_opts:
