@@ -7,43 +7,30 @@ function isUrl(str) {
   return urlRegex.test(str);
 }
 
-export default function (io) {
-  io.of('/').adapter.on('create-room', async (room) => {    
-    console.log({ createRoom: room });
-
-    if (isUrl(room)) {
-      // Get the initial stream data
-      const streamData = await setupStream(room);
-
-      // Need to probably send the streamData to the client here or at least have the socket.emit from app.ts do it
-
-      if (streamData.newStream) {
-        setTimeout(() => {
-          console.log('Start transcribing')
-          transcriberHandler(io, {
-            url: streamData.originalUrl,
-            filename: streamData.file,
-            startTime: 0,
-            prompt: '',
-          })
-        }, 10000);
-      }
-
-      return streamData;
-    }
-  });
-  
+export default function (io) {  
   io.of('/').adapter.on('delete-room', (room) => {
     console.log({ deleteRoom: room });
   });
   
-  io.of('/').adapter.on('join-room', (room, userId) => {
+  io.of('/').adapter.on('join-room', async (room, userId) => {
     if (isUrl(room)) {
-      // We just want to join in progress so let's get the streamSetup only
-      setTimeout(async () => {
-        const streamData = await setupStream(room);
+      const streamData = await setupStream(room);
+
+      // Should check if live too, return user back to homepage?
+      if (!streamData.canPlay) {
+        io.to(userId).emit('stream-error', streamData);
+      } else {
         io.to(userId).emit('start-transcribing', streamData);
-      }, 5000);
+      }
+
+      if (streamData.canPlay && streamData.newStream) {
+        transcriberHandler(io, {
+          url: streamData.originalUrl,
+          filename: streamData.file,
+          startTime: 0,
+          prompt: '',
+        })
+      }
     }
   });
   
