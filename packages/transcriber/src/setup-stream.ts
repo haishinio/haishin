@@ -26,22 +26,28 @@ function setArchivedFileName(url: string): string {
 
 export const getStreamInfo = async function (originalUrl: string): Promise<StreamDataResponse> {
   // Should check if we can play the stream at all (ie. use streamlink)
-  const canPlay = await exec(`streamlink --can-handle-url ${originalUrl}`);
+  let canPlay = false;
 
-  console.log({ canPlay });
+  try {
+    await exec(`streamlink --json ${originalUrl} --retry-open 5`);
+
+    canPlay = true;
+  } catch (error) {
+    console.log({ canPlayError: error });
+  }
 
   const streamsDir = pathToData('streams');
   const streamBaseName = setFileName(originalUrl);
 
   const files = fs.readdirSync(streamsDir);
 
-  let newStream = true;
+  let newStream = false;
   const [filteredFile] = files.filter(file => file.includes(streamBaseName));
 
+  console.log({files, streamBaseName, filteredFile});
+
   // If we have filteredFile then it's not a newStream
-  if (filteredFile) {
-    newStream = false;
-  }
+  if (!filteredFile) newStream = true;
 
   let streamUrl = originalUrl;
   if (isRtmpSite(originalUrl)) {
@@ -63,11 +69,8 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
 export const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
   const streamData = await getStreamInfo(originalUrl);
 
-  // Need to probably handle if we can't play the stream
-  // if (!streamData.canPlay) {}
-
-  // It exists so return the streamData
-  if (!streamData.newStream) return streamData;
+  // If we can't play it or it already exists so just return the streamData and let it be handled
+  if (!streamData.canPlay || !streamData.newStream) return streamData;
 
   // If it doesn't exist then start the archiving process
   let streamLinkMode = '-o';
@@ -75,27 +78,31 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
     streamLinkMode = '-R';
   }
 
-  console.log({streamLinkMode});
+  console.log({streamLinkMode, streamData});
 
-  const streamlinkArgs = [originalUrl, 'best', streamLinkMode, streamData.file, '-f'];
+  const streamlinkArgs = [originalUrl, 'best', streamLinkMode, streamData.file, '-f', '--retry-open', '5'];
   const streamlinkProcess = spawn('streamlink', streamlinkArgs);
 
   streamlinkProcess.stderr.on('data', (data) => {
     // Handle the error output, if any
-    console.error('Streamlink error:', data.toString());
+    console.error(data.toString());
   });
 
   streamlinkProcess.on('close', (code) => {
     // Move completed file to backups
-    fs.copyFileSync(
-      streamData.file,
-      pathToData(`/backups/${setArchivedFileName(originalUrl)}`)
-    );
-
-    // Delete file in streams
-    setTimeout(() => {
-      fs.unlinkSync(streamData.file)
-    }, 1000 * 60 * 2) // 2 minutes after stream ends delete the file
+    try {
+      fs.copyFileSync(
+        streamData.file,
+        pathToData(`/backups/${setArchivedFileName(originalUrl)}`)
+      );
+  
+      // Delete file in streams
+      setTimeout(() => {
+        fs.unlinkSync(streamData.file)
+      }, 1000 * 60 * 2) // 2 minutes after stream ends delete the file
+    } catch {
+      console.log('Could not remove file');
+    }
 
     console.log(`Streamlink process exited with code ${code}`);
   });
@@ -105,18 +112,16 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
     console.log('Starting restreamer...');
     const rtmpServer = `${process.env.RTMP_SERVER_URL}${streamData.baseName}`;
 
-    console.log({ rtmpServer, streamData });
-
-    const ffmpegArgs = ['-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', rtmpServer]
+    const ffmpegArgs = ['-re','-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', rtmpServer]
     
     const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
   
     streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
   
-    ffmpegProcess.stderr.on('data', (data) => {
-      // Handle the error output, if any
-      console.error('FFmpeg error:', data.toString());
-    });
+    // ffmpegProcess.stderr.on('data', (data) => {
+    //   // Handle the error output, if any
+    //   console.error(data.toString());
+    // });
   
     ffmpegProcess.on('close', (code) => {
       console.log(`FFmpeg process exited with code ${code}`);
