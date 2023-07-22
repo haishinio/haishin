@@ -9,7 +9,7 @@ services:
         WS_URL:
       context: .
       dockerfile: ./apps/frontend/Dockerfile
-    env_file: ./.env
+    env_file: ./.env.docker
     ports:
       - 3000:3000
     volumes:
@@ -25,7 +25,7 @@ services:
         GIT_REVISION: dev
       context: .
       dockerfile: ./apps/backend/Dockerfile
-    env_file: ./.env
+    env_file: ./.env.docker
     container_name: backend
     restart: unless-stopped
     ports:

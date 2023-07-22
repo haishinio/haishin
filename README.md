@@ -22,7 +22,7 @@ It's certainly not perfect but hopefully it's enough for English speakers to und
 
 For starters grab API keys for [OpenAi](https://platform.openai.com/) + [DeepL](https://www.deepl.com/pro-api). Then clone the repo to your local machine and once downloaded copy `.env.example` to `.env` and fill it out with your OpenAi and DeepL api keys.
 
-If using [Docker](https://www.docker.com/), you _should_ be able to run `docker-compose build` within the repo folder and then `docker-compose up` to start.
+If using [Docker](https://www.docker.com/), you _should_ be also copy `.env` to `.env.docker` and able to run `docker compose build` within the repo folder and then `docker compose up` to start.
 
 If not using Docker then the instructions below are for you!
 
