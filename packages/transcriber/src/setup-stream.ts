@@ -112,16 +112,18 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
     console.log('Starting restreamer...');
     const rtmpServer = `${process.env.RTMP_SERVER_URL}${streamData.baseName}`;
 
+    console.log({ rtmpServer })
+
     const ffmpegArgs = ['-re','-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', rtmpServer]
     
     const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
   
     streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
   
-    // ffmpegProcess.stderr.on('data', (data) => {
-    //   // Handle the error output, if any
-    //   console.error(data.toString());
-    // });
+    ffmpegProcess.stderr.on('data', (data) => {
+      // Handle the error output, if any
+      console.error(data.toString());
+    });
   
     ffmpegProcess.on('close', (code) => {
       console.log(`FFmpeg process exited with code ${code}`);
