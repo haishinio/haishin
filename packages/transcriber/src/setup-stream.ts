@@ -114,7 +114,7 @@ export const setupStream = async function (originalUrl: string): Promise<StreamD
 
     console.log({ rtmpServer })
 
-    const ffmpegArgs = ['-re','-i', 'pipe:0', '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'zerolatency', '-c:a', 'aac', '-ar', '44100', '-f', 'flv', rtmpServer]
+    const ffmpegArgs = ['-re', '-i', 'pipe:0', '-c:v', 'copy', '-c:a', 'copy', '-f', 'flv', rtmpServer]
     
     const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
   
