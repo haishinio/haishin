@@ -43,6 +43,17 @@ const StreamUrlPage: NextPage = () => {
       console.log('connected')
     })
 
+    socket.on('stream-error', () => {
+      updateStreamUrl('https://www.youtube.com/watch?v=azB-_MlmhfI') // Obituary
+      setIsTranscribing(false);
+      updateTextLogs([{
+        id: '0',
+        time: '0:00',
+        transcription: 'エラーが発生しました、もう一度お試しください',
+        translation: 'There was an issue, please try again'
+      }])
+    });
+
     socket.on('start-transcribing', (data) => {
       setIsTranscribing(true);
       updateStreamUrl(data.streamUrl);
