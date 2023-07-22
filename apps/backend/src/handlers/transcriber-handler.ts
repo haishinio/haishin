@@ -13,8 +13,9 @@ const transcriberHandler = async function (io, data: TranscriberData) {
   const { url, filename, startTime, prompt } = data
   const connectedClients = io.sockets.adapter.rooms.get(url)?.size;
 
-  const doesFileExist = fs.existsSync(filename);
-  if (!doesFileExist) return null; // TODO: Handle this better
+  while (!fs.existsSync(filename)) {
+    // Do nothing, wait for file to exist
+  }
 
   if (connectedClients) {
     const { partFileName, nextStartTime } = await splitVideoFile(filename, startTime)
