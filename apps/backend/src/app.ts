@@ -53,7 +53,7 @@ const config = {
   logType: 3,
 
   rtmp: {
-    port: 1935,
+    port: process.env.RTMP_PORT || 1935,
     chunk_size: 60000,
     gop_cache: true,
     ping: 30,
