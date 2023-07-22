@@ -43,9 +43,9 @@ RUN pip3 install streamlink
 WORKDIR /app
 
 # Don't run production as root
-RUN addgroup --system --gid 1001 expressjs
-RUN adduser --system --uid 1001 expressjs
-USER expressjs
+# RUN addgroup --system --gid 1001 expressjs
+# RUN adduser --system --uid 1001 expressjs
+# USER expressjs
 COPY --from=installer /app .
 
 CMD node apps/backend/dist/app.js
