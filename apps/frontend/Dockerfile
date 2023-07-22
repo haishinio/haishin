@@ -51,9 +51,9 @@ RUN apk update
 WORKDIR /app
 
 # Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
+# RUN addgroup --system --gid 1001 nodejs
+# RUN adduser --system --uid 1001 nextjs
+# USER nextjs
 
 COPY --from=installer /app/apps/frontend/next.config.js .
 COPY --from=installer /app/apps/frontend/package.json .
