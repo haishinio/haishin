@@ -13,11 +13,12 @@ const transcriberHandler = async function (io, data: TranscriberData) {
   const { url, filename, startTime, prompt } = data
   const connectedClients = io.sockets.adapter.rooms.get(url)?.size;
 
-  while (!fs.existsSync(filename)) {
-    // Do nothing, wait for file to exist
-  }
-
   if (connectedClients) {
+    // First check we have a file
+    while (!fs.existsSync(filename)) {
+      // Do nothing, wait for file to exist
+    }
+
     const { partFileName, nextStartTime } = await splitVideoFile(filename, startTime)
 
     if (partFileName !== '') {
@@ -47,12 +48,16 @@ const transcriberHandler = async function (io, data: TranscriberData) {
       })
     }
   } else {
-    console.log(`No connected clients for ${url}, skipping transcription and translation`)
-    setTimeout(() => {
-      transcriberHandler(io, {
-        url, filename, startTime: startTime + 5, prompt: ''
-      })
-    }, 5000)
+    console.log(`No connected clients for ${url}, skipping transcription and translation`);
+
+    // If we have a file then try again in 5 seconds
+    if (fs.existsSync(filename)) {
+      setTimeout(() => {
+        transcriberHandler(io, {
+          url, filename, startTime: startTime + 5, prompt: ''
+        })
+      }, 5000)
+    }
   }
 }
 

@@ -82,6 +82,7 @@ const StreamUrlPage: NextPage = () => {
 
     return () => {
       if (socket) {
+        console.log('disconnecting from socket...');
         socket.disconnect()
       }
     }
