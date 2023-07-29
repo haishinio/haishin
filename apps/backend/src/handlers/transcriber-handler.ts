@@ -14,9 +14,11 @@ const transcriberHandler = async function (io, data: TranscriberData) {
   const connectedClients = io.sockets.adapter.rooms.get(url)?.size;
 
   if (connectedClients) {
-    // First check we have a file
-    while (!fs.existsSync(filename)) {
-      // Do nothing, wait for file to exist
+    // If the startTime is 0, wait for the file to exist
+    if (startTime === 0) {
+      while (!fs.existsSync(filename)) {
+        // Do nothing, wait for file to exist
+      }
     }
 
     const { partFileName, nextStartTime } = await splitVideoFile(filename, startTime)
@@ -41,11 +43,15 @@ const transcriberHandler = async function (io, data: TranscriberData) {
         url, filename, startTime: nextStartTime, prompt: transcription
       })
     } else {
-      // Just try again
-      console.log('No filepart so try again')
-      transcriberHandler(io, {
-        url, filename, startTime: nextStartTime, prompt
-      })
+      if (fs.existsSync(filename)) {
+        // Just try again
+        console.log('No filepart so try again')
+        transcriberHandler(io, {
+          url, filename, startTime: nextStartTime, prompt
+        })
+      } else {
+        // No file and no part so we're done
+      }
     }
   } else {
     console.log(`No connected clients for ${url}, skipping transcription and translation`);

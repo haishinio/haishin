@@ -20,7 +20,6 @@
     "@haishin/transcriber-utils": "workspace:^",
     "@sentry/node": "^7.57.0",
     "await-exec": "^0.1.2",
-    "date-fns": "^2.30.0",
     "deepl-node": "^1.10.2",
     "node-ffprobe": "^3.0.0",
     "openai": "^3.3.0",

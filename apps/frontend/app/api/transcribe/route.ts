@@ -21,7 +21,7 @@ export async function POST(request: Request) {
 
   const cwd = process.cwd();
   const uploadPath = path.join(cwd, '../..', `${streamFile}`);
-  const workerPath = path.join(cwd, '../..', 'packages', 'transcriber', 'dist', 'worker.js');
+  const workerPath = path.join(cwd, '../..', 'packages', 'transcriber', 'dist', 'workers', 'ffmpeg-splitter.js');
 
   let textLogArray = [] as TextLog[];
   // For every 10s, split the file and send to whisper and then deepl

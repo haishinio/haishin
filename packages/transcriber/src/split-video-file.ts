@@ -16,7 +16,7 @@ Sentry.init({
   tracesSampleRate: 1.0,
 })
 
-const splitVideoFile = async function (filename: string, startTime: number, duration = 0, workerPath = path.join(__dirname, './worker.js')): Promise<SplitVideoFileResponse> {
+const splitVideoFile = async function (filename: string, startTime: number, duration = 0, workerPath = path.join(__dirname, './workers/ffmpeg-splitter.js')): Promise<SplitVideoFileResponse> {
   const pathToFile = filename
 
   let durationOfPart = duration
@@ -32,7 +32,7 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
       durationOfPart = (currentStreamLength - startTime)
     } else {
       // TODO: Handle error, ie do nothing and wait for the next attempt
-      console.log('Could not get duration of stream');
+      console.log('Could not get duration of stream, maybe it has ended?');
 
       return {
         partFileName: '',

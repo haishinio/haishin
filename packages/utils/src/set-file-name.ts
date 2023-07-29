@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 export function getPathsByUrl(url: string) {
   let cleanPath = url
     .replace('http://', '')
@@ -41,6 +43,13 @@ export function getPathsByUrl(url: string) {
 export function setFileName(url: string): string {
   const paths = getPathsByUrl(url);
   const path = `${paths.site}--${paths.user}`;
+  return path;
+}
+
+export function setArchivedFileName(url: string): string {
+  const dateTimeStart = format(new Date(), 'y-MM-dd_HH-mm-ss');
+  const paths = getPathsByUrl(url);
+  const path = `${paths.site}--${paths.user}--${dateTimeStart}.mp4`;
   return path;
 }
 

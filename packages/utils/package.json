@@ -14,7 +14,9 @@
   },
   "keywords": [],
   "author": "",
-  "dependencies": {},
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-json": "^6.0.0",
