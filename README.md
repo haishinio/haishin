@@ -7,16 +7,8 @@ This website is able to take a stream url or an mp4 file and then transcribe wha
 
 It's certainly not perfect but hopefully it's enough for English speakers to understand the context around streams.
 
-## In Progress
-- Deployment, currently with beta testers so please wait for now
-
-## TODOs
-
-- Can we improve translations? I think we can do something about the sentences etc. sent to deepL
-- Should it be possible to save the textLog for the user (They could just copy and paste I guess.)
-- Can we not use the best preset so we can save on filesize
-- Can we pull in comments + gifts from livestreams?
-- Can we add auth so you could comment directly from here? Also might handle [#3 Twitcasts that require an account](https://github.com/tomouchuu/haishin/issues/3)
+## Current Status
+Currently with beta testers so please wait for now, if you'd like to give it a try message me on twitter or something! Probably will be waiting for #20 until I post the link publicly incase of api abuse.
 
 ## Local Use
 
