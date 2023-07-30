@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Loading from "../../components/loading"
 import StreamPage from '../../components/stream-page'
 
 import type { TextLog } from '../../types/Textlog'
@@ -57,7 +58,7 @@ const StreamIndex: NextPage = () => {
             updateFileDuration={updateFileDuration}
           />
         ) : (
-          <p>LOADING</p>
+          <Loading message="Setting up the upload..." />
         )
       }
     </>

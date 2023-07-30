@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 import FlvVideoPlayer from "./flv-video-player";
+import Spinner from "./spinner";
 import TopMenu from './top-menu';
 import TextLogRow from './textlog-row';
 
@@ -88,7 +89,15 @@ const StreamPage = (props: Props) => {
               {
                 textLogs.length < 1 && (
                   <tr>
-                    <td colSpan={3} className="text-center p-4">Loading...</td>
+                    <td className="p-2 w-20 text-center">
+                      <Spinner />
+                    </td>
+                    <td className="animate-pulse">
+                      <div className="h-6 bg-slate-200 rounded m-2"></div>
+                    </td>
+                    <td className="animate-pulse">
+                      <div className="h-6 bg-slate-200 rounded m-2"></div>
+                    </td>
                   </tr>
                 )
               }

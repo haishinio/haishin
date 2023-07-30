@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { secondsToDuration } from '@haishin/transcriber-utils'
 
+import Loading from "../../../components/loading"
 import StreamPage from '../../../components/stream-page'
 
 import type { Socket } from 'socket.io-client'
@@ -117,7 +118,11 @@ const StreamUrlPage: NextPage = () => {
             updateFileDuration={() => {}}
           />
         ) : (
-          <p>LOADING</p>
+          <div className="h-screen w-screen flex content-center items-center mx-auto text-center">
+            <div className="w-full text-2xl">
+              <Loading message="Getting stream data..." />
+            </div>
+          </div>
         )
       }
     </>
