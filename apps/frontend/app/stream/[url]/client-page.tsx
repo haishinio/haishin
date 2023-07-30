@@ -19,7 +19,7 @@ let socket: Socket;
 const StreamUrlPage: NextPage = () => {
   const pathName = usePathname();
   const encodedUrl = pathName?.replace('/stream/', '') as string;
-  const url = decodeURIComponent(encodedUrl);
+  const url = atob(encodedUrl);
 
   // Setup Stream
   const [ streamUrl, updateStreamUrl ] = useState('');

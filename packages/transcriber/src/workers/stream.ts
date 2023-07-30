@@ -47,7 +47,9 @@ async function stream(streamData: StreamDataResponse) {
 
   if (streamData.isRtmp) {
     parentPort.postMessage({ message: `Start restreaming...` });
-    const rtmpServer = `${process.env.RTMP_SERVER_URL}${streamData.baseName}`;
+
+    const safeUrl = btoa(streamData.originalUrl)
+    const rtmpServer = `${process.env.RTMP_SERVER_URL}${safeUrl}`;
     const ffmpegArgs = ['-re', '-i', 'pipe:0', '-c:v', 'copy', '-c:a', 'copy', '-f', 'flv', rtmpServer]
   
     const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);

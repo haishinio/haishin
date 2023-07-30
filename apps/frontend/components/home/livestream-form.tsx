@@ -8,7 +8,7 @@ const HomeLivestreamForm = () => {
   const [cleanStreamUrl, updateCleanStreamUrl] = useState('')
 
   useEffect(() => {
-    const cleanUrl = encodeURIComponent(streamUrl)
+    const cleanUrl = btoa(streamUrl)
     updateCleanStreamUrl(cleanUrl)
   }, [streamUrl])
 

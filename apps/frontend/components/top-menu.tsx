@@ -15,7 +15,9 @@ const TopMenu = (props: Props) => {
 
   useEffect(() => {
     if (streamUrl) {
-      const cleanUrl = encodeURIComponent(streamUrl)
+      let cleanUrl = streamUrl;
+
+      cleanUrl = btoa(streamUrl);
       updateCleanStreamUrl(cleanUrl)
     }
   }, [streamUrl])

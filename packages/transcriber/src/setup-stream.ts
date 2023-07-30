@@ -45,7 +45,8 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
   let streamUrl = originalUrl;
   let isRtmp = false;
   if (isRtmpSite(originalUrl)) {
-    streamUrl = `${process.env.RTMP_CLIENT_URL}${streamBaseName}.flv`;
+    const safeUrl = btoa(originalUrl)
+    streamUrl = `${process.env.RTMP_CLIENT_URL}${safeUrl}.flv`;
     isRtmp = true
   }
 
