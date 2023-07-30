@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 
 type Props = {
   url: string
@@ -10,9 +10,6 @@ const TopMenu = (props: Props) => {
   const [ streamUrl, updateStreamUrl ] = useState(url)
   const [ cleanStreamUrl, updateCleanStreamUrl ] = useState('')
 
-  const formRef = useRef<HTMLFormElement>(null)
-  const uploadRef = useRef<HTMLInputElement>(null)
-
   useEffect(() => {
     if (streamUrl) {
       let cleanUrl = streamUrl;
@@ -21,18 +18,6 @@ const TopMenu = (props: Props) => {
       updateCleanStreamUrl(cleanUrl)
     }
   }, [streamUrl])
-
-  const clickUploadRef = () => {
-    if (uploadRef.current) {
-      uploadRef.current.click()
-    }
-  }
-
-  const onFileUpload = () => {
-    if (formRef.current) {
-      formRef.current.submit()
-    }
-  }
 
   const onStreamSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -51,14 +36,6 @@ const TopMenu = (props: Props) => {
           </label>
         </form>
       </div>
-
-      <form action="/api/upload" method="post" encType="multipart/form-data" className="flex" ref={formRef}>
-        <input ref={uploadRef} type="file" name="file" hidden onChange={() => onFileUpload} />
-        <label className="relative flex-1">
-          <span className="sr-only">File</span>
-          <input className="font-bold hover:text-zinc-200 transition-colors" type="button" value="Upload" onClick={() => clickUploadRef} />
-        </label>
-      </form>
     </div>
   )
 }
