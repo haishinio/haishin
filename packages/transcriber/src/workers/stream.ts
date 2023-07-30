@@ -56,7 +56,7 @@ async function stream(streamData: StreamDataResponse) {
 
     ffmpegProcess.stderr.on('data', (data) => {
       // Handle the error output, if any
-      console.error(data.toString());
+      // console.error(data.toString());
     });
 
     ffmpegProcess.on('close', (code) => {

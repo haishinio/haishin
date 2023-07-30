@@ -54,7 +54,7 @@ const transcriberHandler = async function (io, data: TranscriberData) {
       }
     }
   } else {
-    console.log(`No connected clients for ${url}, skipping transcription and translation`);
+    // console.log(`No connected clients for ${url}, skipping transcription and translation`);
 
     // If we have a file then try again in 5 seconds
     if (fs.existsSync(filename)) {
