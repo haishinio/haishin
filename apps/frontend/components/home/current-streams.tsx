@@ -3,6 +3,8 @@ import Link from "next/link";
 async function getData() {
   const url = `${process.env.RTMP_CLIENT_API_URL}streams`;
 
+  console.log({ url });
+
   const res = await fetch(url, { next: { revalidate: 10 } });
  
   if (!res.ok) {
