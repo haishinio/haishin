@@ -6,6 +6,7 @@ import FlvVideoPlayer from "./flv-video-player";
 import Spinner from "./spinner";
 import TopMenu from './top-menu';
 import TextLogRow from './textlog-row';
+import Alert from './alert';
 
 import useWindowDimension from '../hooks/useWindowHeight';
 
@@ -80,6 +81,10 @@ const StreamPage = (props: Props) => {
               'Stop transcribing+translating' :
               'Start transcribing+translating'
             }
+          </div>
+
+          <div className="hidden xl:block mx-32 mt-12">
+            <Alert />
           </div>
         </div>
 
