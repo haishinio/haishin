@@ -8,7 +8,8 @@ async function getData() {
   const res = await fetch(url, { next: { revalidate: 10 } });
  
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    // throw new Error('Failed to fetch data')
+    return {}
   }
  
   return res.json()
