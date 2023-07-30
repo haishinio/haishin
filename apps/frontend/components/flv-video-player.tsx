@@ -15,9 +15,17 @@ export const FlvVideoPlayer = ({url}: {url: string}) => {
         playerRef.current = mpegts.createPlayer({
           type: 'flv',
           isLive: true,
+          hasAudio: true,
+          hasVideo: true,
           url,
         }, {
+          enableWorker: true,
+          enableStashBuffer: false,
           liveBufferLatencyChasing: true,
+          liveBufferLatencyMaxLatency: 10,
+          liveBufferLatencyMinRemain: 2,
+          lazyLoad: false,
+          deferLoadAfterSourceOpen: false,
         });
   
         playerRef.current.attachMediaElement(videoRef.current);
