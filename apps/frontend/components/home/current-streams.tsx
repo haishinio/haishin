@@ -1,24 +1,13 @@
+'use client';
+
+import useSWR from 'swr';
 import Link from "next/link";
-
-async function getData() {
-  const url = `${process.env.RTMP_CLIENT_API_URL}streams`;
-
-  console.log({ url });
-
-  const res = await fetch(url, { next: { revalidate: 10 } });
  
-  if (!res.ok) {
-    // throw new Error('Failed to fetch data')
-    return {}
-  }
- 
-  return res.json()
-}
- 
-export default async function CurrentStreams() {
-  const data = await getData()
+export default function CurrentStreams() {
+  const url = `${process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL}streams`;
+  const { data, error } = useSWR(url, (url: string) => fetch(url).then((res) => res.json()), { refreshInterval: 60000 });
 
-  if (!data.live) return (
+  if (!data?.live || error) return (
     <div>
       <p>There are no current streams...</p>
     </div>

@@ -29,7 +29,7 @@ export default async function Page() {
         <section className="current-streams">
           <h3 className="text-2xl">Current livestreams</h3>
 
-          {/* <CurrentStreams /> */}
+          <CurrentStreams />
 
           <section>
             <p>Add a livestream to haishin by entering it below</p>
