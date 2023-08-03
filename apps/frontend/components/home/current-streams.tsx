@@ -17,7 +17,7 @@ export default function CurrentStreams() {
  
   return (
     <>
-      <section className="mt-4 grid grid-flow-col auto-cols-max gap-4">
+      <section className="mt-4 grid grid-cols-2 gap-4">
         {streams.map((stream) => (
           <div key={stream}>
             <Link href={`/stream/${stream}`} className="transition-all duration-100 text-sky-600 hover:text-sky-500">{atob(stream)}</Link>
