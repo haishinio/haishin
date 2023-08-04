@@ -20,7 +20,7 @@ export default function CurrentStreams() {
       <section className="mt-4 grid grid-cols-2 gap-4">
         {streams.map((stream) => (
           <div key={stream}>
-            <Link href={`/stream/${stream}`} className="transition-all duration-100 text-sky-600 hover:text-sky-500">{atob(stream)}</Link>
+            <Link href={`/stream/${stream}`} className="transition-all duration-100 text-sky-600 hover:text-sky-500 break-all">{atob(stream)}</Link>
           </div>
         ))}
       </section>
