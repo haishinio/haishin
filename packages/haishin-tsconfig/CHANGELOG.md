@@ -1,5 +1,11 @@
 # @haishin/tsconfig
 
+## 2.0.0
+
+### Major Changes
+
+- [`3fdfa09`](https://github.com/tomouchuu/haishin/commit/3fdfa094d5d305ea40255fd6112e35418db605c4) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Bump tsconfig to v2.0.0 to be more in line with the other packages
+
 ## 1.0.0
 
 ### Major Changes
