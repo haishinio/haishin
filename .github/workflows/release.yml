@@ -41,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
-      publishedPackages: fromJSON(${{ steps.changesets.outputs.publishedPackages }})
+      publishedPackages: ${{ fromJSON(steps.changesets.outputs.publishedPackages) }}
 
   publish-frontend:
     needs: release
@@ -51,11 +51,11 @@ jobs:
       contents: read
       packages: write
     if:
-      ${{ needs.release.outputs.hasChangesets }} == 'false' && (
-        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') }} == 'true' ||
-        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tramscriber') }} == 'true' ||
-        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'frontend') }} == 'true'
-      )
+      ${{ needs.release.outputs.hasChangesets == 'false' && (
+        contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, 'tramscriber') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, 'frontend') == 'true'
+      ) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -99,11 +99,11 @@ jobs:
       contents: read
       packages: write
     if:
-      ${{ needs.release.outputs.hasChangesets }} == 'false' && (
-        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') }} == 'true' ||
-        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tramscriber') }} == 'true' ||
-        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'backend') }} == 'true'
-      )
+      ${{ needs.release.outputs.hasChangesets == 'false' && (
+        contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, 'tramscriber') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, 'backend') == 'true'
+      ) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
