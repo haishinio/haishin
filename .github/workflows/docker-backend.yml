@@ -11,7 +11,7 @@ name: Build backend docker image
 
 on:
   push:
-    branches: ['main']
+    branches: ['release']
 
 env:
   REGISTRY: ghcr.io
