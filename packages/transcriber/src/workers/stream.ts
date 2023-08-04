@@ -9,15 +9,32 @@ import type { StreamDataResponse } from "../../types/responses";
 let streamlinkProcess: ChildProcessWithoutNullStreams;
 
 async function stream(streamData: StreamDataResponse) {
-  let streamLinkMode = '-o';
-  if (streamData.isRtmp) {
-    streamLinkMode = '-R';
-  }
+  const streamLinkMode = '-R';
 
   parentPort.postMessage({ message: `Streamlink mode: ${streamLinkMode}` });
 
   const streamlinkArgs = [streamData.originalUrl, '--default-stream', 'best', streamLinkMode, streamData.file, '-f', '--retry-open', '5'];
   streamlinkProcess = spawn('streamlink', streamlinkArgs);
+
+  parentPort.postMessage({ message: `Start restreaming...` });
+
+  const safeUrl = btoa(streamData.originalUrl)
+  const rtmpServer = `${process.env.RTMP_SERVER_URL}${safeUrl}`;
+  const ffmpegArgs = ['-re', '-i', 'pipe:0', '-c:v', 'copy', '-c:a', 'copy', '-f', 'flv', rtmpServer]
+
+  const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
+
+  streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
+
+  ffmpegProcess.stderr.on('data', (data) => {
+    // Handle the error output, if any
+    // console.error(data.toString());
+  });
+
+  ffmpegProcess.on('close', (code) => {
+    parentPort.postMessage({ message: `ffmpeg process exited with code ${code}, shutting down process...` });
+    parentPort.postMessage('shutdown');
+  });
 
   streamlinkProcess.on('close', (code) => {
     // Move completed file to backups
@@ -44,28 +61,6 @@ async function stream(streamData: StreamDataResponse) {
       parentPort.postMessage('shutdown');
     }
   });
-
-  if (streamData.isRtmp) {
-    parentPort.postMessage({ message: `Start restreaming...` });
-
-    const safeUrl = btoa(streamData.originalUrl)
-    const rtmpServer = `${process.env.RTMP_SERVER_URL}${safeUrl}`;
-    const ffmpegArgs = ['-re', '-i', 'pipe:0', '-c:v', 'copy', '-c:a', 'copy', '-f', 'flv', rtmpServer]
-  
-    const ffmpegProcess = spawn('ffmpeg', ffmpegArgs);
-
-    streamlinkProcess.stdout.pipe(ffmpegProcess.stdin);
-
-    ffmpegProcess.stderr.on('data', (data) => {
-      // Handle the error output, if any
-      // console.error(data.toString());
-    });
-
-    ffmpegProcess.on('close', (code) => {
-      parentPort.postMessage({ message: `ffmpeg process exited with code ${code}, shutting down process...` });
-      parentPort.postMessage('shutdown');
-    });
-  }
 }
 
 parentPort.on('message', (message) => {

@@ -1,7 +1,6 @@
 export interface StreamDataResponse {
   canPlay: boolean
   newStream: boolean
-  isRtmp: boolean
   file: string
   baseName: string
   originalUrl: string

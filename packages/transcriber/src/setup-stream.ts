@@ -5,7 +5,7 @@ import { Worker } from 'worker_threads'
 
 import * as Sentry from "@sentry/node"
 
-import { isRtmpSite, pathToData, setFileName } from "@haishin/transcriber-utils"
+import { pathToData, setFileName } from "@haishin/transcriber-utils"
 
 import type { StreamDataResponse } from '../types/responses.js'
 
@@ -42,13 +42,8 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
   // If we have filteredFile then it's not a newStream
   if (!filteredFile) newStream = true;
 
-  let streamUrl = originalUrl;
-  let isRtmp = false;
-  if (isRtmpSite(originalUrl)) {
-    const safeUrl = btoa(originalUrl)
-    streamUrl = `${process.env.RTMP_CLIENT_URL}${safeUrl}.flv`;
-    isRtmp = true
-  }
+  const safeUrl = btoa(originalUrl)
+  const streamUrl = `${process.env.RTMP_CLIENT_URL}${safeUrl}.flv`;
 
   const file = pathToData(`streams/${streamBaseName}.mp4`);
 
@@ -56,7 +51,6 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
     // Utils
     canPlay,
     newStream,
-    isRtmp,
     // Name
     baseName: streamBaseName,
     // Urls

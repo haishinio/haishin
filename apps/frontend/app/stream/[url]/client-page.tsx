@@ -23,7 +23,6 @@ const StreamUrlPage: NextPage = () => {
 
   // Setup Stream
   const [ streamUrl, updateStreamUrl ] = useState('');
-  const [ isRtmp, setIsRtmp ] = useState(false);
   
   // Transcriptions
   const [ isTranscribing, setIsTranscribing ] = useState(false)
@@ -58,10 +57,6 @@ const StreamUrlPage: NextPage = () => {
     socket.on('start-transcribing', (data) => {
       setIsTranscribing(true);
       updateStreamUrl(data.streamUrl);
-
-      if (data.streamUrl.includes('flv')) {
-        setIsRtmp(true);
-      }
     })
 
     socket.on('transcription-translation', (data) => {
@@ -110,7 +105,7 @@ const StreamUrlPage: NextPage = () => {
         streamUrl ? (
           <StreamPage
             controlTranscription={controlTranscription}
-            isRtmp={isRtmp}
+            isRtmp={true}
             isTranscribing={isTranscribing}
             originalUrl={url}
             streamUrl={streamUrl}
