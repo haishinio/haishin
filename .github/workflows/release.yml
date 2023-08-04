@@ -41,7 +41,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
-      publishedPackages: ${{ fromJSON(steps.changesets.outputs.publishedPackages) }}
+      publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
 
   publish-frontend:
     needs: release
