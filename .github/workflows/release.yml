@@ -5,9 +5,14 @@ on:
     branches:
       - main
 
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
 jobs:
   release:
     name: Release
+    timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -18,8 +23,14 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Install Dependencies
-        run: pnpm i
+      - name: install pnpm
+        run: npm i pnpm@latest -g
+
+      - name: setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: install dependencies
+        run: pnpm install
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
