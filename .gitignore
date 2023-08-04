@@ -6,6 +6,9 @@
 .env.docker
 .env
 
+# PNPM
+/.pnpm-store
+
 # Turbo
 .turbo
 
