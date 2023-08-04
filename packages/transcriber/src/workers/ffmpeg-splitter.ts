@@ -3,7 +3,7 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
 
 const ffmpeg = createFFmpeg({ log: false, corePath: '@ffmpeg/core', });
 
-async function run(pathToFile, startTime, durationOfPart) {
+async function run(pathToFile: string, startTime: number, durationOfPart: number) {
   await ffmpeg.load();
 
   try {
@@ -14,19 +14,20 @@ async function run(pathToFile, startTime, durationOfPart) {
     
     const outputData = ffmpeg.FS('readFile', 'output.wav');
 
-    parentPort.postMessage({ output: outputData });
-  } catch (error) {
-    parentPort.postMessage({ error: error.message });
+    parentPort?.postMessage({ output: outputData });
+  } catch (error: unknown) {
+    const { message } = error as Error;
+    parentPort?.postMessage({ error: message });
   } finally {
     ffmpeg.FS('unlink', 'input.mp4');
     ffmpeg.FS('unlink', 'output.wav');
     
     ffmpeg.exit();
-    parentPort.close();
+    parentPort?.close();
   }
 }
 
-parentPort.on('message', (message) => {
+parentPort?.on('message', (message) => {
   if (message.command === 'run') {
     run(message.pathToFile, message.startTime, message.durationOfPart);
   }

@@ -2,6 +2,8 @@ import fs from 'fs'
 import { v4 as uuidv4 } from 'uuid'
 import { splitVideoFile, transcribeTranslatePart } from '@haishin/transcriber'
 
+import type { Server } from "socket.io";
+
 interface TranscriberData {
   url: string
   filename: string
@@ -9,7 +11,7 @@ interface TranscriberData {
   prompt: string
 }
 
-const transcriberHandler = async function (io, data: TranscriberData) {
+const transcriberHandler = async function (io: Server, data: TranscriberData) {
   const { url, filename, startTime, prompt } = data
   const connectedClients = io.sockets.adapter.rooms.get(url)?.size;
 

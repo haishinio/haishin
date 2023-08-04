@@ -1,18 +1,20 @@
 import { setupStream } from "@haishin/transcriber"
 import transcriberHandler from "./transcriber-handler"
 
-function isUrl(str) {
+import type { Server } from "socket.io";
+
+function isUrl(str: string) {
   // Regular expression for URLs
   const urlRegex = /^(?:\w+:)?\/\/([^\s.]+\.\S{2}|localhost[:?\d]*)\S*$/;
   return urlRegex.test(str);
 }
 
-export default function (io) {  
-  io.of('/').adapter.on('delete-room', (room) => {
+export default function (io: Server) {  
+  io.of('/').adapter.on('delete-room', (room: string) => {
     console.log({ deleteRoom: room });
   });
   
-  io.of('/').adapter.on('join-room', async (room, userId) => {
+  io.of('/').adapter.on('join-room', async (room: string, userId: string) => {
     if (isUrl(room)) {
       const streamData = await setupStream(room);
 
@@ -34,7 +36,7 @@ export default function (io) {
     }
   });
   
-  io.of('/').adapter.on('leave-room', (room) => {
+  io.of('/').adapter.on('leave-room', (room: string) => {
     console.log({ leaveRoom: room });
   });
 }

@@ -1,4 +1,4 @@
-import express from "express";
+import express from 'express';
 import NodeMediaServer from "node-media-server";
 import { createServer } from "http";
 import { Server } from "socket.io";
@@ -13,23 +13,14 @@ process.chdir('../../');
 const app = express();
 
 // The request handler must be the first middleware on the app
-app.use(Sentry.Handlers.requestHandler());
+app.use(Sentry.Handlers.requestHandler() as express.RequestHandler);
 // The error handler must be before any other error middleware and after all controllers
-app.use(Sentry.Handlers.errorHandler());
-
-// Optional fallthrough error handler
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-app.use(function onError(err, req, res, next) {
-  // The error id is attached to `res.sentry` to be returned
-  // and optionally displayed to the user for support.
-  res.statusCode = 500;
-  res.end(res.sentry + "\n");
-});
+app.use(Sentry.Handlers.errorHandler() as express.ErrorRequestHandler);
 
 const httpServer = createServer(app);
 
 let productionMediaServerHttps = {};
-let productionCors = [];
+let productionCors = [] as string[];
 
 if (process.env.PRODUCTION_URL) {
   const productionDomain = process.env.PRODUCTION_URL.replace('https://', '')
@@ -61,7 +52,8 @@ const config = {
   },
   http: {
     port: 8000,
-    allow_origin: '*'
+    allow_origin: '*',
+    mediaroot: './data'
   },
   ...productionMediaServerHttps
 };
@@ -81,7 +73,7 @@ nms.on('donePublish', (id, StreamPath, args) => {
 });
 
 // Attach the NodeMediaServer to the Express.js server
-nms.run({ httpServer });
+nms.run();
 
 const io = new Server(httpServer, {
   cors: {

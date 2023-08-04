@@ -25,6 +25,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@haishin/tsconfig": "workspace:*",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/node": "20.4.1",
     "@types/react": "18.2.14",

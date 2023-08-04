@@ -26,6 +26,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@haishin/tsconfig": "workspace:*",
     "@faker-js/faker": "^8.0.2",
     "@rollup/plugin-commonjs": "^25.0.2",
     "@rollup/plugin-json": "^6.0.0",
