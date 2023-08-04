@@ -1,4 +1,4 @@
-name: Build
+name: Release
 
 on:
   push:
@@ -8,6 +8,8 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   release:
@@ -32,8 +34,104 @@ jobs:
       - name: install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
+      publishedPackages: fromJSON(${{ steps.changesets.outputs.publishedPackages }})
+
+  publish-frontend:
+    needs: release
+    name: Publish backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    if:
+      ${{ needs.release.outputs.hasChangesets }} == 'false' && (
+        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') }} == 'true' ||
+        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tramscriber') }} == 'true' ||
+        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'frontend') }} == 'true'
+      )
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
+
+      - name: Get git revision
+        id: git_rev
+        run: echo "rev=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          file: ./apps/frontend/Dockerfile
+          build-args: |
+            GIT_REVISION=${{ steps.git_rev.outputs.rev }}
+            DEEPL_API_KEY=${{ secrets.DEEPL_API_KEY }}
+            RTMP_CLIENT_API_URL=${{ secrets.RTMP_CLIENT_API_URL }}
+            WS_URL=${{ secrets.WS_URL }}
+          push: true
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+
+  publish-backend:
+    needs: release
+    name: Publish backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    if:
+      ${{ needs.release.outputs.hasChangesets }} == 'false' && (
+        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') }} == 'true' ||
+        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'tramscriber') }} == 'true' ||
+        ${{ contains(needs.release.outputs.publishedPackages.*.name, 'backend') }} == 'true'
+      )
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
+
+      - name: Get git revision
+        id: git_rev
+        run: echo "rev=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: .
+          file: ./apps/backend/Dockerfile
+          build-args: |
+            GIT_REVISION=${{ steps.git_rev.outputs.rev }}
+          push: true
+          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
