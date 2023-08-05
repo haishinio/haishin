@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.9
+
+### Patch Changes
+
+- [`45eb6a1`](https://github.com/tomouchuu/haishin/commit/45eb6a1cc22bda7aaf1072578609ce2da647400d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - And more debugging
+
 ## 2.0.8
 
 ### Patch Changes
