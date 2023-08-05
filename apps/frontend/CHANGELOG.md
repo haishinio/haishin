@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.6
+
+### Patch Changes
+
+- [`27d9e0a`](https://github.com/tomouchuu/haishin/commit/27d9e0aa93da84f4433b310df7f539431f20d119) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Another trigger update
+
 ## 2.0.5
 
 ### Patch Changes
