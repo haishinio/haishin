@@ -17,24 +17,27 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
+      - name: Checkout repo
         uses: actions/checkout@v3
+
+      - name: Fetch tags
+        run: git fetch --tags origin
 
       - name: Setup Node.js 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
 
-      - name: install pnpm
+      - name: Install pnpm
         run: npm i pnpm@latest -g
 
-      - name: setup pnpm config
+      - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
-      - name: install dependencies
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request
+      - name: Create release pull request
         id: changesets
         uses: changesets/action@v1
         env:
