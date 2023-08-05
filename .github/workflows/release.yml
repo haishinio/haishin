@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Create release pull request
+      - name: Create release pull request / tag versions
         id: changesets
         uses: changesets/action@v1
         env:

@@ -12,9 +12,10 @@ name: Build frontend docker image
 on:
   push:
     tags:
-      - '@haishin/tsconfig**'
-      - '@haishin/transcriber**'
-      - '@haishin/frontend**'
+      - '@haishin/tsconfig@*'
+      - '@haishin/transcriber-utils@*'
+      - '@haishin/transcriber@*'
+      - '@haishin/frontend@*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
