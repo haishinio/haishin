@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.14
+
+### Patch Changes
+
+- [`15c39af`](https://github.com/tomouchuu/haishin/commit/15c39af5bb44fe0c6beceec6fcd4a71fb3b59296) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Try to use toJSON rather than fromJSON just to see what happens
+
 ## 2.0.13
 
 ### Patch Changes
