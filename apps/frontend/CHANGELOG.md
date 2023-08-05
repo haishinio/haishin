@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.7
+
+### Patch Changes
+
+- [`17ecd66`](https://github.com/tomouchuu/haishin/commit/17ecd661a311896646a585b53fbeb2e6fb2ec234) Thanks [@tomouchuu](https://github.com/tomouchuu)! - And trigger a workflow
+
 ## 2.0.6
 
 ### Patch Changes
