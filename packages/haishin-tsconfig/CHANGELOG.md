@@ -1,5 +1,11 @@
 # @haishin/tsconfig
 
+## 2.0.2
+
+### Patch Changes
+
+- [`58d583f`](https://github.com/tomouchuu/haishin/commit/58d583f078e398734d48c2644f16740d61538660) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Another bump and switch back to the super release workflow
+
 ## 2.0.1
 
 ### Patch Changes
