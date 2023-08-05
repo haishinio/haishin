@@ -1,5 +1,11 @@
 # @haishin/tsconfig
 
+## 2.0.1
+
+### Patch Changes
+
+- [`cb01f51`](https://github.com/tomouchuu/haishin/commit/cb01f513310ca556cd1869270cc7f39ba179b0e7) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update the tsconfig to try trigger builds for both backend+frontend
+
 ## 2.0.0
 
 ### Major Changes
