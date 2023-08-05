@@ -14,7 +14,7 @@ on:
     tags:
       - \@haishin/tsconfig**
       - \@haishin/transcriber**
-      - \@haishin/backend**
+      - \@haishin/frontend**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

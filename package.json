@@ -1,5 +1,6 @@
 {
-  "name": "root",
+  "name": "@haishin/monorepo",
+  "version": "2.0.0",
   "private": true,
   "pnpm": {
     "patchedDependencies": {
