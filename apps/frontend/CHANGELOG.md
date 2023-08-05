@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.8
+
+### Patch Changes
+
+- [`582d859`](https://github.com/tomouchuu/haishin/commit/582d8597ae3476557cc62f157a8cfcb62e67851c) Thanks [@tomouchuu](https://github.com/tomouchuu)! - See if it correctly finds the frontend package
+
 ## 2.0.7
 
 ### Patch Changes
