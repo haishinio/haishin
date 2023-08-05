@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.13
+
+### Patch Changes
+
+- [`29660bf`](https://github.com/tomouchuu/haishin/commit/29660bf38a2bb135fd6a948146cc884820b3f2d6) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix new task
+
 ## 2.0.12
 
 ### Patch Changes
