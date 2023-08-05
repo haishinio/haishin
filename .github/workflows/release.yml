@@ -50,10 +50,8 @@ jobs:
         run: |
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
-          echo "publishedPackagesJson=${{ fromJSON(steps.changesets.outputs.publishedPackages) }}"
-          echo "publishedPackageNames=${{ steps.changesets.outputs.publishedPackages.*.name }}"
-          echo "hasFrontendPackage=${{ contains(steps.changesets.outputs.publishedPackages.*.name, 'frontend') }}"
-          echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && (contains(steps.changesets.outputs.publishedPackages.*.name, 'tsconfig') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, 'transcriber') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, 'frontend') == 'true') }}"
+          echo "hasFrontendPackage=${{ contains(steps.changesets.outputs.publishedPackages.*.name, '@haishin/frontend') }}"
+          echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && (contains(steps.changesets.outputs.publishedPackages.*.name, '@haishin/tsconfig') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, '@haishin/transcriber') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, '@haishin/frontend') == 'true') }}"
     outputs:
       hasChangesets: steps.changesets.outputs.hasChangesets
       publishedPackages: fromJSON(steps.changesets.outputs.publishedPackages)
@@ -67,9 +65,10 @@ jobs:
       packages: write
     if: |
       needs.release.outputs.hasChangesets == 'false' && (
-        contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') == 'true' ||
-        contains(needs.release.outputs.publishedPackages.*.name, 'transcriber') == 'true' ||
-        contains(needs.release.outputs.publishedPackages.*.name, 'frontend') == 'true'
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/tsconfig') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/transcriber-utils') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/transcriber') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/frontend') == 'true'
       )
     steps:
       - name: Checkout repository
@@ -115,9 +114,10 @@ jobs:
       packages: write
     if: |
       needs.release.outputs.hasChangesets == 'false' && (
-        contains(needs.release.outputs.publishedPackages.*.name, 'tsconfig') == 'true' ||
-        contains(needs.release.outputs.publishedPackages.*.name, 'transcriber') == 'true' ||
-        contains(needs.release.outputs.publishedPackages.*.name, 'backend') == 'true'
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/tsconfig') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/transcriber-utils') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/transcriber') == 'true' ||
+        contains(needs.release.outputs.publishedPackages.*.name, '@haishin/backend') == 'true'
       )
     steps:
       - name: Checkout repository
