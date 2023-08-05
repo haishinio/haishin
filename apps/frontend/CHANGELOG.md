@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.3
+
+### Patch Changes
+
+- [`7e46091`](https://github.com/tomouchuu/haishin/commit/7e46091e98910bd6b6735aacc2c75c7d88fbcccc) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Another small patch bump, to see if the release workflow will push expected tags correctly
+
 ## 2.0.2
 
 ### Patch Changes
