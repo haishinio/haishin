@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.5
+
+### Patch Changes
+
+- [`c5cdb92`](https://github.com/tomouchuu/haishin/commit/c5cdb9288ebd208bb3cfb07b1fa0a993f11ad9e5) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Another small patch to hopefully get the package building independently
+
 ## 2.0.4
 
 ### Patch Changes
