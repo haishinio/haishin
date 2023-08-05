@@ -25,7 +25,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-image:
+  build-and-push-frontend-image:
+    name: Build + push frontend image
     runs-on: ubuntu-latest
     permissions:
       contents: read

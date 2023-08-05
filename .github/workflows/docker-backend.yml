@@ -25,7 +25,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push-image:
+  build-and-push-backend-image:
+    name: Build + push backend image
     runs-on: ubuntu-latest
     permissions:
       contents: read

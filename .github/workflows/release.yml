@@ -8,8 +8,6 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   release:
@@ -41,7 +39,7 @@ jobs:
         id: changesets
         uses: changesets/action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HAISHIN_RUNNER_TOKEN }}
         with:
           version: pnpm version-packages
           publish: pnpm publish-packages
