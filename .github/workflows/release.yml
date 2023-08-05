@@ -56,7 +56,7 @@ jobs:
           echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && (contains(steps.changesets.outputs.publishedPackages.*.name, 'tsconfig') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, 'transcriber') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, 'frontend') == 'true') }}"
     outputs:
       hasChangesets: steps.changesets.outputs.hasChangesets
-      publishedPackages: ${{ fromJSON(steps.changesets.outputs.publishedPackages) }}
+      publishedPackages: fromJSON(steps.changesets.outputs.publishedPackages)
 
   publish-frontend:
     needs: release
