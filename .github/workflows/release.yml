@@ -49,7 +49,7 @@ jobs:
       - name: Convert published package names to JSON
         id: publishedPackageNames
         run: |
-          names=$(echo "${{ fromJSON(steps.changesets.outputs.publishedPackages) }}" | jq -r '.[].name')
+          names=$(echo "${{ toJSON(steps.changesets.outputs.publishedPackages) }}" | jq -r '.[].name')
           json=$(echo "$names" | jq -sR 'split("\n") | map(select(length > 0)) | map({name: .})')
           echo "publishedPackageNames=$json" >> $GITHUB_OUTPUT
 
@@ -57,7 +57,8 @@ jobs:
         run: |
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
-          echo "publishedPackageNames=${{ join(fromJSON(steps.publishedPackageNames.outputs.publishedPackageNames), ', ') }}"
+          echo "publishedPackageNames=${{ steps.publishedPackageNames.outputs.publishedPackageNames }}"
+          echo "publishedPackageNamesJoin=${{ join(fromJSON(steps.publishedPackageNames.outputs.publishedPackageNames), ', ') }}"
           echo "hasFrontendPackage=${{ contains(fromJSON(steps.publishedPackageNames.outputs.publishedPackageNames), '@haishin/frontend') }}"
           echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && contains(fromJSON(steps.publishedPackageNames.outputs.publishedPackageNames), '@haishin/frontend') == 'true' }}"
     outputs:
