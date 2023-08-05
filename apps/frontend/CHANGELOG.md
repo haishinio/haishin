@@ -1,5 +1,13 @@
 # @haishin/frontend
 
+## 2.0.12
+
+### Patch Changes
+
+- [`884ea8b`](https://github.com/tomouchuu/haishin/commit/884ea8b2f394dcaecf9cf66db54cba78177fc7df) Thanks [@tomouchuu](https://github.com/tomouchuu)! - And generate release
+
+- [`b0bdb5b`](https://github.com/tomouchuu/haishin/commit/b0bdb5ba98ec1c4177594fc146d425ed1e6448dd) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds another task to try get the names in expected format
+
 ## 2.0.11
 
 ### Patch Changes
