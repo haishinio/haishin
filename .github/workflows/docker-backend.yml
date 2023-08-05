@@ -12,9 +12,9 @@ name: Build backend docker image
 on:
   push:
     tags:
-      - \@haishin/tsconfig**
-      - \@haishin/transcriber**
-      - \@haishin/backend**
+      - '@haishin/tsconfig**'
+      - '@haishin/transcriber**'
+      - '@haishin/backend**'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
