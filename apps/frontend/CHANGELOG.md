@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.10
+
+### Patch Changes
+
+- [`14aeeca`](https://github.com/tomouchuu/haishin/commit/14aeeca83370a1f26a76a5b6e8dcddf91ae0690a) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Hopefully understand what contain wants to do with an array, so trigger a workflow
+
 ## 2.0.9
 
 ### Patch Changes
