@@ -52,7 +52,7 @@ jobs:
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
           echo "publishedPackageNames=${{ join(fromJSON(steps.changesets.outputs.publishedPackages.*.name), ', ') }}"
           echo "hasFrontendPackage=${{ contains(fromJSON(steps.changesets.outputs.publishedPackages.*.name), '@haishin/frontend') }}"
-          echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && (contains(fromJSON(steps.changesets.outputs.publishedPackages.*.name), '@haishin/tsconfig') == 'true' || contains(fromJSON(steps.changesets.outputs.publishedPackages.*.name), '@haishin/transcriber') == 'true' || contains(fromJSON(steps.changesets.outputs.publishedPackages.*.name), '@haishin/frontend') == 'true') }}"
+          echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && contains(fromJSON(steps.changesets.outputs.publishedPackages.*.name), '@haishin/frontend') == 'true' }}"
     outputs:
       hasChangesets: steps.changesets.outputs.hasChangesets
       publishedPackages: fromJSON(steps.changesets.outputs.publishedPackages)
