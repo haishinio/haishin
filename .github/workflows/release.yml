@@ -49,9 +49,9 @@ jobs:
       - name: Convert published package names to JSON
         id: publishedPackageNames
         run: |
-          names=$(echo "${{ steps.changesets.outputs.publishedPackages }}" | jq -r '.[].name')
+          names=$(echo "${{ fromJSON(steps.changesets.outputs.publishedPackages) }}" | jq -r '.[].name')
           json=$(echo "$names" | jq -sR 'split("\n") | map(select(length > 0)) | map({name: .})')
-          echo "::set-output name=publishedPackageNames::$json"
+          echo "publishedPackageNames=$json" >> $GITHUB_OUTPUT
 
       - name: TEST
         run: |
