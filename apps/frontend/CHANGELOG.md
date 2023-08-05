@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.11
+
+### Patch Changes
+
+- [`0399b41`](https://github.com/tomouchuu/haishin/commit/0399b4197ae9620cc02c6e8619da613a232f1005) Thanks [@tomouchuu](https://github.com/tomouchuu)! - More logging to understand why it's not triggering
+
 ## 2.0.10
 
 ### Patch Changes
