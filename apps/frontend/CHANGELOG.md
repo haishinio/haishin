@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.4
+
+### Patch Changes
+
+- [`e58afd1`](https://github.com/tomouchuu/haishin/commit/e58afd1665c74ac52128fa9c2f86a04151d2540b) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes docker-frontend workflow to trigger on frontend tag push (hopefully)
+
 ## 2.0.3
 
 ### Patch Changes
