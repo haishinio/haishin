@@ -50,11 +50,13 @@ jobs:
         run: |
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
+          echo "publishedPackagesJson=${{ fromJSON(steps.changesets.outputs.publishedPackages) }}"
+          echo "publishedPackageNames=${{ steps.changesets.outputs.publishedPackages.*.name }}"
           echo "hasFrontendPackage=${{ contains(steps.changesets.outputs.publishedPackages.*.name, 'frontend') }}"
           echo "shouldTriggerBuild=${{ steps.changesets.outputs.hasChangesets == 'false' && (contains(steps.changesets.outputs.publishedPackages.*.name, 'tsconfig') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, 'transcriber') == 'true' || contains(steps.changesets.outputs.publishedPackages.*.name, 'frontend') == 'true') }}"
     outputs:
       hasChangesets: steps.changesets.outputs.hasChangesets
-      publishedPackages: steps.changesets.outputs.publishedPackages
+      publishedPackages: ${{ fromJSON(steps.changesets.outputs.publishedPackages) }}
 
   publish-frontend:
     needs: release
