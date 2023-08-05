@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.2
+
+### Patch Changes
+
+- [`06d1a02`](https://github.com/tomouchuu/haishin/commit/06d1a02c2449eb151f8cbc36ec479bf7491757ba) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Just attempt to build the frontend package
+
 ## 2.0.1
 
 ### Patch Changes
