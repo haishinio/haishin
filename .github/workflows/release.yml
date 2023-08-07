@@ -51,10 +51,9 @@ jobs:
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
           echo "publishedPackageNames=${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}"
-          echo "publishedPackageNamesAlt=${{ steps.changesets.outputs.publishedPackages.*['name'] }}"
           echo "contains=${{ contains(toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']), '@haishin/frontend') }}"
-          echo "containsAlt=${{ contains(steps.changesets.outputs.publishedPackages.*['name'], '@haishin/frontend') }}"
           echo "checker=${{ steps.changesets.outputs.hasChangesets == 'false' && contains(toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']), '@haishin/frontend') == 'true' }}"
+          echo "checkerAlt=${{ steps.changesets.outputs.hasChangesets == 'false' && contains(toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']), '@haishin/frontend') == true }}"
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
