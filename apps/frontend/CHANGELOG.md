@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.19
+
+### Patch Changes
+
+- [`bd888f2`](https://github.com/tomouchuu/haishin/commit/bd888f2079faf6b01bbebca3e345ded2c7e26e37) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Attempt to use github copilot's recommendation
+
 ## 2.0.18
 
 ### Patch Changes
