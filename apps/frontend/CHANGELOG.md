@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.17
+
+### Patch Changes
+
+- [`c23d884`](https://github.com/tomouchuu/haishin/commit/c23d884e19cd8292a7f0ca7fb7e5ff5914eab5fb) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Use toJSON rather than fromJSON
+
 ## 2.0.16
 
 ### Patch Changes
