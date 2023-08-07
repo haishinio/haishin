@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.24
+
+### Patch Changes
+
+- [`4ac75f2`](https://github.com/tomouchuu/haishin/commit/4ac75f26dc16b6f5b20e90e618f96d6b01d657db) Thanks [@tomouchuu](https://github.com/tomouchuu)! - More messing with outcome of contains and publishedPackages
+
 ## 2.0.23
 
 ### Patch Changes
