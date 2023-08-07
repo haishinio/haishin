@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.15
+
+### Patch Changes
+
+- [`5c6e4a8`](https://github.com/tomouchuu/haishin/commit/5c6e4a8355f1ba62c1ae23fa4fb5487407895bf9) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Still attempting to get the publishedPackages names
+
 ## 2.0.14
 
 ### Patch Changes
