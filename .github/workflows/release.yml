@@ -46,19 +46,12 @@ jobs:
             version: pnpm version-packages
             publish: pnpm publish-packages
 
-      - name: Get published packages
-        id: get-published-packages
-        run: |
-          echo "publishedPackagesJSON=${{ toJSON(steps.changesets.outputs.publishedPackages) }}" >> $GITHUB_OUTPUT
-
       - name: TEST
         run: |
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
-          echo "publishedPackagesJSON=${{ steps.get-published-packages.outputs.publishedPackagesJSON }}"
-          echo "publishedPackagesStr=${{ fromJSON(steps.get-published-packages.outputs.publishedPackagesJSON) }}"
-          echo "publishedPackageNames=${{ steps.get-published-packages.outputs.publishedPackagesJSON.*.name }}"
-          echo "joinedPublishedPackageNames=${{ join(steps.get-published-packages.outputs.publishedPackagesJSON.*.name, ', ') }}"
+          echo "publishedPackageNames=${{ toJSON(steps.changesets.outputs.publishedPackages.*.name) }}"
+          echo "joinedPublishedPackageNames=${{ join(toJSON(steps.changesets.outputs.publishedPackages.*.name), ', ') }}"
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
