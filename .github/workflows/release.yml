@@ -48,7 +48,7 @@ jobs:
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
-      publishedPackageNames: ${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}
+      publishedPackageNames: ${{ fromJSON(steps.changesets.outputs.publishedPackages).*['name'] }}
 
   publish-frontend:
     needs: release
