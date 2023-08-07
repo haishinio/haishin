@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.16
+
+### Patch Changes
+
+- [`abb0620`](https://github.com/tomouchuu/haishin/commit/abb0620b5cfbd22aee94c8030fc323accec51638) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Once again, attempt to convert the publishedPackages to json so we can use later
+
 ## 2.0.15
 
 ### Patch Changes
