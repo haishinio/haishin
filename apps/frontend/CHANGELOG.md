@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.23
+
+### Patch Changes
+
+- [`65f7196`](https://github.com/tomouchuu/haishin/commit/65f7196d5b7e2cec15d70d36e9e7b8cdc6ff6936) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Just don't use fromJSON, it's cursed
+
 ## 2.0.22
 
 ### Patch Changes
