@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.18
+
+### Patch Changes
+
+- [`4ec82a6`](https://github.com/tomouchuu/haishin/commit/4ec82a61d67e472d7dfea5fa14be455dfbce3d40) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Hopefully understand object filters with toJSON
+
 ## 2.0.17
 
 ### Patch Changes
