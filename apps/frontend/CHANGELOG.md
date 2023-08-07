@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.21
+
+### Patch Changes
+
+- [`f80d365`](https://github.com/tomouchuu/haishin/commit/f80d365d2acd29ce5f2ea9b822477687672a10fe) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Don't pass a string to the publish workflows, pass the array
+
 ## 2.0.20
 
 ### Patch Changes
