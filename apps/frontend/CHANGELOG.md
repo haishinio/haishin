@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.25
+
+### Patch Changes
+
+- [`eefc4da`](https://github.com/tomouchuu/haishin/commit/eefc4da383343cb7ced0004f4f7d76aa822f8f9f) Thanks [@tomouchuu](https://github.com/tomouchuu)! - As we got a true for the checker, pass that onto the job ifs
+
 ## 2.0.24
 
 ### Patch Changes
