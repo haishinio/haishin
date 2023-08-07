@@ -52,7 +52,7 @@ jobs:
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
           echo "publishedPackageNamesArr=${{ fromJSON(steps.changesets.outputs.publishedPackages).*['name'] }}"
           echo "publishedPackageNamesStr=${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}"
-          echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets == 'false' && contains(fromJSON(steps.changesets.outputs.publishedPackages).*['name'], '@haishin/frontend') == 'true' }}"
+          echo "checker=${{ steps.changesets.outputs.hasChangesets == 'false' && contains(fromJSON(steps.changesets.outputs.publishedPackages).*['name'], '@haishin/frontend') == 'true' }}"
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
