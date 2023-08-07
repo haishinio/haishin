@@ -51,6 +51,7 @@ jobs:
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
           echo "publishedPackageNames=${{ steps.changesets.outputs.publishedPackages.*.name }}"
+          echo "joinedPublishedPackageNames=${{ join(steps.changesets.outputs.publishedPackages.*.name, ', ') }}"
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
