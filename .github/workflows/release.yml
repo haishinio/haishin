@@ -49,14 +49,14 @@ jobs:
       - name: Get published packages
         id: get-published-packages
         run: |
-          echo "publishedPackagesJSON=${{ fromJSON(steps.changesets.outputs.publishedPackages) }}" >> $GITHUB_OUTPUT
+          echo "publishedPackagesJSON=${{ toJSON(steps.changesets.outputs.publishedPackages) }}" >> $GITHUB_OUTPUT
 
       - name: TEST
         run: |
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
           echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
           echo "publishedPackagesJSON=${{ steps.get-published-packages.outputs.publishedPackagesJSON }}"
-          echo "publishedPackagesStr=${{ toJSON(steps.get-published-packages.outputs.publishedPackagesJSON) }}"
+          echo "publishedPackagesStr=${{ fromJSON(steps.get-published-packages.outputs.publishedPackagesJSON) }}"
           echo "publishedPackageNames=${{ steps.get-published-packages.outputs.publishedPackagesJSON.*.name }}"
           echo "joinedPublishedPackageNames=${{ join(steps.get-published-packages.outputs.publishedPackagesJSON.*.name, ', ') }}"
     outputs:
