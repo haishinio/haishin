@@ -48,7 +48,7 @@ jobs:
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
-      publishedPackageNames: ${{ fromJSON(steps.changesets.outputs.publishedPackages).*['name'] }}
+      publishedPackageNames: ${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}
 
   publish-frontend:
     needs: release
@@ -59,10 +59,10 @@ jobs:
       packages: write
     if: |
       needs.release.outputs.hasChangesets == 'false' && (
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/tsconfig') == 'true' ||
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/transcriber-utils') == 'true' ||
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/transcriber') == 'true' ||
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/frontend') == 'true'
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/tsconfig') == 'true' ||
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/transcriber-utils') == 'true' ||
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/transcriber') == 'true' ||
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/frontend') == 'true'
       )
     steps:
       - name: Checkout repository
@@ -108,10 +108,10 @@ jobs:
       packages: write
     if: |
       needs.release.outputs.hasChangesets == 'false' && (
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/tsconfig') == 'true' ||
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/transcriber-utils') == 'true' ||
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/transcriber') == 'true' ||
-        contains(needs.release.outputs.publishedPackageNames, '@haishin/backend') == 'true'
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/tsconfig') == 'true' ||
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/transcriber-utils') == 'true' ||
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/transcriber') == 'true' ||
+        contains(fromJSON(needs.release.outputs.publishedPackageNames), '@haishin/backend') == 'true'
       )
     steps:
       - name: Checkout repository
