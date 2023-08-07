@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.20
+
+### Patch Changes
+
+- [`c03f607`](https://github.com/tomouchuu/haishin/commit/c03f607cbbbd32c82007f7c2945a2b973d735cb6) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Now we have the package names, attempt to start the workflows when a package has been published
+
 ## 2.0.19
 
 ### Patch Changes
