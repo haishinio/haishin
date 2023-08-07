@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.0.22
+
+### Patch Changes
+
+- [`580e02c`](https://github.com/tomouchuu/haishin/commit/580e02c771791502bf0bfcbf700479d2ac0155fa) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Add some logging so we kinda know whats going on
+
 ## 2.0.21
 
 ### Patch Changes
