@@ -12,7 +12,8 @@
     "dev": "dotenv -- turbo dev",
     "start": "dotenv -- turbo start",
     "changeset": "changeset",
-    "version-packages": "changeset version"
+    "version-packages": "changeset version",
+    "publish-packages": "changeset tag"
   },
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
