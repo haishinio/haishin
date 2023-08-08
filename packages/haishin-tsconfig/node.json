@@ -1,9 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "display": "Node",
-  "extends": "./base.json",
-  "compilerOptions": {
-    "emitDeclarationOnly": true,
-    "outDir": "./dist"
-  }
+  "extends": "./base.json"
 }
