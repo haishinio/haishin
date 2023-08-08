@@ -1,5 +1,13 @@
 # @haishin/frontend
 
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`6958a2e`](https://github.com/tomouchuu/haishin/commit/6958a2e9488b6d7ff13c228652571cbbfeecbba7)]:
+  - @haishin/transcriber@2.1.1
+  - @haishin/transcriber-utils@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes

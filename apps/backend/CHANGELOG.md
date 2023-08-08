@@ -1,5 +1,14 @@
 # @haishin/backend
 
+## 2.1.1
+
+### Patch Changes
+
+- [`6958a2e`](https://github.com/tomouchuu/haishin/commit/6958a2e9488b6d7ff13c228652571cbbfeecbba7) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes tsconfig for node projects to get correct dist files generated on build
+
+- Updated dependencies [[`6958a2e`](https://github.com/tomouchuu/haishin/commit/6958a2e9488b6d7ff13c228652571cbbfeecbba7)]:
+  - @haishin/transcriber@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes
