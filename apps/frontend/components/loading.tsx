@@ -2,7 +2,7 @@ import Spinner from "./spinner";
 
 const getRandomElement = (array: string[]) => array[Math.floor(Math.random() * array.length)];
 
-const Loading = ({message}: {message: string}) => {
+const Loading = ({message}: {message?: string}) => {
   const messages = [
     'Loading...',
     'iWanna Party Night...',

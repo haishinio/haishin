@@ -1,6 +1,11 @@
-// Import your Client Component
-import StreamPage from './client-page'
+import { Suspense } from 'react'
+import StreamUrlPage from './client-page'
+import Loading from "../../components/loading"
  
 export default async function Page() {
-  return <StreamPage />
+  return (
+    <Suspense fallback={<Loading />}>
+      <StreamUrlPage />
+    </Suspense>
+  )
 }
