@@ -33,6 +33,8 @@ export default function (io: Server) {
           prompt: '',
         })
       }
+    } else {
+      io.to(userId).emit('stream-error', { message: 'Invalid URL' });
     }
   });
   
