@@ -16,7 +16,7 @@
     "@jorgeferrero/stream-to-buffer": "^2.0.6",
     "@sentry/nextjs": "^7.57.0",
     "mpegts.js": "^1.7.3",
-    "next": "13.4.13",
+    "next": "13.4.9",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-player": "^2.12.0",
