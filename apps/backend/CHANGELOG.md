@@ -1,5 +1,11 @@
 # @haishin/backend
 
+## 2.1.2
+
+### Patch Changes
+
+- [`3e03671`](https://github.com/tomouchuu/haishin/commit/3e036716cc7fbc84cc9cc0c08e29ac4b1e630d31) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Have stream errors redirect to a stream-error page which at the moment is the 404 page
+
 ## 2.1.1
 
 ### Patch Changes

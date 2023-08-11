@@ -1,5 +1,15 @@
 # @haishin/frontend
 
+## 2.2.0
+
+### Minor Changes
+
+- [`b7aaebf`](https://github.com/tomouchuu/haishin/commit/b7aaebfb6ed87b44fce165b14d848ddf2cb69d1b) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds a 404 not found page to catch any 404 errors related to routing
+
+### Patch Changes
+
+- [`3e03671`](https://github.com/tomouchuu/haishin/commit/3e036716cc7fbc84cc9cc0c08e29ac4b1e630d31) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Have stream errors redirect to a stream-error page which at the moment is the 404 page
+
 ## 2.1.1
 
 ### Patch Changes
