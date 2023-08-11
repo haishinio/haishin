@@ -1,5 +1,11 @@
 # @haishin/backend
 
+## 2.1.3
+
+### Patch Changes
+
+- [`e61f4ea`](https://github.com/tomouchuu/haishin/commit/e61f4ea9af94c48c8678169046dc6ed2610d2aa0) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes stream error incorrectly caused by the userId not being a url
+
 ## 2.1.2
 
 ### Patch Changes
