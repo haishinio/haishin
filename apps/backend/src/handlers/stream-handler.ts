@@ -33,7 +33,10 @@ export default function (io: Server) {
           prompt: '',
         })
       }
+    } else if (room === userId) {
+      // In this case we don't want to do anything
     } else {
+      console.log({ invalidUrl: room });
       io.to(userId).emit('stream-error', { message: 'Invalid URL' });
     }
   });
