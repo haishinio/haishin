@@ -1,5 +1,13 @@
 # @haishin/frontend
 
+## 2.2.1
+
+### Patch Changes
+
+- [`e85d3c0`](https://github.com/tomouchuu/haishin/commit/e85d3c04e80d5e051ed2c582ceb40e2c841ed136) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Updates stream pages to use loading component as a fallback with suspense
+
+- [`9c87ab8`](https://github.com/tomouchuu/haishin/commit/9c87ab8e55babec7ec8e1aa29af763b81e7105d8) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Revert the nextjs update, for whatever reason it causes our start to fail
+
 ## 2.2.0
 
 ### Minor Changes
