@@ -43,8 +43,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.HAISHIN_RUNNER_TOKEN }}
         with:
-            version: pnpm version-packages
-            publish: pnpm publish-packages
+          version: pnpm version-packages
+          publish: pnpm publish-packages
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
@@ -60,7 +60,7 @@ jobs:
     if: |
       needs.create-release-pr.outputs.hasChangesets == 'false' && (
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber-utils') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
       )
@@ -109,7 +109,7 @@ jobs:
     if: |
       needs.create-release-pr.outputs.hasChangesets == 'false' && (
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber-utils') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
       )
@@ -144,7 +144,7 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ steps.meta.outputs.tags }}
-  
+
   cleanup-old-release-tags:
     needs: create-release-pr
     name: Cleanup old release tags

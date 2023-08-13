@@ -24,7 +24,7 @@
 
 - Updated dependencies [[`6958a2e`](https://github.com/tomouchuu/haishin/commit/6958a2e9488b6d7ff13c228652571cbbfeecbba7)]:
   - @haishin/transcriber@2.1.1
-  - @haishin/transcriber-utils@2.1.1
+  - @haishin/utils@2.1.1
 
 ## 2.1.0
 
@@ -38,4 +38,4 @@
 
 - Updated dependencies [[`75cc915`](https://github.com/tomouchuu/haishin/commit/75cc9157c32e348055223c831004db903bba5a6f), [`d8674c5`](https://github.com/tomouchuu/haishin/commit/d8674c5324615802fe8db8bd87272433e13d488b)]:
   - @haishin/transcriber@2.1.0
-  - @haishin/transcriber-utils@2.1.0
+  - @haishin/utils@2.1.0

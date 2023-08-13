@@ -1,4 +1,4 @@
-# @haishin/transcriber-utils
+# @haishin/utils
 
 ## 2.1.1
 
