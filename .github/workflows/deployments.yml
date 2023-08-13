@@ -144,3 +144,22 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ steps.meta.outputs.tags }}
+  
+  cleanup-old-release-tags:
+    needs: create-release-pr
+    name: Cleanup old release tags
+    runs-on: ubuntu-latest
+    if: |
+      needs.create-release-pr.outputs.hasChangesets == 'false'
+    strategy:
+      matrix:
+        package: ${{ needs.create-release-pr.outputs.publishedPackageNames }}
+    steps:
+      - name: 'Delete release tags'
+        uses: jay2610/delete-older-releases@1.4.0
+        with:
+          keep_latest: 1
+          delete_tags: true
+          delete_tag_pattern: ${{ matrix.package }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
