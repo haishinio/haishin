@@ -41,8 +41,8 @@ export const getStreamInfo = async function (
 
   console.log({ files, streamBaseName, filteredFile })
 
-  // If we have filteredFile then it's not a newStream
-  if (filteredFile === '') newStream = true
+  // If we don't have filteredFile then it's a newStream
+  if (filteredFile === undefined) newStream = true
 
   const safeUrl = btoa(originalUrl)
   const streamUrl = `${process.env.RTMP_CLIENT_URL ?? ''}${safeUrl}.flv`

@@ -31,7 +31,7 @@ const splitVideoFile = async function (
     // ie. We don't know the duration of the part yet
     const probeData = await ffprobe(pathToFile)
 
-    if (probeData.error != null) {
+    if (probeData?.format?.duration != null) {
       const currentStreamLength = parseInt(probeData.format.duration)
       nextStartTime = currentStreamLength
       durationOfPart = currentStreamLength - startTime

@@ -22,7 +22,10 @@ const httpServer = createServer(app)
 let productionMediaServerHttps = {}
 let productionCors = [] as string[]
 
-if (process.env.PRODUCTION_URL !== undefined) {
+if (
+  process.env.PRODUCTION_URL !== undefined &&
+  process.env.PRODUCTION_URL !== ''
+) {
   const productionDomain = process.env.PRODUCTION_URL.replace('https://', '')
 
   productionMediaServerHttps = {

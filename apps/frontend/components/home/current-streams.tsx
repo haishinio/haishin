@@ -3,8 +3,15 @@
 import useSWR from 'swr'
 import Link from 'next/link'
 
+const NoStreamsComponent = (): JSX.Element => (
+  <div>
+    <p>There are no current streams...</p>
+  </div>
+)
+
 export default function CurrentStreams(): JSX.Element {
-  const url = `${process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL}streams`
+  const rtmpUrl = process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL ?? ''
+  const url = `${rtmpUrl}streams`
   const { data, error } = useSWR(
     url,
     async (url: string): Promise<any> =>
@@ -14,12 +21,8 @@ export default function CurrentStreams(): JSX.Element {
 
   const fetchError = Boolean(error)
 
-  if (Object.keys(data?.live).length === 0 || fetchError)
-    return (
-      <div>
-        <p>There are no current streams...</p>
-      </div>
-    )
+  if (rtmpUrl === '' || data?.live === undefined || fetchError)
+    return <NoStreamsComponent />
 
   const streams = Object.keys(data.live)
 

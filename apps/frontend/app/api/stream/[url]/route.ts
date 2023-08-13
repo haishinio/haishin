@@ -25,9 +25,10 @@ export async function GET(
 
     if (range != null) {
       const [start, end] = range.replace(/bytes=/, '').split('-')
+
       let startByte = parseInt(start)
       const endByte =
-        end != null
+        end !== ''
           ? parseInt(end)
           : Math.min(startByte + CHUNK_SIZE, videoSize - 1)
       if (startByte > endByte) startByte = 0
