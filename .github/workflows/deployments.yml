@@ -149,11 +149,12 @@ jobs:
     needs: create-release-pr
     name: Cleanup old release tags
     runs-on: ubuntu-latest
+    continue-on-error: true
     if: |
       needs.create-release-pr.outputs.hasChangesets == 'false'
     strategy:
       matrix:
-        package: ${{ needs.create-release-pr.outputs.publishedPackageNames }}
+        package: ${{ fromJSON(needs.create-release-pr.outputs.publishedPackages).*['name'] }}
     steps:
       - name: 'Delete release tags'
         uses: jay2610/delete-older-releases@1.4.0
