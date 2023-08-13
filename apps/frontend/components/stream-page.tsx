@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import ReactPlayer from 'react-player'
 import FlvVideoPlayer from './flv-video-player'
 import Spinner from './spinner'
 import TopMenu from './top-menu'
@@ -66,14 +65,16 @@ const StreamPage = (props: Props): JSX.Element => {
             {isRtmp ? (
               <FlvVideoPlayer url={streamUrl} />
             ) : (
-              <ReactPlayer
-                url={streamUrl}
+              <video
+                autoPlay
+                controls
                 height='100%'
                 width='100%'
-                controls
-                playing
-                playsinline
-                onDuration={updateDuration}
+                playsInline
+                src={streamUrl}
+                onLoadedMetadata={(e) => {
+                  updateDuration(e.currentTarget.duration)
+                }}
               />
             )}
           </div>
