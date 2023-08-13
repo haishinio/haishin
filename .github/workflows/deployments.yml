@@ -45,6 +45,11 @@ jobs:
         with:
           version: pnpm version-packages
           publish: pnpm publish-packages
+      - name: Echo outputs
+        run: |
+          echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
+          echo "publishedPackages=${{ steps.changesets.outputs.publishedPackages }}"
+          echo "publishedPackageNames=${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}"
     outputs:
       hasChangesets: ${{ steps.changesets.outputs.hasChangesets }}
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
@@ -151,9 +156,7 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        needs.create-release-pr.outputs.publishedPackages != '' && needs.create-release-pr.outputs.publishedPackages.success
-      )
+      needs.create-release-pr.outputs.hasChangesets == 'false' && needs.create-release-pr.outputs.publishedPackages != ''
     strategy:
       matrix:
         package: ${{ fromJSON(needs.create-release-pr.outputs.publishedPackages).*['name'] }}
