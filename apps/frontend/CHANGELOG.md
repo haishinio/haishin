@@ -1,5 +1,13 @@
 # @haishin/frontend
 
+## 2.2.3
+
+### Patch Changes
+
+- [`9144e5b`](https://github.com/tomouchuu/haishin/commit/9144e5b2e7829ebf198d5b9d8f5d4348f24788f5) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Remove react-player in favour of just normal video for uploaded clips, fixes #70
+
+- [`104903b`](https://github.com/tomouchuu/haishin/commit/104903bf001c0a269933e596e2f01eeb1f011083) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up console error by stoping the render of the StreamPage when no streamUrl is present
+
 ## 2.2.2
 
 ### Patch Changes
