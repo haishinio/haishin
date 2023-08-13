@@ -1,5 +1,16 @@
 # @haishin/transcriber
 
+## 2.1.2
+
+### Patch Changes
+
+- [`5a1e0b1`](https://github.com/tomouchuu/haishin/commit/5a1e0b1717d9fcc4b3d355fe2c4d21054f53b473) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update transcriber package to account for new eslint+prettier configs
+
+- [`fa415b5`](https://github.com/tomouchuu/haishin/commit/fa415b5a246a8b9ac9b3d86fcb2f27f6db5dd7fb) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Introduce a shared eslint+prettier based on standard to the project
+
+- Updated dependencies [[`dcfee0d`](https://github.com/tomouchuu/haishin/commit/dcfee0da98b53cfab379a845ca6f1946d7807283), [`fa415b5`](https://github.com/tomouchuu/haishin/commit/fa415b5a246a8b9ac9b3d86fcb2f27f6db5dd7fb)]:
+  - @haishin/utils@2.1.2
+
 ## 2.1.1
 
 ### Patch Changes

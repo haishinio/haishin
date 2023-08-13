@@ -1,5 +1,16 @@
 # @haishin/backend
 
+## 2.1.4
+
+### Patch Changes
+
+- [`fa415b5`](https://github.com/tomouchuu/haishin/commit/fa415b5a246a8b9ac9b3d86fcb2f27f6db5dd7fb) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Introduce a shared eslint+prettier based on standard to the project
+
+- [`7ef87b3`](https://github.com/tomouchuu/haishin/commit/7ef87b3e1fe3097dbdb0beceba5ec3d357360843) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Updates code to account for new eslint+prettier configs
+
+- Updated dependencies [[`5a1e0b1`](https://github.com/tomouchuu/haishin/commit/5a1e0b1717d9fcc4b3d355fe2c4d21054f53b473), [`fa415b5`](https://github.com/tomouchuu/haishin/commit/fa415b5a246a8b9ac9b3d86fcb2f27f6db5dd7fb)]:
+  - @haishin/transcriber@2.1.2
+
 ## 2.1.3
 
 ### Patch Changes
