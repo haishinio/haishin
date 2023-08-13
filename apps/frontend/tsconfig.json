@@ -10,5 +10,11 @@
       }
     ]
   },
-  "include": ["app", "utils/ffmpeg-splitter-worker.js", "next-env.d.ts", ".next/types/**/*.ts"]
+  "include": [
+    "app",
+    "types/**/*.ts",
+    "utils/ffmpeg-splitter-worker.js",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ]
 }

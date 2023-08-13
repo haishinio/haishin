@@ -1,25 +1,25 @@
-const path = require("path");
-const { withSentryConfig } = require("@sentry/nextjs");
+const path = require('path')
+const { withSentryConfig } = require('@sentry/nextjs')
 
 const moduleExports = {
   env: {
     HAISHIN_VERSION: process.env.HAISHIN_VERSION,
-    WS_URL: process.env.WS_URL,
+    WS_URL: process.env.WS_URL
   },
   sentry: {
-    hideSourceMaps: true,
+    hideSourceMaps: true
   },
   output: 'standalone',
   experimental: {
     outputFileTracingRoot: path.join(__dirname, '../../'),
-    serverActions: true,
+    serverActions: true
   },
   reactStrictMode: true,
-  swcMinify: true,
-};
+  swcMinify: true
+}
 
 const sentryWebpackPluginOptions = {
-  silent: true, // Suppresses all logs
-};
+  silent: true // Suppresses all logs
+}
 
-module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions);
+module.exports = withSentryConfig(moduleExports, sentryWebpackPluginOptions)

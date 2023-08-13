@@ -1,24 +1,25 @@
-import Spinner from "./spinner";
+import Spinner from './spinner'
 
-const getRandomElement = (array: string[]) => array[Math.floor(Math.random() * array.length)];
+const getRandomElement = (array: string[]): string =>
+  array[Math.floor(Math.random() * array.length)]
 
-const Loading = ({message}: {message?: string}) => {
+const Loading = ({ message }: { message?: string }): JSX.Element => {
   const messages = [
     'Loading...',
     'iWanna Party Night...',
     'Papipupepo...',
-    'Check a dempa...',
-  ];
-  let currentMessage = getRandomElement(messages);
+    'Check a dempa...'
+  ]
+  let currentMessage = getRandomElement(messages)
 
-  if (message) currentMessage = message;
+  if (message != null) currentMessage = message
 
   return (
     <>
       <Spinner />
-      <span className="block animate-pulse">{currentMessage}</span>
+      <span className='block animate-pulse'>{currentMessage}</span>
     </>
   )
 }
 
-export default Loading;
+export default Loading
