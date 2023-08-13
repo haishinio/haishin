@@ -151,7 +151,9 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false'
+      needs.create-release-pr.outputs.hasChangesets == 'false' && (
+        needs.create-release-pr.outputs.publishedPackages != '' && needs.create-release-pr.outputs.publishedPackages.success
+      )
     strategy:
       matrix:
         package: ${{ fromJSON(needs.create-release-pr.outputs.publishedPackages).*['name'] }}
