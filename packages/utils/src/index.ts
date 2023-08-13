@@ -1,7 +1,11 @@
-import { getPathsByUrl, setFileName, setArchivedFileName } from "./set-file-name";
-import { pathToData } from "./path-to-data";
-import { msToSeconds, secondsToDuration } from "./seconds-to-duration";
-import { isRtmpSite } from "./rtmp-sites";
+import {
+  getPathsByUrl,
+  setFileName,
+  setArchivedFileName
+} from './set-file-name'
+import { pathToData } from './path-to-data'
+import { msToSeconds, secondsToDuration } from './seconds-to-duration'
+import { isRtmpSite } from './rtmp-sites'
 
 export {
   getPathsByUrl,
@@ -10,8 +14,8 @@ export {
   pathToData,
   setArchivedFileName,
   setFileName,
-  secondsToDuration,
-};
+  secondsToDuration
+}
 
 const utils = {
   getPathsByUrl,
@@ -20,7 +24,7 @@ const utils = {
   pathToData,
   secondsToDuration,
   setArchivedFileName,
-  setFileName,
+  setFileName
 }
 
-export default utils;
+export default utils

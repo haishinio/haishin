@@ -1,8 +1,5 @@
 {
   "extends": "@haishin/tsconfig/node.json",
-  // "compilerOptions": {
-  //   "rootDir": "./src",
-  // },
   "exclude": ["node_modules", "dist"],
   "include": ["src/**/*.ts"],
 }

@@ -1,8 +1,5 @@
 export function isRtmpSite(url: string): boolean {
-  return (
-    url.includes('showroom') ||
-    url.includes('twitcasting')
-  );
+  return url.includes('showroom') || url.includes('twitcasting')
 }
 
-export default isRtmpSite;
+export default isRtmpSite
