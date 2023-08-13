@@ -1,5 +1,13 @@
 # @haishin/utils
 
+## 2.1.2
+
+### Patch Changes
+
+- [`dcfee0d`](https://github.com/tomouchuu/haishin/commit/dcfee0da98b53cfab379a845ca6f1946d7807283) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Makes sure package is in line with eslint+prettier configs
+
+- [`fa415b5`](https://github.com/tomouchuu/haishin/commit/fa415b5a246a8b9ac9b3d86fcb2f27f6db5dd7fb) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Introduce a shared eslint+prettier based on standard to the project
+
 ## 2.1.1
 
 ### Patch Changes
