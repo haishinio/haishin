@@ -102,7 +102,7 @@ importers:
       '@haishin/transcriber':
         specifier: workspace:^
         version: link:../../packages/transcriber
-      '@haishin/transcriber-utils':
+      '@haishin/utils':
         specifier: workspace:^
         version: link:../../packages/utils
       '@jorgeferrero/stream-to-buffer':
@@ -193,7 +193,7 @@ importers:
       '@ffmpeg/ffmpeg':
         specifier: ^0.11.6
         version: 0.11.6
-      '@haishin/transcriber-utils':
+      '@haishin/utils':
         specifier: workspace:^
         version: link:../utils
       '@sentry/node':
