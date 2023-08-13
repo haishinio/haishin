@@ -1,0 +1,16 @@
+name: Clean Up Docker Images
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  delete-untagged-docker-images:
+    name: Delete untagged docker images
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Delete action'
+        uses: Chizkiyahu/delete-untagged-ghcr-action@v2
+        with:
+          token: ${{ secrets.HAISHIN_RUNNER_TOKEN }}
+          owner_type: user
