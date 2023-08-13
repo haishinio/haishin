@@ -1,0 +1,23 @@
+{
+  "name": "eslint-config-haishin",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@haishin/tsconfig": "workspace:*",
+    "@typescript-eslint/eslint-plugin": "^5.61.0",
+    "@typescript-eslint/parser": "^5.61.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-config-standard-with-typescript": "latest",
+    "eslint-config-turbo": "^1.9.3",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "typescript": "*"
+  }
+}
