@@ -20,11 +20,11 @@
       "dependsOn": ["build", "lint"]
     }
   },
-  "globalDotEnv": [".env"],
-  "globalPassThroughEnv": [
+  "globalEnv": [
     "APP_ENV",
     "OPENAI_API_KEY",
     "DEEPL_API_KEY",
+    "PRODUCTION_URL",
     "RTMP_SERVER_URL",
     "RTMP_CLIENT_API_URL",
     "RTMP_CLIENT_URL",
