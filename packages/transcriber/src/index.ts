@@ -1,13 +1,8 @@
-import {getStreamInfo, setupStream} from "./setup-stream";
-import splitVideoFile from "./split-video-file";
-import transcribeTranslatePart from "./transcribe-translate-part";
+import { getStreamInfo, setupStream } from './setup-stream'
+import splitVideoFile from './split-video-file'
+import transcribeTranslatePart from './transcribe-translate-part'
 
-export {
-  getStreamInfo,
-  setupStream,
-  splitVideoFile,
-  transcribeTranslatePart
-};
+export { getStreamInfo, setupStream, splitVideoFile, transcribeTranslatePart }
 
 const transcriber = {
   getStreamInfo,
@@ -16,4 +11,4 @@ const transcriber = {
   transcribeTranslatePart
 }
 
-export default transcriber;
+export default transcriber

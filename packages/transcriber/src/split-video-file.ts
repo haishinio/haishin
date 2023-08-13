@@ -4,19 +4,24 @@ import crypto from 'crypto'
 import ffprobe from 'node-ffprobe'
 import { v4 as uuidv4 } from 'uuid'
 import { Worker } from 'worker_threads'
-import * as Sentry from "@sentry/node"
+import * as Sentry from '@sentry/node'
 
-import { SplitVideoFileResponse } from '../types/responses'
+import type { SplitVideoFileResponse } from '../types/responses'
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 1.0
 })
 
-const splitVideoFile = async function (filename: string, startTime: number, duration = 0, workerPath = path.join(__dirname, './workers/ffmpeg-splitter.js')): Promise<SplitVideoFileResponse> {
+const splitVideoFile = async function (
+  filename: string,
+  startTime: number,
+  duration = 0,
+  workerPath = path.join(__dirname, './workers/ffmpeg-splitter.js')
+): Promise<SplitVideoFileResponse> {
   const pathToFile = filename
 
   let durationOfPart = duration
@@ -25,14 +30,14 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
   if (durationOfPart === 0) {
     // ie. We don't know the duration of the part yet
     const probeData = await ffprobe(pathToFile)
-  
-    if (!probeData.error) {
+
+    if (probeData.error != null) {
       const currentStreamLength = parseInt(probeData.format.duration)
       nextStartTime = currentStreamLength
-      durationOfPart = (currentStreamLength - startTime)
+      durationOfPart = currentStreamLength - startTime
     } else {
       // TODO: Handle error, ie do nothing and wait for the next attempt
-      console.log('Could not get duration of stream, maybe it has ended?');
+      console.log('Could not get duration of stream, maybe it has ended?')
 
       return {
         partFileName: '',
@@ -44,37 +49,43 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
   const part = uuidv4({
     random: crypto.getRandomValues(new Uint8Array(16))
   })
-  const partFileName = path.join(pathToFile, '../../', `stream-parts/${part}.wav`)
+  const partFileName = path.join(
+    pathToFile,
+    '../../',
+    `stream-parts/${part}.wav`
+  )
 
-  const ffmpegSplitWorker = new Worker(workerPath);
+  const ffmpegSplitWorker = new Worker(workerPath)
 
   try {
-    ffmpegSplitWorker.postMessage({ 
-      command: 'run', 
-      pathToFile, startTime, durationOfPart
-    });
-  
+    ffmpegSplitWorker.postMessage({
+      command: 'run',
+      pathToFile,
+      startTime,
+      durationOfPart
+    })
+
     const splitFileData = await new Promise<Buffer>((resolve, reject) => {
       ffmpegSplitWorker.on('message', (message) => {
-        if (message.error) {
+        if (message.error != null) {
           // We might have already moved the file to backup as stream ended
-          Sentry.captureException(message.error);
-          reject(new Error(message.error));
+          Sentry.captureException(message.error)
+          reject(new Error(message.error))
         } else {
-          resolve(message.output);
+          resolve(message.output)
         }
-      });
-      ffmpegSplitWorker.on('error', reject);
+      })
+      ffmpegSplitWorker.on('error', reject)
       ffmpegSplitWorker.on('exit', (code) => {
         if (code !== 0) {
-          reject(new Error(`Worker stopped with exit code ${code}`));
+          reject(new Error(`Worker stopped with exit code ${code}`))
         }
-      });
-    });
-  
+      })
+    })
+
     await fs.promises.writeFile(partFileName, splitFileData)
   } catch (error) {
-    Sentry.captureException(error);
+    Sentry.captureException(error)
   }
 
   return {
@@ -83,4 +94,4 @@ const splitVideoFile = async function (filename: string, startTime: number, dura
   }
 }
 
-export default splitVideoFile;
+export default splitVideoFile

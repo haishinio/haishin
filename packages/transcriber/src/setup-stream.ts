@@ -3,9 +3,9 @@ import path from 'path'
 import exec from 'await-exec'
 import { Worker } from 'worker_threads'
 
-import * as Sentry from "@sentry/node"
+import * as Sentry from '@sentry/node'
 
-import { pathToData, setFileName } from "@haishin/transcriber-utils"
+import { pathToData, setFileName } from '@haishin/utils'
 
 import type { StreamDataResponse } from '../types/responses.js'
 
@@ -14,38 +14,40 @@ Sentry.init({
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 1.0
 })
 
-export const getStreamInfo = async function (originalUrl: string): Promise<StreamDataResponse> {
+export const getStreamInfo = async function (
+  originalUrl: string
+): Promise<StreamDataResponse> {
   // Should check if we can play the stream at all (ie. use streamlink)
-  let canPlay = false;
+  let canPlay = false
 
   try {
-    await exec(`streamlink --json ${originalUrl} --retry-open 5`);
+    await exec(`streamlink --json ${originalUrl} --retry-open 5`)
 
-    canPlay = true;
+    canPlay = true
   } catch (error) {
-    console.log({ canPlayError: error });
+    console.log({ canPlayError: error })
   }
 
-  const streamsDir = pathToData('streams');
-  const streamBaseName = setFileName(originalUrl);
+  const streamsDir = pathToData('streams')
+  const streamBaseName = setFileName(originalUrl)
 
-  const files = fs.readdirSync(streamsDir);
+  const files = fs.readdirSync(streamsDir)
 
-  let newStream = false;
-  const [filteredFile] = files.filter(file => file.includes(streamBaseName));
+  let newStream = false
+  const [filteredFile] = files.filter((file) => file.includes(streamBaseName))
 
-  console.log({files, streamBaseName, filteredFile});
+  console.log({ files, streamBaseName, filteredFile })
 
   // If we have filteredFile then it's not a newStream
-  if (!filteredFile) newStream = true;
+  if (filteredFile === '') newStream = true
 
   const safeUrl = btoa(originalUrl)
-  const streamUrl = `${process.env.RTMP_CLIENT_URL}${safeUrl}.flv`;
+  const streamUrl = `${process.env.RTMP_CLIENT_URL ?? ''}${safeUrl}.flv`
 
-  const file = pathToData(`streams/${streamBaseName}.mp4`);
+  const file = pathToData(`streams/${streamBaseName}.mp4`)
 
   return {
     // Utils
@@ -56,48 +58,50 @@ export const getStreamInfo = async function (originalUrl: string): Promise<Strea
     // Urls
     originalUrl,
     streamUrl,
-    file,
-  };
+    file
+  }
 }
 
-export const setupStream = async function (originalUrl: string): Promise<StreamDataResponse> {
-  const streamData = await getStreamInfo(originalUrl);
+export const setupStream = async function (
+  originalUrl: string
+): Promise<StreamDataResponse> {
+  const streamData = await getStreamInfo(originalUrl)
 
   // If we can't play it or it already exists so just return the streamData and let it be handled
-  if (!streamData.canPlay || !streamData.newStream) return streamData;
+  if (!streamData.canPlay || !streamData.newStream) return streamData
 
   // Start stream worker
   const workerPath = path.join(__dirname, './workers/stream.js')
-  const streamWorker = new Worker(workerPath);
+  const streamWorker = new Worker(workerPath)
 
   try {
-    streamWorker.postMessage({ 
-      command: 'stream', 
+    streamWorker.postMessage({
+      command: 'stream',
       streamData
-    });
+    })
 
     streamWorker.on('message', (message) => {
-      if (message.error) {
-        console.log({ workerError: message.error });
+      if (message.error != null) {
+        console.log({ workerError: message.error })
       } else {
-        console.log({ workerMessage: message.message });
+        console.log({ workerMessage: message.message })
       }
-    });
+    })
 
     streamWorker.on('error', (error) => {
       // Sentry.captureException(error);
-      console.log({ workerError: error });
-    });
+      console.log({ workerError: error })
+    })
 
     streamWorker.on('exit', (code) => {
-      console.log({ workerExit: code });
-    });
+      console.log({ workerExit: code })
+    })
   } catch (error) {
-    console.log({ error });
+    console.log({ error })
     // Sentry.captureException(error);
   }
 
-  return streamData;
+  return streamData
 }
 
-export default setupStream;
+export default setupStream

@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
-  extends: ["haishin"],
+  extends: ['haishin'],
   parserOptions: {
     project: './tsconfig.json'
   }
-};
+}

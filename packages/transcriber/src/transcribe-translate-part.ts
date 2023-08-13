@@ -1,19 +1,19 @@
 import fs from 'fs'
-import { Configuration, OpenAIApi } from "openai"
+import { Configuration, OpenAIApi } from 'openai'
 import * as deepl from 'deepl-node'
-import * as Sentry from "@sentry/node"
+import * as Sentry from '@sentry/node'
 
 import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
-import { TranscriberResponse } from '../types/responses'
+import type { TranscriberResponse } from '../types/responses'
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
 
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 1.0
 })
 
 const openAiConfig = new Configuration({
@@ -22,15 +22,21 @@ const openAiConfig = new Configuration({
 const openai = new OpenAIApi(openAiConfig)
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 
-const transcribeTranslatePart = async function (filename: string, prompt: string): Promise<TranscriberResponse> {
+const transcribeTranslatePart = async function (
+  filename: string,
+  prompt: string
+): Promise<TranscriberResponse> {
   if (process.env.APP_ENV === 'faker') {
     const fakeResult = await new Promise<TranscriberResponse>((resolve) => {
-      setTimeout(() => {
-        resolve({
-          transcription: fakerJP.lorem.words(10),
-          translation: fakerGB.lorem.words(10),
-        })
-      }, fakerGB.number.int({ min: 1000, max: 5000 }))
+      setTimeout(
+        () => {
+          resolve({
+            transcription: fakerJP.lorem.words(10),
+            translation: fakerGB.lorem.words(10)
+          })
+        },
+        fakerGB.number.int({ min: 1000, max: 5000 })
+      )
     })
     return fakeResult
   }
@@ -47,18 +53,22 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
       'ja'
     )
     transcriptionText = transcription.data.text
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    Sentry.captureException(error);
+    Sentry.captureException(error)
   }
-  
+
   // Translate the JP text
   let translation = { text: '' }
   if (transcriptionText !== '') {
     try {
-      translation = await translator.translateText(transcriptionText, 'ja', 'en-GB')
+      translation = await translator.translateText(
+        transcriptionText,
+        'ja',
+        'en-GB'
+      )
     } catch (error) {
-      Sentry.captureException(error);
+      Sentry.captureException(error)
     }
   }
 
@@ -68,4 +78,4 @@ const transcribeTranslatePart = async function (filename: string, prompt: string
   }
 }
 
-export default transcribeTranslatePart;
+export default transcribeTranslatePart

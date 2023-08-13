@@ -19,5 +19,17 @@
     "start": {
       "dependsOn": ["build", "lint"]
     }
-  }
+  },
+  "globalDotEnv": [".env"],
+  "globalPassThroughEnv": [
+    "APP_ENV",
+    "OPENAI_API_KEY",
+    "DEEPL_API_KEY",
+    "RTMP_SERVER_URL",
+    "RTMP_CLIENT_API_URL",
+    "RTMP_CLIENT_URL",
+    "WS_URL",
+    "SENTRY_DSN",
+    "SENTRY_IGNORE_API_RESOLUTION_ERROR"
+  ]
 }
