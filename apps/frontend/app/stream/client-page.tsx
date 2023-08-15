@@ -13,6 +13,8 @@ const StreamIndex: NextPage = () => {
   const searchParams = useSearchParams()
   const url = searchParams?.get('url') as string
 
+  if (url == null) window.location.href = '/stream-error'
+
   const [streamUrl, setStreamUrl] = useState('')
   const [fileDuration, updateFileDuration] = useState(0)
   const [textLogs, updateTextLogs] = useState<TextLog[]>([])

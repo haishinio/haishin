@@ -28,7 +28,7 @@ async function stream(streamData: StreamDataResponse): Promise<void> {
 
   parentPort?.postMessage({ message: `Start restreaming...` })
 
-  const safeUrl = btoa(streamData.originalUrl)
+  const safeUrl = encodeURIComponent(btoa(streamData.originalUrl))
   const rtmpServer = `${process.env.RTMP_SERVER_URL ?? ''}${safeUrl}`
   const ffmpegArgs = [
     '-re',

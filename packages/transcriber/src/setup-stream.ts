@@ -44,7 +44,7 @@ export const getStreamInfo = async function (
   // If we don't have filteredFile then it's a newStream
   if (filteredFile === undefined) newStream = true
 
-  const safeUrl = btoa(originalUrl)
+  const safeUrl = encodeURIComponent(btoa(originalUrl))
   const streamUrl = `${process.env.RTMP_CLIENT_URL ?? ''}${safeUrl}.flv`
 
   const file = pathToData(`streams/${streamBaseName}.mp4`)

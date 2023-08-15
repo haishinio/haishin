@@ -19,7 +19,9 @@ let socket: Socket
 const StreamUrlPage: NextPage = () => {
   const pathName = usePathname()
   const encodedUrl = pathName?.replace('/stream/', '')
-  const url = atob(encodedUrl)
+  const url = atob(decodeURIComponent(encodedUrl))
+
+  if (url == null || url === '') window.location.href = '/stream-error'
 
   // Setup Stream
   const [streamUrl, updateStreamUrl] = useState('')
@@ -49,6 +51,9 @@ const StreamUrlPage: NextPage = () => {
 
     socket.on('start-transcribing', (data) => {
       setIsTranscribing(true)
+
+      console.log({ data })
+
       updateStreamUrl(data.streamUrl)
     })
 
@@ -79,7 +84,7 @@ const StreamUrlPage: NextPage = () => {
   }, [url])
 
   // Start/Stop transcribing the stream
-  const controlTranscription = async (): Promise<void> => {
+  const controlTranscription = (): void => {
     const nextState = !isTranscribing
 
     if (!nextState) {
