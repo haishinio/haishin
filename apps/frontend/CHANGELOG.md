@@ -1,5 +1,14 @@
 # @haishin/frontend
 
+## 2.2.4
+
+### Patch Changes
+
+- [`5f72ea5`](https://github.com/tomouchuu/haishin/commit/5f72ea5df9c91de31a06fd12d41c1ccf6fc5869c) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes an error caused by when the base64'd url has '/' etc
+
+- Updated dependencies [[`5f72ea5`](https://github.com/tomouchuu/haishin/commit/5f72ea5df9c91de31a06fd12d41c1ccf6fc5869c)]:
+  - @haishin/transcriber@2.1.3
+
 ## 2.2.3
 
 ### Patch Changes
