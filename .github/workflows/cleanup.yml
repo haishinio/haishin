@@ -9,8 +9,15 @@ jobs:
     name: Delete untagged docker images
     runs-on: ubuntu-latest
     steps:
-      - name: 'Delete action'
-        uses: Chizkiyahu/delete-untagged-ghcr-action@v2
+      - name: 'Delete old frontend images'
+        uses: actions/delete-package-versions@v4
         with:
-          token: ${{ secrets.HAISHIN_RUNNER_TOKEN }}
-          owner_type: user
+          package-name: 'haishin-frontend'
+          package-type: 'container'
+          delete-only-untagged-versions: 'true'
+      - name: 'Delete old backend images'
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'haishin-backend'
+          package-type: 'container'
+          delete-only-untagged-versions: 'true'
