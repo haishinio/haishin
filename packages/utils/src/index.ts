@@ -6,6 +6,7 @@ import {
 import { pathToData } from './path-to-data'
 import { msToSeconds, secondsToDuration } from './seconds-to-duration'
 import { isRtmpSite } from './rtmp-sites'
+import urlUtils from './url-utils'
 
 export {
   getPathsByUrl,
@@ -14,7 +15,8 @@ export {
   pathToData,
   setArchivedFileName,
   setFileName,
-  secondsToDuration
+  secondsToDuration,
+  urlUtils
 }
 
 const utils = {
@@ -24,7 +26,8 @@ const utils = {
   pathToData,
   secondsToDuration,
   setArchivedFileName,
-  setFileName
+  setFileName,
+  url: urlUtils
 }
 
 export default utils

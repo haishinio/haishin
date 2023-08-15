@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { parentPort } from 'worker_threads'
 import { spawn } from 'child_process'
-import { pathToData, setArchivedFileName } from '@haishin/utils'
+import { pathToData, setArchivedFileName, urlUtils } from '@haishin/utils'
 // import * as Sentry from '@sentry/node'
 
 import type { ChildProcessWithoutNullStreams } from 'child_process'
@@ -28,7 +28,7 @@ async function stream(streamData: StreamDataResponse): Promise<void> {
 
   parentPort?.postMessage({ message: `Start restreaming...` })
 
-  const safeUrl = encodeURIComponent(btoa(streamData.originalUrl))
+  const safeUrl = urlUtils.encodeUrl(streamData.originalUrl)
   const rtmpServer = `${process.env.RTMP_SERVER_URL ?? ''}${safeUrl}`
   const ffmpegArgs = [
     '-re',

@@ -5,7 +5,7 @@ import { Worker } from 'worker_threads'
 
 import * as Sentry from '@sentry/node'
 
-import { pathToData, setFileName } from '@haishin/utils'
+import { pathToData, setFileName, urlUtils } from '@haishin/utils'
 
 import type { StreamDataResponse } from '../types/responses.js'
 
@@ -44,7 +44,7 @@ export const getStreamInfo = async function (
   // If we don't have filteredFile then it's a newStream
   if (filteredFile === undefined) newStream = true
 
-  const safeUrl = encodeURIComponent(btoa(originalUrl))
+  const safeUrl = urlUtils.encodeUrl(originalUrl)
   const streamUrl = `${process.env.RTMP_CLIENT_URL ?? ''}${safeUrl}.flv`
 
   const file = pathToData(`streams/${streamBaseName}.mp4`)

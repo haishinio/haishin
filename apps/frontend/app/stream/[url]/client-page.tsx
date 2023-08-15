@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { secondsToDuration } from '@haishin/utils'
+import { secondsToDuration, urlUtils } from '@haishin/utils'
 
 import Loading from '../../../components/loading'
 import StreamPage from '../../../components/stream-page'
@@ -19,7 +19,7 @@ let socket: Socket
 const StreamUrlPage: NextPage = () => {
   const pathName = usePathname()
   const encodedUrl = pathName?.replace('/stream/', '')
-  const url = atob(decodeURIComponent(encodedUrl))
+  const url = urlUtils.decodeUrl(encodedUrl)
 
   if (url == null || url === '') window.location.href = '/stream-error'
 
