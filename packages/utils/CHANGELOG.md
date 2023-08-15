@@ -1,5 +1,11 @@
 # @haishin/utils
 
+## 2.2.0
+
+### Minor Changes
+
+- [`808ea7e`](https://github.com/tomouchuu/haishin/commit/808ea7efea13c3eb2af4c18a431364041649a566) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds a new urlUtil object for encoding+decoding urls
+
 ## 2.1.2
 
 ### Patch Changes
