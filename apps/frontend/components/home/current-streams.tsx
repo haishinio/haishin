@@ -2,6 +2,7 @@
 
 import useSWR from 'swr'
 import Link from 'next/link'
+import { urlUtils } from '@haishin/utils'
 
 const NoStreamsComponent = (): JSX.Element => (
   <div>
@@ -35,7 +36,7 @@ export default function CurrentStreams(): JSX.Element {
               href={`/stream/${stream}`}
               className='transition-all duration-100 text-sky-600 hover:text-sky-500 break-all'
             >
-              {atob(stream)}
+              {urlUtils.decodeUrl(stream)}
             </Link>
           </div>
         ))}

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { urlUtils } from '@haishin/utils'
 
 interface Props {
   url: string
@@ -12,9 +13,7 @@ const TopMenu = (props: Props): JSX.Element => {
 
   useEffect(() => {
     if (streamUrl !== '') {
-      let cleanUrl = streamUrl
-
-      cleanUrl = btoa(streamUrl)
+      const cleanUrl = urlUtils.encodeUrl(streamUrl)
       updateCleanStreamUrl(cleanUrl)
     }
   }, [streamUrl])

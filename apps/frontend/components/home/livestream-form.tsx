@@ -9,8 +9,10 @@ const HomeLivestreamForm = (): JSX.Element => {
   const [cleanStreamUrl, updateCleanStreamUrl] = useState('')
 
   useEffect(() => {
-    const cleanUrl = urlUtils.encodeUrl(streamUrl)
-    updateCleanStreamUrl(cleanUrl)
+    if (streamUrl !== '') {
+      const cleanUrl = urlUtils.encodeUrl(streamUrl)
+      updateCleanStreamUrl(cleanUrl)
+    }
   }, [streamUrl])
 
   return (
