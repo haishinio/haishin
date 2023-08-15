@@ -1,5 +1,17 @@
 # @haishin/frontend
 
+## 2.2.5
+
+### Patch Changes
+
+- [`95ac55d`](https://github.com/tomouchuu/haishin/commit/95ac55dbbf72dd5fdc44cfdf98ba3cd9abc8785f) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes bugs caused by missing an atob/btoa checks
+
+- [`808ea7e`](https://github.com/tomouchuu/haishin/commit/808ea7efea13c3eb2af4c18a431364041649a566) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds a new urlUtil object for encoding+decoding urls
+
+- Updated dependencies [[`808ea7e`](https://github.com/tomouchuu/haishin/commit/808ea7efea13c3eb2af4c18a431364041649a566)]:
+  - @haishin/utils@2.2.0
+  - @haishin/transcriber@2.1.4
+
 ## 2.2.4
 
 ### Patch Changes
