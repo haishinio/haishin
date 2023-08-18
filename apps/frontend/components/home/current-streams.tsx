@@ -2,7 +2,8 @@
 
 import useSWR from 'swr'
 import Link from 'next/link'
-import { urlUtils } from '@haishin/utils'
+
+import type StreamInfo from '../../types/StreamInfo'
 
 const NoStreamsComponent = (): JSX.Element => (
   <div>
@@ -11,10 +12,8 @@ const NoStreamsComponent = (): JSX.Element => (
 )
 
 export default function CurrentStreams(): JSX.Element {
-  const rtmpUrl = process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL ?? ''
-  const url = `${rtmpUrl}streams`
-  const { data, error } = useSWR(
-    url,
+  const { data: streams, error }: { data: StreamInfo[]; error?: any } = useSWR(
+    '/api/stream',
     async (url: string): Promise<any> =>
       await fetch(url).then(async (res) => await res.json()),
     { refreshInterval: 60000 }
@@ -22,21 +21,19 @@ export default function CurrentStreams(): JSX.Element {
 
   const fetchError = Boolean(error)
 
-  if (rtmpUrl === '' || data?.live === undefined || fetchError)
+  if (streams === undefined || streams.length === 0 || fetchError)
     return <NoStreamsComponent />
-
-  const streams = Object.keys(data.live)
 
   return (
     <>
       <section className='mt-4 grid grid-cols-2 gap-4'>
         {streams.map((stream) => (
-          <div key={stream}>
+          <div key={stream.id}>
             <Link
-              href={`/stream/${stream}`}
+              href={`/stream/${stream.id}`}
               className='transition-all duration-100 text-sky-600 hover:text-sky-500 break-all'
             >
-              {urlUtils.decodeUrl(stream)}
+              {stream.title}
             </Link>
           </div>
         ))}
