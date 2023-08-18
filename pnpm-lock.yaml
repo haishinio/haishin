@@ -11,6 +11,9 @@ patchedDependencies:
   node-ffprobe@3.0.0:
     hash: mhkbpzp5mvsndy2wn6zppl26ii
     path: patches/node-ffprobe@3.0.0.patch
+  node-media-server@2.6.2:
+    hash: dduhnn2nvr6goavkli7wzpitsy
+    path: patches/node-media-server@2.6.2.patch
 
 importers:
 
@@ -57,7 +60,7 @@ importers:
         version: 4.18.2
       node-media-server:
         specifier: ^2.6.2
-        version: 2.6.2(bufferutil@4.0.7)(utf-8-validate@5.0.2)
+        version: 2.6.2(patch_hash=dduhnn2nvr6goavkli7wzpitsy)(bufferutil@4.0.7)(utf-8-validate@5.0.2)
       socket.io:
         specifier: ^4.7.1
         version: 4.7.1(bufferutil@4.0.7)(utf-8-validate@5.0.2)
@@ -4408,7 +4411,7 @@ packages:
     hasBin: true
     dev: false
 
-  /node-media-server@2.6.2(bufferutil@4.0.7)(utf-8-validate@5.0.2):
+  /node-media-server@2.6.2(patch_hash=dduhnn2nvr6goavkli7wzpitsy)(bufferutil@4.0.7)(utf-8-validate@5.0.2):
     resolution: {integrity: sha512-k/fsilAMh3G8P2hj11mp8gj5i5eXy7QrbY0CZUwQxVc0fHalIEIfSrxFzK2kP38XaEwOCmQlFS5zj5/JGQvl8A==}
     engines: {node: '>=8.0.0'}
     hasBin: true
@@ -4426,6 +4429,7 @@ packages:
       - supports-color
       - utf-8-validate
     dev: false
+    patched: true
 
   /node-notifier@8.0.2:
     resolution: {integrity: sha512-oJP/9NAdd9+x2Q+rfphB2RJCHjod70RcRLjosiPMMu5gjIfwVnOUGq2nbTjTUbmy0DJ/tFIVT30+Qe3nzl4TJg==}
