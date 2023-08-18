@@ -11,7 +11,13 @@ export default function NotFound(): JSX.Element {
           <small className='block text-3xl'>- 配信 -</small>
         </h1>
         <h2 className='text-xl'>Stream or page not found!!</h2>
-        <p>Feel free to go back to the homepage and try again.</p>
+        <p>
+          Feel free to go{' '}
+          <a href='/' className='underline'>
+            back to the homepage
+          </a>{' '}
+          and try again.
+        </p>
         <p>
           If you are repeatedly reaching here maybe give{' '}
           <a
