@@ -7,7 +7,8 @@ This website is able to take a stream url or an mp4 file and then transcribe wha
 It's certainly not perfect but hopefully it's enough for English speakers to understand the context around streams.
 
 ## Current Status
-Currently with beta testers so please wait for now, if you'd like to give it a try message me on twitter or something! Probably will be waiting for #20 until I post the link publicly incase of api abuse.
+
+Currently with beta testers so please wait for now, if you'd like to give it a try message me on twitter or something! Probably will be waiting for [#20](https://github.com/tomouchuu/haishin/issues/20) until I post the link publicly incase of api abuse.
 
 ## Local Use
 
