@@ -24,6 +24,6 @@
     "eslint-config-haishin": "workspace:*",
     "prettier": "^3.0.1",
     "prettier-config-standard": "^7.0.0",
-    "turbo": "^1.10.7"
+    "turbo": "^1.10.12"
   }
 }
