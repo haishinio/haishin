@@ -6,7 +6,12 @@ import * as Sentry from '@sentry/node'
 
 import registerStreamHandlers from './handlers/stream-handler'
 
-Sentry.init({ dsn: process.env.SENTRY_DSN })
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    tracesSampleRate: 1.0
+  })
+}
 
 process.chdir('../../')
 

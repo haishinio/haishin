@@ -2,7 +2,6 @@ import fs from 'fs'
 import { parentPort } from 'worker_threads'
 import { spawn } from 'child_process'
 import { pathToData, setArchivedFileName, urlUtils } from '@haishin/utils'
-// import * as Sentry from '@sentry/node'
 
 import type { ChildProcessWithoutNullStreams } from 'child_process'
 import type { StreamDataResponse } from '../../types/responses'

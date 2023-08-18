@@ -9,13 +9,15 @@ import { pathToData, setFileName, urlUtils } from '@haishin/utils'
 
 import type { StreamDataResponse } from '../types/responses.js'
 
-Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
 
-  // We recommend adjusting this value in production, or using tracesSampler
-  // for finer control
-  tracesSampleRate: 1.0
-})
+    // We recommend adjusting this value in production, or using tracesSampler
+    // for finer control
+    tracesSampleRate: 1.0
+  })
+}
 
 export const getStreamInfo = async function (
   originalUrl: string
