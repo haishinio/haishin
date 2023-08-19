@@ -20,21 +20,15 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
   const rtmpUrl = process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL ?? ''
   const url = `${rtmpUrl}streams`
 
-  console.log({ url })
-
   const baseStreamsObj = await fetch(url).then(
     async (response) => await response.json()
   )
-
-  console.log({ baseStreamsObj })
 
   if (isEmpty(baseStreamsObj)) {
     return NextResponse.json([], { status: 200 })
   }
 
   const streamKeys = Object.keys(baseStreamsObj.live)
-
-  console.log({ streamKeys })
 
   const streams = streamKeys.map((stream: any) => {
     const streamData = baseStreamsObj.live[stream]
@@ -56,8 +50,6 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
       viewers
     }
   })
-
-  console.log({ streams })
 
   return NextResponse.json(streams, { status: 200 })
 }
