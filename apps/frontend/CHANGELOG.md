@@ -1,5 +1,22 @@
 # @haishin/frontend
 
+## 2.2.6
+
+### Patch Changes
+
+- [`2168d57`](https://github.com/tomouchuu/haishin/commit/2168d57ef63d6e98a011884f8e3280181c8b0ca0) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Set sentry to only load on production
+
+- [`ad7362d`](https://github.com/tomouchuu/haishin/commit/ad7362d07ed18a00933b4456a6ebf1af12a01db2) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Make use of turbo's remote caching to speed up builds
+
+- [`60732cc`](https://github.com/tomouchuu/haishin/commit/60732cc33572f2c884f86b1043c2a9f6c8ef54af) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Rather than calling the backend directly, call the frontend's api so we can then change/modify the data as we see fit
+
+- [`1506329`](https://github.com/tomouchuu/haishin/commit/150632921991818df8ca51c751f234fd194ecaf8) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds link back to homepage on the not-found/stream-error page
+
+- [`a7ffdab`](https://github.com/tomouchuu/haishin/commit/a7ffdab91d5899bf47a1ad037be40678733fb656) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Have a proper ended stream message and disconnect from socket channel when over
+
+- Updated dependencies [[`2168d57`](https://github.com/tomouchuu/haishin/commit/2168d57ef63d6e98a011884f8e3280181c8b0ca0)]:
+  - @haishin/transcriber@2.1.5
+
 ## 2.2.5
 
 ### Patch Changes

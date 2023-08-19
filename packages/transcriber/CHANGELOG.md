@@ -1,5 +1,11 @@
 # @haishin/transcriber
 
+## 2.1.5
+
+### Patch Changes
+
+- [`2168d57`](https://github.com/tomouchuu/haishin/commit/2168d57ef63d6e98a011884f8e3280181c8b0ca0) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Set sentry to only load on production
+
 ## 2.1.4
 
 ### Patch Changes
