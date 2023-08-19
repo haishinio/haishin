@@ -3,7 +3,13 @@
 import { useEffect, useRef } from 'react'
 import type mpegts from 'mpegts.js'
 
-export const FlvVideoPlayer = ({ url }: { url: string }): JSX.Element => {
+export const FlvVideoPlayer = ({
+  updateEnded,
+  url
+}: {
+  updateEnded: () => void
+  url: string
+}): JSX.Element => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const playerRef = useRef<mpegts.Player | null>(null)
 
@@ -11,7 +17,11 @@ export const FlvVideoPlayer = ({ url }: { url: string }): JSX.Element => {
     const setupPlayer = async (): Promise<void> => {
       const mpegts = (await import('mpegts.js')).default
 
-      if (videoRef.current != null && mpegts.getFeatureList().mseLivePlayback) {
+      if (
+        playerRef.current == null &&
+        videoRef.current != null &&
+        mpegts.getFeatureList().mseLivePlayback
+      ) {
         playerRef.current = mpegts.createPlayer(
           {
             type: 'flv',
@@ -21,7 +31,7 @@ export const FlvVideoPlayer = ({ url }: { url: string }): JSX.Element => {
             url
           },
           {
-            enableWorker: true,
+            enableWorker: false,
             enableStashBuffer: false,
             liveBufferLatencyChasing: true,
             liveBufferLatencyMaxLatency: 10,
@@ -30,6 +40,10 @@ export const FlvVideoPlayer = ({ url }: { url: string }): JSX.Element => {
             deferLoadAfterSourceOpen: false
           }
         )
+
+        playerRef.current.on(mpegts.Events.LOADING_COMPLETE, () => {
+          updateEnded()
+        })
 
         playerRef.current.attachMediaElement(videoRef.current)
         playerRef.current.load()
@@ -40,10 +54,12 @@ export const FlvVideoPlayer = ({ url }: { url: string }): JSX.Element => {
 
     return () => {
       if (playerRef.current != null) {
+        playerRef.current.detachMediaElement()
+        playerRef.current.unload()
         playerRef.current.destroy()
       }
     }
-  }, [url, videoRef])
+  }, [updateEnded, url])
 
   return <video autoPlay controls ref={videoRef} />
 }

@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 
 import io from 'socket.io-client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import { secondsToDuration, urlUtils } from '@haishin/utils'
 
@@ -25,6 +25,8 @@ const StreamUrlPage: NextPage = () => {
 
   // Setup Stream
   const [streamUrl, updateStreamUrl] = useState('')
+  // const [streamComplete, setStreamComplete] = useState(false) // We'll use streamComplete later to change things
+  const [, setStreamComplete] = useState(false)
 
   // Transcriptions
   const [isTranscribing, setIsTranscribing] = useState(false)
@@ -51,8 +53,6 @@ const StreamUrlPage: NextPage = () => {
 
     socket.on('start-transcribing', (data) => {
       setIsTranscribing(true)
-
-      console.log({ data })
 
       updateStreamUrl(data.streamUrl)
     })
@@ -98,6 +98,25 @@ const StreamUrlPage: NextPage = () => {
     setIsTranscribing(nextState)
   }
 
+  let updateEnded = useCallback((): (() => void) => {
+    updateEnded = () => () => {}
+
+    setStreamComplete(true)
+
+    updateTextLogs((state) => [
+      {
+        id: 'end',
+        time: 'Complete',
+        transcription: '配信は終了しました',
+        translation: 'Stream has ended'
+      },
+      ...state
+    ])
+    socket.disconnect()
+
+    return () => {}
+  }, [])
+
   return (
     <>
       {streamUrl !== '' ? (
@@ -109,6 +128,7 @@ const StreamUrlPage: NextPage = () => {
           streamUrl={streamUrl}
           textLogs={textLogs}
           updateFileDuration={() => {}}
+          updateEnded={updateEnded}
         />
       ) : (
         <div className='h-screen w-screen flex content-center items-center mx-auto text-center'>

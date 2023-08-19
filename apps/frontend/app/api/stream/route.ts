@@ -32,7 +32,7 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
   const streams = streamKeys.map((stream: any) => {
     const streamData = baseStreamsObj.live[stream]
     const { publisher, subscribers } = streamData
-    const viewers = Math.floor(subscribers.length / 2) // For some reason, the subscribers array is double so we need to halve it
+    const viewers = subscribers.length
 
     const url = urlUtils.decodeUrl(stream)
     const paths = getPathsByUrl(url)

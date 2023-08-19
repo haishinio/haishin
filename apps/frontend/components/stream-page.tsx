@@ -19,6 +19,7 @@ interface Props {
   streamUrl: string
   textLogs: TextLog[]
   updateFileDuration?: (duration: number) => void
+  updateEnded: () => void
 }
 
 const StreamPage = (props: Props): JSX.Element => {
@@ -29,7 +30,8 @@ const StreamPage = (props: Props): JSX.Element => {
     originalUrl,
     streamUrl,
     textLogs,
-    updateFileDuration
+    updateFileDuration,
+    updateEnded
   } = props
 
   // Set logHeight
@@ -63,7 +65,7 @@ const StreamPage = (props: Props): JSX.Element => {
 
           <div className='aspect-w-16 aspect-h-9'>
             {isRtmp ? (
-              <FlvVideoPlayer url={streamUrl} />
+              <FlvVideoPlayer url={streamUrl} updateEnded={updateEnded} />
             ) : (
               <video
                 autoPlay
@@ -74,6 +76,9 @@ const StreamPage = (props: Props): JSX.Element => {
                 src={streamUrl}
                 onLoadedMetadata={(e) => {
                   updateDuration(e.currentTarget.duration)
+                }}
+                onEnded={() => {
+                  updateEnded()
                 }}
               />
             )}

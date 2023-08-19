@@ -57,6 +57,7 @@ const StreamIndex: NextPage = () => {
           streamUrl={streamUrl}
           textLogs={textLogs}
           updateFileDuration={updateFileDuration}
+          updateEnded={() => {}}
         />
       ) : (
         <Loading message='Setting up the upload...' />
