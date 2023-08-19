@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.2.7
+
+### Patch Changes
+
+- [`c0db054`](https://github.com/tomouchuu/haishin/commit/c0db054e4c8c9e6b5e30f21b341c6bc62590d42d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Log the api/stream endpoint to work out what's happening
+
 ## 2.2.6
 
 ### Patch Changes
