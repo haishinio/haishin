@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 2.2.8
+
+### Patch Changes
+
+- [`62aa801`](https://github.com/tomouchuu/haishin/commit/62aa8017a6977fd6a08b33945a8731e48b409415) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Remove logging for the stream route, now the correct url has been passed
+
 ## 2.2.7
 
 ### Patch Changes
