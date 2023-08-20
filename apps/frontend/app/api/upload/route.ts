@@ -1,11 +1,7 @@
-import { NextResponse } from 'next/server'
 import fs from 'fs'
+import { NextResponse } from 'next/server'
 
-import path from 'path'
-
-const pathToData = (restOfFilePath: string): string => {
-  return path.join(process.cwd(), '../../', restOfFilePath)
-}
+import pathToData from '../../../utils/path-to-data'
 
 // Function to save the file
 const saveFile = async (file: File): Promise<string> => {

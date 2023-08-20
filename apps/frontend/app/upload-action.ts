@@ -1,12 +1,9 @@
 'use server'
 
 import fs from 'fs'
-import path from 'path'
 import { redirect } from 'next/navigation'
 
-const pathToData = (restOfFilePath: string): string => {
-  return path.join(process.cwd(), '../../', restOfFilePath)
-}
+import pathToData from '../utils/path-to-data'
 
 const saveFile = async (file: File): Promise<string> => {
   const servePath = `./data/uploads/${file.name}`

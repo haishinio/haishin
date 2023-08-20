@@ -1,17 +1,15 @@
 import fs from 'fs'
-import path from 'path'
 import { NextResponse } from 'next/server'
 import { streamToBuffer } from '@jorgeferrero/stream-to-buffer'
 
-const pathToData = (restOfFilePath: string): string => {
-  return path.join(process.cwd(), '../../', restOfFilePath)
-}
+import pathToData from '../../../../utils/path-to-data'
 
 export async function GET(
   request: Request,
   { params }: { params: { url: string } }
 ): Promise<NextResponse> {
   const { url } = params
+
   const filePath = pathToData(`./data/${url}`) // Set file path
   const videoSize = fs.statSync(filePath).size
 

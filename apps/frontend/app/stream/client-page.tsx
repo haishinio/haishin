@@ -22,7 +22,7 @@ const StreamIndex: NextPage = () => {
   useEffect(() => {
     if (url !== '') {
       const cleanUrl = encodeURIComponent(url)
-      setStreamUrl(`/api/stream/${cleanUrl}`)
+      setStreamUrl(`/api/upload/${cleanUrl}`)
     }
   }, [url])
 
