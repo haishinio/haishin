@@ -6,6 +6,14 @@ import HomeLivestreamForm from '../components/home/livestream-form'
 import CurrentStreams from '../components/home/current-streams'
 import Footer from '../components/home/footer'
 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Haishin - 配信 -',
+  description:
+    "Haishin is a transcriber+translator service for livestreams powered by openai's whisper and deepL's translations."
+}
+
 export default function Page(): JSX.Element {
   return (
     <div className='p-4'>
