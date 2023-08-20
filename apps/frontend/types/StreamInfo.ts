@@ -4,6 +4,7 @@ export interface StreamInfo {
   duration: number
   thumbnail: string
   title: string
+  url: string
   viewers: number
 }
 

@@ -29,7 +29,8 @@ let productionCors = [] as string[]
 
 if (
   process.env.PRODUCTION_URL !== undefined &&
-  process.env.PRODUCTION_URL !== ''
+  process.env.PRODUCTION_URL !== '' &&
+  !process.env.PRODUCTION_URL.includes('http://localhost')
 ) {
   const productionDomain = process.env.PRODUCTION_URL.replace('https://', '')
 

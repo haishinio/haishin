@@ -4,7 +4,7 @@ import { getPathsByUrl, urlUtils } from '@haishin/utils'
 
 import type StreamInfo from '../../../types/StreamInfo'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 function isEmpty(obj: object): boolean {
   for (const prop in obj) {
@@ -18,9 +18,9 @@ function isEmpty(obj: object): boolean {
 
 export async function GET(): Promise<NextResponse<StreamInfo[]>> {
   const rtmpUrl = process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL ?? ''
-  const url = `${rtmpUrl}streams`
+  const apiUrl = `${rtmpUrl}streams`
 
-  const baseStreamsObj = await fetch(url).then(
+  const baseStreamsObj = await fetch(apiUrl).then(
     async (response) => await response.json()
   )
 
@@ -35,8 +35,8 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
     const { publisher, subscribers } = streamData
     const viewers = subscribers.length
 
-    const url = urlUtils.decodeUrl(stream)
-    const paths = getPathsByUrl(url)
+    const streamUrl = urlUtils.decodeUrl(stream)
+    const paths = getPathsByUrl(streamUrl)
     const title = `${paths.site} - ${paths.user}`
 
     return {
@@ -47,6 +47,7 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
       ),
       thumbnail: '',
       title,
+      url: streamUrl,
       viewers
     }
   })
