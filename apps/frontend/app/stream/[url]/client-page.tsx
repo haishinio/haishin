@@ -1,12 +1,10 @@
 'use client'
 
-import type { NextPage } from 'next'
-
 import io from 'socket.io-client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
-import { secondsToDuration, urlUtils } from '@haishin/utils'
+
+import { secondsToDuration } from '@haishin/utils'
 
 import Loading from '../../../components/loading'
 import StreamPage from '../../../components/stream-page'
@@ -16,12 +14,13 @@ import type { TextLog } from '../../../types/Textlog'
 
 let socket: Socket
 
-const StreamUrlPage: NextPage = () => {
-  const pathName = usePathname()
-  const encodedUrl = pathName?.replace('/stream/', '')
-  const url = urlUtils.decodeUrl(encodedUrl)
+interface Props {
+  initialDuration: number
+  url: string
+}
 
-  if (url == null || url === '') window.location.href = '/stream-error'
+const StreamUrlPage = ({ initialDuration, url }: Props): JSX.Element => {
+  console.log({ initialDuration, url })
 
   // Setup Stream
   const [streamUrl, updateStreamUrl] = useState('')
@@ -133,7 +132,7 @@ const StreamUrlPage: NextPage = () => {
       ) : (
         <div className='h-screen w-screen flex content-center items-center mx-auto text-center'>
           <div className='w-full text-2xl'>
-            <Loading message='Getting stream data...' />
+            <Loading message={`Getting stream data for ${url}`} />
           </div>
         </div>
       )}

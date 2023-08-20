@@ -4,7 +4,7 @@ import { getPathsByUrl, urlUtils } from '@haishin/utils'
 
 import type StreamInfo from '../../../types/StreamInfo'
 
-export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 function isEmpty(obj: object): boolean {
   for (const prop in obj) {

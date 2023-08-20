@@ -1,33 +1,39 @@
-import { Suspense } from 'react'
 import type { Metadata } from 'next'
 
 import StreamUrlPage from './client-page'
-import Loading from '../../../components/loading'
+import type StreamInfo from '../../../types/StreamInfo'
 
 interface Props {
   params: { url: string }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+async function getStreamData(streamUrl: string): Promise<StreamInfo> {
   const productionUrl =
     process.env.PRODUCTION_URL !== '' ||
     process.env.PRODUCTION_URL !== undefined
       ? (process.env.PRODUCTION_URL as string)
       : 'http://localhost:3000'
-  const streamUrl = params.url
-  const url = `${productionUrl}/api/stream/${streamUrl}`
 
-  const stream = await fetch(url).then(async (res) => await res.json())
+  const apiUrl = `${productionUrl}/api/stream/${streamUrl}`
+
+  const stream = await fetch(apiUrl, { cache: 'no-store' }).then(
+    async (res) => await res.json()
+  )
+
+  return stream
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const stream = await getStreamData(params.url)
 
   return {
-    title: `📝 ${stream.title as string}`
+    title: `📝 ${stream.title}`
   }
 }
 
-export default function Page(): JSX.Element {
-  return (
-    <Suspense fallback={<Loading />}>
-      <StreamUrlPage />
-    </Suspense>
-  )
+export default async function Page({ params }: Props): Promise<JSX.Element> {
+  const streamData = await getStreamData(params.url)
+  const { duration, url } = streamData
+
+  return <StreamUrlPage initialDuration={duration} url={url} />
 }
