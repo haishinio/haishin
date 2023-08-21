@@ -3,7 +3,7 @@ import Spinner from './spinner'
 const getRandomElement = (array: string[]): string =>
   array[Math.floor(Math.random() * array.length)]
 
-const Loading = ({ message }: { message?: string }): JSX.Element => {
+const Loading = ({ message }: { message?: string }): React.JSX.Element => {
   const messages = [
     'Loading...',
     'iWanna Party Night...',

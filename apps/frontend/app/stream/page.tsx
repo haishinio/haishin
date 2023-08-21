@@ -18,7 +18,7 @@ export async function generateMetadata({
   }
 }
 
-export default function Page(): JSX.Element {
+export default function Page(): React.JSX.Element {
   return (
     <Suspense fallback={<Loading />}>
       <StreamUrlPage />

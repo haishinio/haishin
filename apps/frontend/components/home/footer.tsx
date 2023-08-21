@@ -2,7 +2,7 @@ function getVersion(): string {
   return process.env.HAISHIN_VERSION ?? 'dev'
 }
 
-export default function CurrentStreams(): JSX.Element {
+export default function Footer(): React.JSX.Element {
   const version = getVersion()
 
   return (

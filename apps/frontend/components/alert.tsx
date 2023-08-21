@@ -1,4 +1,4 @@
-const Alert = (): JSX.Element => (
+const Alert = (): React.JSX.Element => (
   <div
     className='border-2 border-sky-200 bg-sky-100 rounded text-center p-4 my-6'
     role='alert'

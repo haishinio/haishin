@@ -4,7 +4,7 @@ interface Props {
   textLog: TextLog
 }
 
-export default function TextLogRow({ textLog }: Props): JSX.Element {
+export default function TextLogRow({ textLog }: Props): React.JSX.Element {
   return (
     <>
       <td className='p-2 w-full table-cell sm:hidden'>

@@ -9,7 +9,7 @@ export const FlvVideoPlayer = ({
 }: {
   updateEnded: () => void
   url: string
-}): JSX.Element => {
+}): React.JSX.Element => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const playerRef = useRef<mpegts.Player | null>(null)
 

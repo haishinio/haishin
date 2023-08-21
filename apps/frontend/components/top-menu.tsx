@@ -6,7 +6,7 @@ interface Props {
   url: string
 }
 
-const TopMenu = (props: Props): JSX.Element => {
+const TopMenu = (props: Props): React.JSX.Element => {
   const { url } = props
   const [streamUrl, updateStreamUrl] = useState(url)
   const [cleanStreamUrl, updateCleanStreamUrl] = useState('')

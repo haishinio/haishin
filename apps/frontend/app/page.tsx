@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "Haishin is a transcriber+translator service for livestreams powered by openai's whisper and deepL's translations."
 }
 
-export default function Page(): JSX.Element {
+export default function Page(): React.JSX.Element {
   return (
     <div className='p-4'>
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>

@@ -1,6 +1,6 @@
 import useRandomArtistSong from '../hooks/useRandomArtistSong'
 
-export default function NotFound(): JSX.Element {
+export default function NotFound(): React.JSX.Element {
   const randomArtistSong = useRandomArtistSong()
 
   return (

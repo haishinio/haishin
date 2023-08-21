@@ -31,7 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function Page({ params }: Props): Promise<JSX.Element> {
+export default async function Page({
+  params
+}: Props): Promise<React.JSX.Element> {
   const streamData = await getStreamData(params.url)
   const { duration, url } = streamData
 

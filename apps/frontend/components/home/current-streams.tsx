@@ -5,13 +5,13 @@ import Link from 'next/link'
 
 import type StreamInfo from '../../types/StreamInfo'
 
-const NoStreamsComponent = (): JSX.Element => (
+const NoStreamsComponent = (): React.JSX.Element => (
   <div>
     <p>There are no current streams...</p>
   </div>
 )
 
-export default function CurrentStreams(): JSX.Element {
+export default function CurrentStreams(): React.JSX.Element {
   const { data: streams, error }: { data: StreamInfo[]; error?: any } = useSWR(
     '/api/stream',
     async (url: string): Promise<any> =>

@@ -11,7 +11,7 @@ export default function GlobalError({
 }: {
   error: Error
   reset: () => void
-}): JSX.Element {
+}): React.JSX.Element {
   useEffect(() => {
     // Log the error to an error reporting service
     function logError(): void {
