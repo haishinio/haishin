@@ -1,11 +1,14 @@
+import { base32Encode, base32Decode } from '@ctrl/ts-base32'
+
 export const encodeUrl = (url: string): string => {
-  const encodedUrl = encodeURIComponent(btoa(url))
+  const bufferedUrl = Buffer.from(url)
+  const encodedUrl = base32Encode(bufferedUrl)
 
   return encodedUrl
 }
 
-export const decodeUrl = (base64Url: string): string => {
-  const decodedUrl = atob(decodeURIComponent(base64Url))
+export const decodeUrl = (base32Url: string): string => {
+  const decodedUrl = Buffer.from(base32Decode(base32Url)).toString()
 
   return decodedUrl
 }
