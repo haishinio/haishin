@@ -13,10 +13,11 @@ import {
 } from 'media-chrome/dist/react'
 import HlsVideoElement from './hls-video-player'
 import Duration from './duration'
-import type StreamInfo from '../../types/StreamInfo'
 import Loading from '../loading'
 
-export const VideoPlayer = ({
+import type StreamInfo from '../../types/StreamInfo'
+
+export const LiveVideoPlayer = ({
   streamId,
   updateEnded,
   url
@@ -50,16 +51,16 @@ export const VideoPlayer = ({
         />
       )}
       <MediaControlBar>
-        <MediaLiveButton></MediaLiveButton>
+        <MediaLiveButton />
         {started !== null && (
           <Duration initialDuration={duration} hasEnded={hasEnded} />
         )}
         <div className='flex-grow bg-[--media-secondary-color]'></div>
-        <MediaVolumeRange></MediaVolumeRange>
-        <MediaMuteButton></MediaMuteButton>
+        <MediaVolumeRange />
+        <MediaMuteButton />
       </MediaControlBar>
     </MediaController>
   )
 }
 
-export default VideoPlayer
+export default LiveVideoPlayer

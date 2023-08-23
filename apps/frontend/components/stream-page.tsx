@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-// import FlvVideoPlayer from './flv-video-player'
-import VideoPlayer from './video-player'
+import LiveVideoPlayer from './live-video-player'
+import VodVideoPlayer from './vod-video-player'
 import Spinner from './spinner'
 import TopMenu from './top-menu'
 import TextLogRow from './textlog-row'
@@ -69,25 +69,15 @@ const StreamPage = (props: Props): React.JSX.Element => {
 
           <div className='aspect-w-16 aspect-h-9'>
             {isRtmp ? (
-              <VideoPlayer
+              <LiveVideoPlayer
                 streamId={streamId}
                 url={streamUrl}
                 updateEnded={updateEnded}
               />
             ) : (
-              <video
-                autoPlay
-                controls
-                height='100%'
-                width='100%'
-                playsInline
-                src={streamUrl}
-                onLoadedMetadata={(e) => {
-                  updateDuration(e.currentTarget.duration)
-                }}
-                onEnded={() => {
-                  updateEnded()
-                }}
+              <VodVideoPlayer
+                streamUrl={streamUrl}
+                updateDuration={updateDuration}
               />
             )}
           </div>
