@@ -60,7 +60,10 @@ const StreamIndex: NextPage = () => {
           updateEnded={() => {}}
         />
       ) : (
-        <Loading message='Setting up the upload...' />
+        <Loading
+          className='h-screen w-screen text-2xl'
+          message='Setting up the upload...'
+        />
       )}
     </>
   )

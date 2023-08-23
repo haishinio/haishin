@@ -130,11 +130,10 @@ const StreamUrlPage = ({ initialDuration, url }: Props): JSX.Element => {
           updateEnded={updateEnded}
         />
       ) : (
-        <div className='h-screen w-screen flex content-center items-center mx-auto text-center'>
-          <div className='w-full text-2xl'>
-            <Loading message={`Getting stream data for ${url}`} />
-          </div>
-        </div>
+        <Loading
+          className='h-screen w-screen text-2xl'
+          message={`Getting stream data for ${url}`}
+        />
       )}
     </>
   )

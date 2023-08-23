@@ -20,7 +20,7 @@ export async function generateMetadata({
 
 export default function Page(): React.JSX.Element {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading className='h-screen w-screen text-2xl' />}>
       <StreamUrlPage />
     </Suspense>
   )
