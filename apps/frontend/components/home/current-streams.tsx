@@ -1,9 +1,10 @@
 'use client'
 
-import useSWR from 'swr'
 import Link from 'next/link'
+import useStream from '../../hooks/useStream'
 
 import type StreamInfo from '../../types/StreamInfo'
+import Loading from '../loading'
 
 const NoStreamsComponent = (): React.JSX.Element => (
   <div>
@@ -12,16 +13,13 @@ const NoStreamsComponent = (): React.JSX.Element => (
 )
 
 export default function CurrentStreams(): React.JSX.Element {
-  const { data: streams, error }: { data: StreamInfo[]; error?: any } = useSWR(
-    '/api/stream',
-    async (url: string): Promise<any> =>
-      await fetch(url).then(async (res) => await res.json()),
-    { refreshInterval: 60000 }
-  )
+  const { data, isError, isLoading } = useStream()
 
-  const fetchError = Boolean(error)
+  if (isLoading) return <Loading message='Getting streams...' />
 
-  if (streams === undefined || streams.length === 0 || fetchError)
+  const streams = data as StreamInfo[]
+
+  if (streams === undefined || streams.length === 0 || isError)
     return <NoStreamsComponent />
 
   return (
