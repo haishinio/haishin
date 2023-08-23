@@ -1,5 +1,11 @@
 # @haishin/frontend
 
+## 3.0.1
+
+### Patch Changes
+
+- [`e50937d`](https://github.com/tomouchuu/haishin/commit/e50937d986e676c8217ec9967de67ec27c9bef98) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Should fix fetch issues by referring to local docker urls
+
 ## 3.0.0
 
 ### Major Changes
