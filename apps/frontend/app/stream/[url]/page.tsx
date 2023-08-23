@@ -9,9 +9,8 @@ interface Props {
 
 async function getStreamData(streamUrl: string): Promise<StreamInfo> {
   const productionUrl =
-    process.env.PRODUCTION_URL !== '' ||
-    process.env.PRODUCTION_URL !== undefined
-      ? (process.env.PRODUCTION_URL as string)
+    process.env.FRONTEND_URL !== '' || process.env.FRONTEND_URL !== undefined
+      ? (process.env.FRONTEND_URL as string)
       : 'http://localhost:3000'
 
   const apiUrl = `${productionUrl}/api/stream/${streamUrl}`
