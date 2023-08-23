@@ -1,5 +1,37 @@
 # @haishin/frontend
 
+## 3.0.0
+
+### Major Changes
+
+- [`92f2e7a`](https://github.com/tomouchuu/haishin/commit/92f2e7a1ea5e8c55f8f89320325538f2aeca831c) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch to hls for livestreams
+
+### Minor Changes
+
+- [`3cb3a92`](https://github.com/tomouchuu/haishin/commit/3cb3a92e6f3507716ba0b0bef4dffb1456e5adfc) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds new api/stream/[id] route to handle stream specific information
+
+- [`6c2a66c`](https://github.com/tomouchuu/haishin/commit/6c2a66c10f64fce77fba9bd8a2ba21a8890028f4) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch to the custom video player for uploads too
+
+- [`688f7c4`](https://github.com/tomouchuu/haishin/commit/688f7c4b13b8910d8bd42774f2937c2712c27311) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Move api/stream/[url] to api/upload/[url] to prepare for new api/stream/[id] route to power better information for the livestream page
+
+### Patch Changes
+
+- [`51f2203`](https://github.com/tomouchuu/haishin/commit/51f2203b5acbf29a75da629c562e659b45a7a7dd) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Make use of the new stream info endpoint and pass down as props
+
+- [`d44b06c`](https://github.com/tomouchuu/haishin/commit/d44b06c767107f6369427e991880a987dcc54fe7) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update return types for react elements
+
+- [`9254166`](https://github.com/tomouchuu/haishin/commit/9254166a97a127434223f5ee94e797a2f2c7b6ce) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Refactor current streams to use the useStream hook
+
+- [`015d69c`](https://github.com/tomouchuu/haishin/commit/015d69c63a0b909d2dfbdd2daade0f523b948572) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Improve look of loading component by vertically+horizontally centering
+
+- [`e9b8e5a`](https://github.com/tomouchuu/haishin/commit/e9b8e5a47bb3d10f082248e3620d14f9e0f2cc28) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds metadata for the pages, just simple titles, descriptions for now
+
+- [`601a678`](https://github.com/tomouchuu/haishin/commit/601a67810cff9a2d51a75a70d7d891713de4ec79) Thanks [@tomouchuu](https://github.com/tomouchuu)! - No longer need initial duration to be passed down the prop chain
+
+- Updated dependencies [[`3987f04`](https://github.com/tomouchuu/haishin/commit/3987f04762ef9377d8f23d9e29fc6da5901b4a86), [`92f2e7a`](https://github.com/tomouchuu/haishin/commit/92f2e7a1ea5e8c55f8f89320325538f2aeca831c)]:
+  - @haishin/utils@2.3.0
+  - @haishin/transcriber@2.2.0
+
 ## 2.2.8
 
 ### Patch Changes

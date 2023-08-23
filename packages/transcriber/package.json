@@ -1,7 +1,7 @@
 {
   "name": "@haishin/transcriber",
   "description": "A package that restreams+transcribes+translates Japanese streams into English with OpenAI+DeepL",
-  "version": "2.1.5",
+  "version": "2.2.0",
   "private": true,
   "type": "commonjs",
   "main": "./dist/index.js",

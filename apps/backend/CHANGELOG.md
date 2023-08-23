@@ -1,5 +1,22 @@
 # @haishin/backend
 
+## 2.2.0
+
+### Minor Changes
+
+- [`92f2e7a`](https://github.com/tomouchuu/haishin/commit/92f2e7a1ea5e8c55f8f89320325538f2aeca831c) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch to hls for livestreams
+
+### Patch Changes
+
+- [`3cb3a92`](https://github.com/tomouchuu/haishin/commit/3cb3a92e6f3507716ba0b0bef4dffb1456e5adfc) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds new api/stream/[id] route to handle stream specific information
+
+- [`e6118af`](https://github.com/tomouchuu/haishin/commit/e6118afe669cd7e3c5b614d31c99c1be2afabbca) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update ffmpeg path to have a sensible backup if not defined
+
+- [`247ae11`](https://github.com/tomouchuu/haishin/commit/247ae117dcaf11b6eae7b700c2d6d0031cb7d3c4) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Check for both the file and the size of the file before beginning transcriptions
+
+- Updated dependencies [[`92f2e7a`](https://github.com/tomouchuu/haishin/commit/92f2e7a1ea5e8c55f8f89320325538f2aeca831c)]:
+  - @haishin/transcriber@2.2.0
+
 ## 2.1.7
 
 ### Patch Changes
