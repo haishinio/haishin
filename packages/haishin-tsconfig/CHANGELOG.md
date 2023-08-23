@@ -1,5 +1,11 @@
 # @haishin/tsconfig
 
+## 2.1.2
+
+### Patch Changes
+
+- [`015d261`](https://github.com/tomouchuu/haishin/commit/015d2616181c724add225864ae62e58380d64933) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update the nextjs tsconfig to account for updated paths
+
 ## 2.1.1
 
 ### Patch Changes

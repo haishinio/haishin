@@ -1,5 +1,11 @@
 # @haishin/utils
 
+## 2.3.0
+
+### Minor Changes
+
+- [`3987f04`](https://github.com/tomouchuu/haishin/commit/3987f04762ef9377d8f23d9e29fc6da5901b4a86) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from uriencoded base64 strings to just plain base32 strings
+
 ## 2.2.0
 
 ### Minor Changes

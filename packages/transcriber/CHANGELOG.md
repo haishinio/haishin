@@ -1,5 +1,16 @@
 # @haishin/transcriber
 
+## 2.2.0
+
+### Minor Changes
+
+- [`92f2e7a`](https://github.com/tomouchuu/haishin/commit/92f2e7a1ea5e8c55f8f89320325538f2aeca831c) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch to hls for livestreams
+
+### Patch Changes
+
+- Updated dependencies [[`3987f04`](https://github.com/tomouchuu/haishin/commit/3987f04762ef9377d8f23d9e29fc6da5901b4a86)]:
+  - @haishin/utils@2.3.0
+
 ## 2.1.5
 
 ### Patch Changes
