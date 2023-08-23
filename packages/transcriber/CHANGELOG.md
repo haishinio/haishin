@@ -1,5 +1,11 @@
 # @haishin/transcriber
 
+## 2.2.1
+
+### Patch Changes
+
+- [`a55927e`](https://github.com/tomouchuu/haishin/commit/a55927e77752d19fa1b157105585086fe9c4b25d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix paths when splitting uploaded videos
+
 ## 2.2.0
 
 ### Minor Changes
