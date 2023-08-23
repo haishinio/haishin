@@ -51,9 +51,10 @@ const splitVideoFile = async function (
   const part = uuidv4({
     random: crypto.getRandomValues(new Uint8Array(16))
   })
+
   const partFileName = path.join(
     pathToFile,
-    '../../../',
+    pathToFile.includes('uploads') ? '../../' : '../../../',
     `stream-parts/${part}.wav`
   )
 
