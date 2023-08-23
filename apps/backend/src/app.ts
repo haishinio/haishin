@@ -62,7 +62,7 @@ const config = {
     mediaroot: './data'
   },
   trans: {
-    ffmpeg: process.env.FFMPEG_PATH as string,
+    ffmpeg: process.env.FFMPEG_PATH ?? '/usr/bin/ffmpeg',
     tasks: [
       {
         app: 'live',
