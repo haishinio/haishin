@@ -1,3 +1,5 @@
+import fs from 'fs'
+
 import { setupStream } from '@haishin/transcriber'
 import transcriberHandler from './transcriber-handler'
 
@@ -20,16 +22,27 @@ async function joinRoomSetup(
   if (!streamData.canPlay) {
     io.to(userId).emit('stream-error', streamData)
   } else {
-    io.to(userId).emit('start-transcribing', streamData)
-  }
+    // Wait for the streamFile to be available before allowing transcriptions to start
+    // while (!fs.existsSync(streamData.file)) {
+    while (
+      !fs.existsSync(streamData.file) ||
+      fs.statSync(streamData.file).size === 0
+    ) {
+      // Do nothing
+      // console.log("Stream isn't ready")
+    }
 
-  if (streamData.canPlay && streamData.newStream) {
-    void transcriberHandler(io, {
-      url: streamData.originalUrl,
-      filename: streamData.file,
-      startTime: 0,
-      prompt: ''
-    })
+    console.log('Stream is ready')
+    io.to(userId).emit('start-transcribing', streamData)
+
+    if (streamData.newStream) {
+      void transcriberHandler(io, {
+        url: streamData.originalUrl,
+        filename: streamData.file,
+        startTime: 0,
+        prompt: ''
+      })
+    }
   }
 }
 
