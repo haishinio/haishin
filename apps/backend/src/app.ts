@@ -61,6 +61,17 @@ const config = {
     allow_origin: '*',
     mediaroot: './data'
   },
+  trans: {
+    ffmpeg: process.env.FFMPEG_PATH as string,
+    tasks: [
+      {
+        app: 'live',
+        hls: true,
+        hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
+        hlsKeep: false
+      }
+    ]
+  },
   ...productionMediaServerHttps
 }
 

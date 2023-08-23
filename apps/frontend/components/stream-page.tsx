@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import FlvVideoPlayer from './flv-video-player'
+// import FlvVideoPlayer from './flv-video-player'
+import VideoPlayer from './video-player'
 import Spinner from './spinner'
 import TopMenu from './top-menu'
 import TextLogRow from './textlog-row'
@@ -16,15 +17,17 @@ interface Props {
   isRtmp: boolean
   isTranscribing: boolean
   originalUrl: string
+  streamId?: string
   streamUrl: string
   textLogs: TextLog[]
   updateFileDuration?: (duration: number) => void
   updateEnded: () => void
 }
 
-const StreamPage = (props: Props): JSX.Element => {
+const StreamPage = (props: Props): React.JSX.Element => {
   const {
     controlTranscription,
+    streamId,
     isRtmp,
     isTranscribing,
     originalUrl,
@@ -41,7 +44,8 @@ const StreamPage = (props: Props): JSX.Element => {
   useEffect(() => {
     if (ref?.current?.clientHeight != null) {
       const videoHeight = ref.current.clientHeight
-      setLogHeight(window.screen.availHeight - videoHeight)
+
+      setLogHeight(size.height - videoHeight)
     }
   }, [size])
 
@@ -65,7 +69,11 @@ const StreamPage = (props: Props): JSX.Element => {
 
           <div className='aspect-w-16 aspect-h-9'>
             {isRtmp ? (
-              <FlvVideoPlayer url={streamUrl} updateEnded={updateEnded} />
+              <VideoPlayer
+                streamId={streamId}
+                url={streamUrl}
+                updateEnded={updateEnded}
+              />
             ) : (
               <video
                 autoPlay

@@ -12,7 +12,10 @@
   },
   "include": [
     "app",
+    "hooks",
+    "components",
     "types/**/*.ts",
+    "utils",
     "utils/ffmpeg-splitter-worker.js",
     "next-env.d.ts",
     ".next/types/**/*.ts"

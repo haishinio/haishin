@@ -78,12 +78,12 @@ async function stream(streamData: StreamDataResponse): Promise<void> {
 
       // Delete file in streams
       parentPort?.postMessage({
-        message: `Deleting ${streamData.file} in 2 minutes`
+        message: `Deleting ${streamData.folder} in 2 minutes`
       })
       setTimeout(
         () => {
-          fs.unlinkSync(streamData.file)
-          parentPort?.postMessage({ message: `Deleted ${streamData.file}` })
+          fs.rmdirSync(streamData.folder)
+          parentPort?.postMessage({ message: `Deleted ${streamData.folder}` })
         },
         1000 * 60 * 2
       ) // 2 minutes after stream ends delete the file

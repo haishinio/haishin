@@ -2,7 +2,9 @@ export interface StreamDataResponse {
   canPlay: boolean
   newStream: boolean
   file: string
-  baseName: string
+  folder: string
+  streamFile: string
+  id: string
   originalUrl: string
   streamUrl: string
 }

@@ -1,11 +1,8 @@
-import fs from 'fs'
 import path from 'path'
-import exec from 'await-exec'
 import { Worker } from 'worker_threads'
-
 import * as Sentry from '@sentry/node'
 
-import { pathToData, setFileName, urlUtils } from '@haishin/utils'
+import { getStreamInfo } from './get-stream-info.js'
 
 import type { StreamDataResponse } from '../types/responses.js'
 
@@ -17,51 +14,6 @@ if (process.env.NODE_ENV === 'production') {
     // for finer control
     tracesSampleRate: 1.0
   })
-}
-
-export const getStreamInfo = async function (
-  originalUrl: string
-): Promise<StreamDataResponse> {
-  // Should check if we can play the stream at all (ie. use streamlink)
-  let canPlay = false
-
-  try {
-    await exec(`streamlink --json ${originalUrl} --retry-open 5`)
-
-    canPlay = true
-  } catch (error) {
-    console.log({ canPlayError: error })
-  }
-
-  const streamsDir = pathToData('streams')
-  const streamBaseName = setFileName(originalUrl)
-
-  const files = fs.readdirSync(streamsDir)
-
-  let newStream = false
-  const [filteredFile] = files.filter((file) => file.includes(streamBaseName))
-
-  console.log({ files, streamBaseName, filteredFile })
-
-  // If we don't have filteredFile then it's a newStream
-  if (filteredFile === undefined) newStream = true
-
-  const safeUrl = urlUtils.encodeUrl(originalUrl)
-  const streamUrl = `${process.env.RTMP_CLIENT_URL ?? ''}${safeUrl}.flv`
-
-  const file = pathToData(`streams/${streamBaseName}.mp4`)
-
-  return {
-    // Utils
-    canPlay,
-    newStream,
-    // Name
-    baseName: streamBaseName,
-    // Urls
-    originalUrl,
-    streamUrl,
-    file
-  }
 }
 
 export const setupStream = async function (

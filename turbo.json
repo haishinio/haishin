@@ -22,6 +22,7 @@
   },
   "globalEnv": [
     "APP_ENV",
+    "FFMPEG_PATH",
     "HAISHIN_VERSION",
     "OPENAI_API_KEY",
     "DEEPL_API_KEY",

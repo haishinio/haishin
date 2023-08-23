@@ -53,7 +53,7 @@ const splitVideoFile = async function (
   })
   const partFileName = path.join(
     pathToFile,
-    '../../',
+    '../../../',
     `stream-parts/${part}.wav`
   )
 
