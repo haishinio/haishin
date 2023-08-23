@@ -15,17 +15,13 @@ import type { TextLog } from '../../../types/Textlog'
 let socket: Socket
 
 interface Props {
-  initialDuration: number
+  streamId: string
   url: string
 }
 
-const StreamUrlPage = ({ initialDuration, url }: Props): JSX.Element => {
-  console.log({ initialDuration, url })
-
+const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
   // Setup Stream
   const [streamUrl, updateStreamUrl] = useState('')
-  // const [streamComplete, setStreamComplete] = useState(false) // We'll use streamComplete later to change things
-  const [, setStreamComplete] = useState(false)
 
   // Transcriptions
   const [isTranscribing, setIsTranscribing] = useState(false)
@@ -97,23 +93,18 @@ const StreamUrlPage = ({ initialDuration, url }: Props): JSX.Element => {
     setIsTranscribing(nextState)
   }
 
-  let updateEnded = useCallback((): (() => void) => {
-    updateEnded = () => () => {}
-
-    setStreamComplete(true)
-
-    updateTextLogs((state) => [
-      {
-        id: 'end',
-        time: 'Complete',
-        transcription: '配信は終了しました',
-        translation: 'Stream has ended'
+  const updateEnded = useCallback((): (() => void) => {
+    console.log('Stream ended...')
+    const timeout = setTimeout(
+      () => {
+        socket.disconnect()
       },
-      ...state
-    ])
-    socket.disconnect()
+      1000 * 60 * 2
+    ) // 2mins
 
-    return () => {}
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [])
 
   return (
@@ -124,6 +115,7 @@ const StreamUrlPage = ({ initialDuration, url }: Props): JSX.Element => {
           isRtmp={true}
           isTranscribing={isTranscribing}
           originalUrl={url}
+          streamId={streamId}
           streamUrl={streamUrl}
           textLogs={textLogs}
           updateFileDuration={() => {}}

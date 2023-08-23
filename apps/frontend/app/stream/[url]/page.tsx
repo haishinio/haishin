@@ -35,7 +35,7 @@ export default async function Page({
   params
 }: Props): Promise<React.JSX.Element> {
   const streamData = await getStreamData(params.url)
-  const { duration, url } = streamData
+  const { id, url } = streamData
 
-  return <StreamUrlPage initialDuration={duration} url={url} />
+  return <StreamUrlPage streamId={id} url={url} />
 }
