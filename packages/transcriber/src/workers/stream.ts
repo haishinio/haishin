@@ -84,7 +84,7 @@ async function stream(streamData: StreamDataResponse): Promise<void> {
       })
       setTimeout(
         () => {
-          fs.rmdirSync(streamData.folder)
+          fs.rmSync(streamData.folder, { recursive: true, force: true })
           parentPort?.postMessage({ message: `Deleted ${streamData.folder}` })
         },
         1000 * 60 * 2
