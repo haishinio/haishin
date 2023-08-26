@@ -25,11 +25,13 @@ export async function GET(
   const paths = getPathsByUrl(streamUrl)
   const title = `${paths.site} - ${paths.user}`
 
+  const thumbnail = `${process.env.RTMP_CLIENT_URL ?? ''}${id}/stream.jpg`
+
   const stream = {
     id,
     started,
     duration,
-    thumbnail: '',
+    thumbnail,
     title,
     url: streamUrl,
     viewers

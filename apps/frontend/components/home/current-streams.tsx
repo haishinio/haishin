@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import useStream from '../../hooks/useStream'
 
@@ -11,6 +12,31 @@ const NoStreamsComponent = (): React.JSX.Element => (
     <p>There are no current streams...</p>
   </div>
 )
+
+const StreamItem = ({ stream }: { stream: StreamInfo }): React.JSX.Element => {
+  const startedDate = new Date(stream.started)
+  const started = startedDate.toLocaleString()
+
+  return (
+    <Link
+      href={`/stream/${stream.id}`}
+      className='transition-all duration-100 text-sky-600 hover:text-sky-500 break-all'
+    >
+      <div className='aspect-w-16 aspect-h-9 rounded overflow-hidden'>
+        <Image
+          src={stream.thumbnail}
+          alt={stream.title}
+          fill={true}
+          unoptimized
+        />
+      </div>
+      <div className='flex justify-between'>
+        <span>{stream.title}</span>
+        <span>{started}</span>
+      </div>
+    </Link>
+  )
+}
 
 export default function CurrentStreams(): React.JSX.Element {
   const { data, isError, isLoading } = useStream()
@@ -27,12 +53,7 @@ export default function CurrentStreams(): React.JSX.Element {
       <section className='mt-4 grid grid-cols-2 gap-4'>
         {streams.map((stream) => (
           <div key={stream.id}>
-            <Link
-              href={`/stream/${stream.id}`}
-              className='transition-all duration-100 text-sky-600 hover:text-sky-500 break-all'
-            >
-              {stream.title}
-            </Link>
+            <StreamItem stream={stream} />
           </div>
         ))}
       </section>

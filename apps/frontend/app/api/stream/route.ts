@@ -30,7 +30,7 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
 
   const streamKeys = Object.keys(baseStreamsObj.live)
 
-  const streams = streamKeys.map((stream: any) => {
+  const streams = streamKeys.map((stream: string) => {
     const streamData = baseStreamsObj.live[stream]
     const { publisher, subscribers } = streamData
     const viewers = subscribers.length
@@ -39,13 +39,15 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
     const paths = getPathsByUrl(streamUrl)
     const title = `${paths.site} - ${paths.user}`
 
+    const thumbnail = `${process.env.RTMP_CLIENT_URL ?? ''}${stream}/stream.jpg`
+
     return {
       id: stream,
       started: publisher.connectCreated,
       duration: Math.ceil(
         (Date.now() - Date.parse(publisher.connectCreated)) / 1000
       ),
-      thumbnail: '',
+      thumbnail,
       title,
       url: streamUrl,
       viewers
