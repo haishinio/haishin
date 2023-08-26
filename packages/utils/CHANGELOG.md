@@ -1,5 +1,11 @@
 # @haishin/utils
 
+## 2.4.0
+
+### Minor Changes
+
+- [`aad14e8`](https://github.com/tomouchuu/haishin/commit/aad14e8e726c26de5c237c3911e61104c730132d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Remove rtmp sites helper, adds urlFix fn to modify youtube live urls into a format we can use
+
 ## 2.3.0
 
 ### Minor Changes

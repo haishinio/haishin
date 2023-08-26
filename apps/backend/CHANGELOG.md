@@ -1,5 +1,14 @@
 # @haishin/backend
 
+## 2.2.3
+
+### Patch Changes
+
+- [`fda9e2f`](https://github.com/tomouchuu/haishin/commit/fda9e2fa5628108dfd69788b4f0d4ffc13b418e1) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Keep hls files rather than deleting on stream end
+
+- Updated dependencies [[`d7cd7cb`](https://github.com/tomouchuu/haishin/commit/d7cd7cb2b53b88f59b675ee63ba38390142ec25e)]:
+  - @haishin/transcriber@2.3.0
+
 ## 2.2.2
 
 ### Patch Changes
