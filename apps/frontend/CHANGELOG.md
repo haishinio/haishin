@@ -1,5 +1,13 @@
 # @haishin/frontend
 
+## 3.1.1
+
+### Patch Changes
+
+- [`1780b79`](https://github.com/tomouchuu/haishin/commit/1780b79fd267088f143d2682380d310c480c2c78) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix linting error due to removal of isRtmp from stream-page
+
+- [`0e883c4`](https://github.com/tomouchuu/haishin/commit/0e883c4ce9f7a8260d0af348482e167a3bd78b76) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Also "fix" frontend's eslint config by removing unneeded next extend
+
 ## 3.1.0
 
 ### Minor Changes
