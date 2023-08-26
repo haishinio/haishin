@@ -1,5 +1,11 @@
 # @haishin/transcriber
 
+## 2.3.1
+
+### Patch Changes
+
+- [`5bb6187`](https://github.com/tomouchuu/haishin/commit/5bb61875531337c05a544c6db9c6ef885a7430ab) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes issue where old livestream folders weren't deleted after a stream had finished
+
 ## 2.3.0
 
 ### Minor Changes
