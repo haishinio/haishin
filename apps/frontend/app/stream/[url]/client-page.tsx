@@ -112,7 +112,6 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
       {streamUrl !== '' ? (
         <StreamPage
           controlTranscription={controlTranscription}
-          isRtmp={true}
           isTranscribing={isTranscribing}
           originalUrl={url}
           streamId={streamId}

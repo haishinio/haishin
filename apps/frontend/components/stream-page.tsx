@@ -14,7 +14,6 @@ import type { TextLog } from '../types/Textlog'
 
 interface Props {
   controlTranscription: () => void
-  isRtmp: boolean
   isTranscribing: boolean
   originalUrl: string
   streamId?: string
@@ -28,7 +27,6 @@ const StreamPage = (props: Props): React.JSX.Element => {
   const {
     controlTranscription,
     streamId,
-    isRtmp,
     isTranscribing,
     originalUrl,
     streamUrl,
@@ -68,7 +66,7 @@ const StreamPage = (props: Props): React.JSX.Element => {
           <TopMenu url={originalUrl} />
 
           <div className='aspect-w-16 aspect-h-9'>
-            {isRtmp ? (
+            {streamId != null ? (
               <LiveVideoPlayer
                 streamId={streamId}
                 url={streamUrl}

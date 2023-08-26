@@ -6,9 +6,10 @@ import useStream from '../../hooks/useStream'
 import {
   MediaController,
   MediaControlBar,
-  MediaLoadingIndicator,
-  MediaVolumeRange,
   MediaLiveButton,
+  MediaLoadingIndicator,
+  MediaPosterImage,
+  MediaVolumeRange,
   MediaMuteButton
 } from 'media-chrome/dist/react'
 import HlsVideoElement from './hls-video-player'
@@ -22,7 +23,7 @@ export const LiveVideoPlayer = ({
   updateEnded,
   url
 }: {
-  streamId?: string
+  streamId: string
   updateEnded: () => void
   url: string
 }): React.JSX.Element => {
@@ -31,7 +32,7 @@ export const LiveVideoPlayer = ({
 
   if (isLoading || data === undefined) return <Loading />
 
-  const { duration, started } = data as StreamInfo
+  const { duration, thumbnail, started } = data as StreamInfo
 
   const updateHasEnded = (): void => {
     setHasEnded(true)
@@ -43,6 +44,7 @@ export const LiveVideoPlayer = ({
       {started !== null && (
         <HlsVideoElement updateEnded={updateHasEnded} src={url} />
       )}
+      <MediaPosterImage slot='poster' src={thumbnail} />
       <MediaLoadingIndicator slot='centered-chrome' />
       {started === null && (
         <MediaLoadingIndicator
