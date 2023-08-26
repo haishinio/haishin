@@ -3,14 +3,13 @@
   "description": "Transcriber Utils for use within @haishin/*",
   "version": "2.4.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "build": "rollup -c --bundleConfigAsCjs",
-    "watch": "npm run build -- --watch"
+    "build": "tsup",
+    "dev": "tsup --watch -- --dev"
   },
   "keywords": [],
   "author": "",
@@ -20,19 +19,12 @@
   },
   "devDependencies": {
     "@haishin/tsconfig": "workspace:*",
-    "@rollup/plugin-commonjs": "^25.0.2",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.1.0",
-    "@rollup/plugin-sucrase": "^5.0.1",
-    "@rollup/plugin-typescript": "^11.1.2",
     "@types/node": "^20.4.1",
     "@types/uuid": "^9.0.2",
     "eslint": "^8.44.0",
     "eslint-config-haishin": "workspace:*",
-    "rollup": "^3.26.2",
-    "rollup-plugin-cleaner": "^1.0.0",
-    "rollup-plugin-copy": "^3.4.0",
     "tslib": "^2.6.0",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   }
 }
