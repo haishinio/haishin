@@ -51,6 +51,8 @@ async function stream(streamData: StreamDataResponse): Promise<void> {
     // console.error(data.toString());
   })
 
+  parentPort?.postMessage({ thumbnail: true })
+
   ffmpegProcess.on('close', (code) => {
     let codeStr = '?'
     if (code != null) codeStr = code.toString()
