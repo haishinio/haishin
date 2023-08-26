@@ -9,6 +9,7 @@ export function getPathsByUrl(url: string): { site: string; user: string } {
   if (url.includes('youtube') || url.includes('youtu.be')) {
     cleanPath = cleanPath
       .replace('.com', '')
+      .replace('live', '')
       .replace('watch', '')
       .replace('?v=', '')
   }
