@@ -1,5 +1,19 @@
 # @haishin/frontend
 
+## 3.1.0
+
+### Minor Changes
+
+- [`f9c38f6`](https://github.com/tomouchuu/haishin/commit/f9c38f63c217ae46565c5de0c1a3182bd138633a) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Thumbnails + start time introduced to the current streams section
+
+### Patch Changes
+
+- [`4759041`](https://github.com/tomouchuu/haishin/commit/475904167adc0b6fc6bf3d3955a50cf4a91eb5b3) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up of isRtmp and add poster image
+
+- Updated dependencies [[`aad14e8`](https://github.com/tomouchuu/haishin/commit/aad14e8e726c26de5c237c3911e61104c730132d), [`d7cd7cb`](https://github.com/tomouchuu/haishin/commit/d7cd7cb2b53b88f59b675ee63ba38390142ec25e)]:
+  - @haishin/utils@2.4.0
+  - @haishin/transcriber@2.3.0
+
 ## 3.0.2
 
 ### Patch Changes

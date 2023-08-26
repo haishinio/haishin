@@ -1,5 +1,16 @@
 # @haishin/transcriber
 
+## 2.3.0
+
+### Minor Changes
+
+- [`d7cd7cb`](https://github.com/tomouchuu/haishin/commit/d7cd7cb2b53b88f59b675ee63ba38390142ec25e) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds a worker to get the thumbnail every 2mins
+
+### Patch Changes
+
+- Updated dependencies [[`aad14e8`](https://github.com/tomouchuu/haishin/commit/aad14e8e726c26de5c237c3911e61104c730132d)]:
+  - @haishin/utils@2.4.0
+
 ## 2.2.1
 
 ### Patch Changes
