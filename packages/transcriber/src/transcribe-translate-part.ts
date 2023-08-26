@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Configuration, OpenAIApi } from 'openai'
+import OpenAI from 'openai'
 import * as deepl from 'deepl-node'
 import * as Sentry from '@sentry/node'
 
@@ -18,10 +18,9 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
-const openAiConfig = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
-const openai = new OpenAIApi(openAiConfig)
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 
 const transcribeTranslatePart = async function (
@@ -46,17 +45,16 @@ const transcribeTranslatePart = async function (
   // Transcribe into JP text
   let transcriptionText = ''
   try {
-    const transcription = await openai.createTranscription(
-      fs.createReadStream(filename) as unknown as File,
-      'whisper-1',
+    const transcription = await openai.audio.transcriptions.create({
+      model: 'whisper-1',
+      file: fs.createReadStream(filename),
       prompt,
-      'json',
-      0,
-      'ja'
-    )
-    transcriptionText = transcription.data.text
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
+      language: 'ja',
+      response_format: 'json',
+      temperature: 0
+    })
+    transcriptionText = transcription.text
+  } catch (error: unknown) {
     Sentry.captureException(error)
   }
 
@@ -69,7 +67,7 @@ const transcribeTranslatePart = async function (
         'ja',
         'en-GB'
       )
-    } catch (error) {
+    } catch (error: unknown) {
       Sentry.captureException(error)
     }
   }
