@@ -1,5 +1,14 @@
 # @haishin/backend
 
+## 2.2.4
+
+### Patch Changes
+
+- [`5ee34b1`](https://github.com/tomouchuu/haishin/commit/5ee34b1bc25c89a5fc42dc73f9a58f68c83bab90) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes backend transmuxing from rtmp to hls
+
+- Updated dependencies [[`5bb6187`](https://github.com/tomouchuu/haishin/commit/5bb61875531337c05a544c6db9c6ef885a7430ab)]:
+  - @haishin/transcriber@2.3.1
+
 ## 2.2.3
 
 ### Patch Changes
