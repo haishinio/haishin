@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['haishin', 'next', 'next/core-web-vitals'],
+  extends: ['haishin', 'next/core-web-vitals'],
   rules: {
     '@next/next/no-html-link-for-pages': 'off'
   },
