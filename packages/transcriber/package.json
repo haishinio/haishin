@@ -21,7 +21,6 @@
     "await-exec": "^0.1.2",
     "deepl-node": "^1.10.2",
     "glob": "^10.3.3",
-    "node-ffprobe": "^3.0.0",
     "openai": "^4.2.0",
     "uuid": "^9.0.0"
   },

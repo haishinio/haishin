@@ -1,10 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
-import ffprobe from 'node-ffprobe'
 import { v4 as uuidv4 } from 'uuid'
 import { Worker } from 'worker_threads'
 import * as Sentry from '@sentry/node'
+
+import { getDuration } from '@haishin/utils'
 
 import type { SplitVideoFileResponse } from '../types/responses'
 
@@ -31,10 +32,10 @@ const splitVideoFile = async function (
 
   if (durationOfPart === 0) {
     // ie. We don't know the duration of the part yet
-    const probeData = await ffprobe(pathToFile)
+    const duration = getDuration(pathToFile)
 
-    if (probeData?.format?.duration != null) {
-      const currentStreamLength = parseInt(probeData.format.duration)
+    if (duration !== null) {
+      const currentStreamLength = Math.floor(parseFloat(duration))
       nextStartTime = currentStreamLength
       durationOfPart = currentStreamLength - startTime
     } else {

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 
-import { getPathsByUrl, urlUtils } from '@haishin/utils'
+import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
+import { pathToData } from '../../../utils/path-to-data'
 
 import type StreamInfo from '../../../types/StreamInfo'
 
@@ -30,7 +31,7 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
 
   const streamKeys = Object.keys(baseStreamsObj.live)
 
-  const streams = streamKeys.map((stream: string) => {
+  const streams = streamKeys.map((stream: string): StreamInfo => {
     const streamData = baseStreamsObj.live[stream]
     const { publisher, subscribers } = streamData
     const viewers = subscribers.length
@@ -39,14 +40,20 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
     const paths = getPathsByUrl(streamUrl)
     const title = `${paths.site} - ${paths.user}`
 
+    let duration = 0
+    const durationStr = getDuration(
+      pathToData(`data/live/${stream}/stream.mp4`)
+    )
+    if (durationStr !== null) {
+      duration = Math.floor(parseFloat(durationStr))
+    }
+
     const thumbnail = `${process.env.RTMP_CLIENT_URL ?? ''}${stream}/stream.jpg`
 
     return {
       id: stream,
       started: publisher.connectCreated,
-      duration: Math.ceil(
-        (Date.now() - Date.parse(publisher.connectCreated)) / 1000
-      ),
+      duration,
       thumbnail,
       title,
       url: streamUrl,

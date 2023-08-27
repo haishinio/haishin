@@ -27,7 +27,9 @@ export const decodeUrl = (base32Url: string): string => {
   return decodedUrl
 }
 
-export default {
+export const urlUtils = {
   encodeUrl,
   decodeUrl
 }
+
+export default urlUtils
