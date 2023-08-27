@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { urlUtils } from '@haishin/utils'
+import { urlUtils } from '@haishin/utils/dist/url-utils'
 
 interface Props {
   url: string
