@@ -1,5 +1,14 @@
 # @haishin/frontend
 
+## 3.2.1
+
+### Patch Changes
+
+- [`164a122`](https://github.com/tomouchuu/haishin/commit/164a12274c298e5820f55e6822b36af8e6d5d4cf) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds openai api key to the docker build scripts
+
+- Updated dependencies [[`c3a0719`](https://github.com/tomouchuu/haishin/commit/c3a0719950c7dd272e4b27aa70f15b3f8a5c8c4a)]:
+  - @haishin/transcriber@3.0.1
+
 ## 3.2.0
 
 ### Minor Changes
