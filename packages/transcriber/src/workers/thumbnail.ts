@@ -5,8 +5,6 @@ async function thumbnail(
   pathToVideo: string,
   startTime: number
 ): Promise<void> {
-  console.log('Getting latest thumbnail', pathToVideo, startTime)
-
   const ffmpegArgs = [
     '-ss',
     startTime.toString(),
@@ -24,13 +22,9 @@ async function thumbnail(
   const ffmpegProcess = spawn('ffmpeg', ffmpegArgs)
 
   ffmpegProcess.on('close', (code) => {
-    let codeStr = '?'
-    if (code != null) codeStr = code.toString()
+    const ffmpegExitCode = code ?? undefined
 
-    parentPort?.postMessage({
-      message: `ffmpeg process exited with code ${codeStr}, shutting down process...`
-    })
-    parentPort?.postMessage('shutdown')
+    process.exit(ffmpegExitCode)
   })
 }
 
@@ -40,10 +34,5 @@ parentPort?.on('message', (message) => {
       // Log errors
       console.log(error)
     })
-  }
-
-  if (message.command === 'shutdown') {
-    // Clean up resources and exit gracefully
-    process.exit(0)
   }
 })

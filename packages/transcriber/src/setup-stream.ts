@@ -14,6 +14,28 @@ if (process.env.NODE_ENV === 'production') {
   })
 }
 
+function getLatestThumbnailWorker(pathToFile: string, startTime: number): void {
+  const thumbnailWorkerPath = path.join(__dirname, './workers/thumbnail.js')
+
+  const thumbnailWorker = new Worker(thumbnailWorkerPath)
+
+  thumbnailWorker.postMessage({
+    command: 'thumbnail',
+    pathToFile,
+    startTime
+  })
+  thumbnailWorker.on('error', (error) => {
+    console.error(error)
+  })
+  thumbnailWorker.on('exit', (code) => {
+    if (code !== 0) {
+      console.error(`Worker stopped with exit code ${code}`)
+    }
+
+    thumbnailWorker.terminate()
+  })
+}
+
 export const setupStream = async function (
   originalUrl: string
 ): Promise<StreamDataResponse> {
@@ -26,7 +48,6 @@ export const setupStream = async function (
   const streamWorkerPath = path.join(__dirname, './workers/stream.js')
   const thumbnailWorkerPath = path.join(__dirname, './workers/thumbnail.js')
   const streamWorker = new Worker(streamWorkerPath)
-  const thumbnailWorker = new Worker(thumbnailWorkerPath)
 
   try {
     streamWorker.postMessage({
@@ -39,20 +60,7 @@ export const setupStream = async function (
     let thumbnailTime = 100
     const getLatestThumbnail = (): void => {
       if (fs.existsSync(streamData.file)) {
-        thumbnailWorker.postMessage({
-          command: 'thumbnail',
-          pathToFile: streamData.file,
-          startTime: thumbnailTime
-        })
-        thumbnailWorker.on('error', (error) => {
-          console.error(error)
-        })
-        thumbnailWorker.on('exit', (code) => {
-          if (code !== 0) {
-            console.error(`Worker stopped with exit code ${code}`)
-          }
-        })
-
+        getLatestThumbnailWorker(streamData.file, thumbnailTime)
         thumbnailTime += 100
       } else {
         clearInterval(thumbnailIntervalId)
@@ -64,11 +72,7 @@ export const setupStream = async function (
       if (message.error != null) {
         console.log({ workerError: message.error })
       } else if (message.thumbnail === true) {
-        thumbnailWorker.postMessage({
-          command: 'thumbnail',
-          pathToFile: streamData.file,
-          startTime: 0
-        })
+        getLatestThumbnailWorker(streamData.file, 0)
       } else {
         console.log({ workerMessage: message.message })
       }

@@ -89,6 +89,9 @@ const splitVideoFile = async function (
     Sentry.captureException(error)
   }
 
+  ffmpegSplitWorker.postMessage({ command: 'shutdown' })
+  ffmpegSplitWorker.terminate()
+
   return {
     partFileName,
     nextStartTime
