@@ -1,5 +1,21 @@
 # @haishin/frontend
 
+## 3.2.0
+
+### Minor Changes
+
+- [`186c457`](https://github.com/tomouchuu/haishin/commit/186c457b54815759039c5cf151b00cc7d6b8ab97) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Have getDuration be a shared util function for getting a similar duration for all the things that use it
+
+### Patch Changes
+
+- [`7322a01`](https://github.com/tomouchuu/haishin/commit/7322a015b8206178aa0a73a90ab8c5591bfe79f3) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes issues caused by nextjs apparently including the whole utils when we just want specific functions (ie. stop trying to use child_process when you can't)
+
+- [`358f429`](https://github.com/tomouchuu/haishin/commit/358f429ce64f32c4373f340ce1da08a85e3e255d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update tracesSampleRate to only send half of the tracings to sentry
+
+- Updated dependencies [[`90ea579`](https://github.com/tomouchuu/haishin/commit/90ea57963ce9a5f7967b141663e83cb965d3f58a), [`358f429`](https://github.com/tomouchuu/haishin/commit/358f429ce64f32c4373f340ce1da08a85e3e255d), [`c4ca80d`](https://github.com/tomouchuu/haishin/commit/c4ca80db42afeb3f2168e289c531bbfb79dd86c4), [`a377e46`](https://github.com/tomouchuu/haishin/commit/a377e466d77b50d26fbf0cee3818842e5f4ce457), [`186c457`](https://github.com/tomouchuu/haishin/commit/186c457b54815759039c5cf151b00cc7d6b8ab97)]:
+  - @haishin/transcriber@3.0.0
+  - @haishin/utils@3.0.0
+
 ## 3.1.2
 
 ### Patch Changes

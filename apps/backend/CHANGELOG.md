@@ -1,5 +1,20 @@
 # @haishin/backend
 
+## 2.3.0
+
+### Minor Changes
+
+- [`fb1e8a9`](https://github.com/tomouchuu/haishin/commit/fb1e8a9141f204a843a1fc7ed8d1d5d70aa85e2a) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from node-dev/ts-node to tsx for backend dev/faker/starting
+
+### Patch Changes
+
+- [`a4a156a`](https://github.com/tomouchuu/haishin/commit/a4a156a45091fc6932961b01e6dd2bd062e930eb) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Add some sentry integrations to the backend that should enable better logging here
+
+- [`358f429`](https://github.com/tomouchuu/haishin/commit/358f429ce64f32c4373f340ce1da08a85e3e255d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update tracesSampleRate to only send half of the tracings to sentry
+
+- Updated dependencies [[`90ea579`](https://github.com/tomouchuu/haishin/commit/90ea57963ce9a5f7967b141663e83cb965d3f58a), [`358f429`](https://github.com/tomouchuu/haishin/commit/358f429ce64f32c4373f340ce1da08a85e3e255d), [`c4ca80d`](https://github.com/tomouchuu/haishin/commit/c4ca80db42afeb3f2168e289c531bbfb79dd86c4), [`186c457`](https://github.com/tomouchuu/haishin/commit/186c457b54815759039c5cf151b00cc7d6b8ab97)]:
+  - @haishin/transcriber@3.0.0
+
 ## 2.2.4
 
 ### Patch Changes
