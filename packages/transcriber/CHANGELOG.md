@@ -1,5 +1,11 @@
 # @haishin/transcriber
 
+## 3.0.1
+
+### Patch Changes
+
+- [`c3a0719`](https://github.com/tomouchuu/haishin/commit/c3a0719950c7dd272e4b27aa70f15b3f8a5c8c4a) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fixes the streamFolder to point to it's own folder rather than parent folder
+
 ## 3.0.0
 
 ### Major Changes

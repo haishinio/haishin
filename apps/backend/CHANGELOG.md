@@ -1,5 +1,14 @@
 # @haishin/backend
 
+## 2.3.1
+
+### Patch Changes
+
+- [`f1ea55f`](https://github.com/tomouchuu/haishin/commit/f1ea55f81ff288f5041737b22313f8e279e423fd) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Builds the backend server so it can be used by plain old node in the docker image
+
+- Updated dependencies [[`c3a0719`](https://github.com/tomouchuu/haishin/commit/c3a0719950c7dd272e4b27aa70f15b3f8a5c8c4a)]:
+  - @haishin/transcriber@3.0.1
+
 ## 2.3.0
 
 ### Minor Changes
