@@ -6,19 +6,26 @@ import * as Sentry from '@sentry/node'
 
 import registerStreamHandlers from './handlers/stream-handler'
 
-if (process.env.NODE_ENV === 'production') {
-  Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    tracesSampleRate: 0.5
-  })
-}
-
 process.chdir('../../')
 
 const app = express()
 
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      new Sentry.Integrations.Http({ tracing: true }),
+      new Sentry.Integrations.Express({
+        app
+      })
+    ],
+    tracesSampleRate: 0.5
+  })
+}
+
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler() as express.RequestHandler)
+app.use(Sentry.Handlers.tracingHandler() as express.RequestHandler)
 // The error handler must be before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler() as express.ErrorRequestHandler)
 
