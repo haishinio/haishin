@@ -11,10 +11,7 @@ import type { TranscriberResponse } from '../types/responses'
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-
-    // We recommend adjusting this value in production, or using tracesSampler
-    // for finer control
-    tracesSampleRate: 1.0
+    tracesSampleRate: 0.5
   })
 }
 
