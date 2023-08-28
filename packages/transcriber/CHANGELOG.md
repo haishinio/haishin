@@ -1,5 +1,11 @@
 # @haishin/transcriber
 
+## 3.0.2
+
+### Patch Changes
+
+- [`e02060f`](https://github.com/tomouchuu/haishin/commit/e02060f35e6b04d21b0c9abd59c3e99d94919d12) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Should now correctly end worker processes once complete
+
 ## 3.0.1
 
 ### Patch Changes
