@@ -1,5 +1,15 @@
 # @haishin/utils
 
+## 3.0.0
+
+### Major Changes
+
+- [`a377e46`](https://github.com/tomouchuu/haishin/commit/a377e466d77b50d26fbf0cee3818842e5f4ce457) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from rollup to tsup for building + bundling files. Should be faster and lead to improvements later down the line with watching etc.
+
+### Minor Changes
+
+- [`186c457`](https://github.com/tomouchuu/haishin/commit/186c457b54815759039c5cf151b00cc7d6b8ab97) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Have getDuration be a shared util function for getting a similar duration for all the things that use it
+
 ## 2.4.0
 
 ### Minor Changes
