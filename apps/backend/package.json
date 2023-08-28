@@ -3,13 +3,13 @@
   "description": "A website that transcribes+translates Japanese streams into English with OpenAI+DeepL",
   "version": "2.3.0",
   "private": true,
-  "main": "dist/app.js",
+  "main": "dist/app.mjs",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "types": "tsc -p tsconfig.json",
+    "build": "tsup",
     "dev": "tsx watch src/app.ts",
     "faker": "cross-env APP_ENV=faker tsx watch src/app.ts",
-    "start": "tsx src/app.ts"
+    "start": "node dist/app.mjs"
   },
   "dependencies": {
     "@haishin/transcriber": "workspace:*",
@@ -29,6 +29,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.44.0",
     "eslint-config-haishin": "workspace:*",
+    "tsup": "^7.2.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   },

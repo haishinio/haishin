@@ -51,4 +51,4 @@ WORKDIR /app
 # USER expressjs
 COPY --from=installer /app .
 
-CMD node apps/backend/dist/app.js
+CMD node apps/backend/dist/app.mjs
