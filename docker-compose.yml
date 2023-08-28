@@ -6,6 +6,7 @@ services:
       args:
         GIT_REVISION: dev
         DEEPL_API_KEY:
+        OPENAI_API_KEY:
         RTMP_CLIENT_API_URL: http://backend:8000/api/
         SENTRY_AUTH_TOKEN:
         WS_URL:
