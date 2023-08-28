@@ -47,7 +47,7 @@ export const getStreamInfo = async function (
     originalUrl,
     streamUrl,
     // Files
-    folder: streamsDir,
+    folder: `${streamsDir}/${safeUrl}`,
     file,
     streamFile
   }
