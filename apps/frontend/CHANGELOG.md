@@ -1,5 +1,12 @@
 # @haishin/frontend
 
+## 3.2.5
+
+### Patch Changes
+
+- Updated dependencies [[`4e9ee83`](https://github.com/tomouchuu/haishin/commit/4e9ee83d1b746ae4b9eaee8ff8c25dadb1159307)]:
+  - @haishin/transcriber@3.0.5
+
 ## 3.2.4
 
 ### Patch Changes

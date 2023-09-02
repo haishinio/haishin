@@ -1,5 +1,11 @@
 # @haishin/transcriber
 
+## 3.0.5
+
+### Patch Changes
+
+- [`4e9ee83`](https://github.com/tomouchuu/haishin/commit/4e9ee83d1b746ae4b9eaee8ff8c25dadb1159307) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update worker path for base splitting
+
 ## 3.0.4
 
 ### Patch Changes
