@@ -1,5 +1,11 @@
 # @haishin/utils
 
+## 3.0.1
+
+### Patch Changes
+
+- [`d380417`](https://github.com/tomouchuu/haishin/commit/d380417bea0085e51cc32b2e06afa8f4ac08334f) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix dev command to change to watch
+
 ## 3.0.0
 
 ### Major Changes

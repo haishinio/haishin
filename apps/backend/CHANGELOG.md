@@ -1,5 +1,12 @@
 # @haishin/backend
 
+## 2.3.3
+
+### Patch Changes
+
+- Updated dependencies [[`08970dd`](https://github.com/tomouchuu/haishin/commit/08970dd994393981085eb047fa6fb4f4aa84d88b), [`d380417`](https://github.com/tomouchuu/haishin/commit/d380417bea0085e51cc32b2e06afa8f4ac08334f)]:
+  - @haishin/transcriber@3.0.3
+
 ## 2.3.2
 
 ### Patch Changes
