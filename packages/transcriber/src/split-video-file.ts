@@ -20,7 +20,7 @@ const splitVideoFile = async function (
   filename: string,
   startTime: number,
   duration = 0,
-  workerPath = path.join(__dirname, './workers/ffmpeg-splitter.js')
+  workerPath = path.join(__dirname, './workers/ffmpeg-splitter.cjs')
 ): Promise<SplitVideoFileResponse> {
   const pathToFile = filename
 
