@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "build": "tsup",
-    "dev": "tsup --watch -- --dev"
+    "watch": "tsup --watch -- --dev"
   },
   "keywords": [],
   "author": "",
