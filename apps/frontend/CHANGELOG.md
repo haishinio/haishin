@@ -1,5 +1,14 @@
 # @haishin/frontend
 
+## 3.2.4
+
+### Patch Changes
+
+- [`084c0ae`](https://github.com/tomouchuu/haishin/commit/084c0ae089b5350923d2f2f8fc0c4252cf128e4d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix transcribing+translating of uploaded content
+
+- Updated dependencies [[`89041fb`](https://github.com/tomouchuu/haishin/commit/89041fb46220732861d59ba591bf72c7c7a49ca9), [`084c0ae`](https://github.com/tomouchuu/haishin/commit/084c0ae089b5350923d2f2f8fc0c4252cf128e4d)]:
+  - @haishin/transcriber@3.0.4
+
 ## 3.2.3
 
 ### Patch Changes
