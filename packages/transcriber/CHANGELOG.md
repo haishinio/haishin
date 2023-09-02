@@ -1,5 +1,13 @@
 # @haishin/transcriber
 
+## 3.0.4
+
+### Patch Changes
+
+- [`89041fb`](https://github.com/tomouchuu/haishin/commit/89041fb46220732861d59ba591bf72c7c7a49ca9) Thanks [@tomouchuu](https://github.com/tomouchuu)! - More attempted fixes at closing workers when they are done
+
+- [`084c0ae`](https://github.com/tomouchuu/haishin/commit/084c0ae089b5350923d2f2f8fc0c4252cf128e4d) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix transcribing+translating of uploaded content
+
 ## 3.0.3
 
 ### Patch Changes
