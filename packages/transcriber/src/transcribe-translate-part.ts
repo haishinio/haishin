@@ -52,6 +52,7 @@ const transcribeTranslatePart = async function (
     })
     transcriptionText = transcription.text
   } catch (error: unknown) {
+    console.log({ error })
     Sentry.captureException(error)
   }
 
@@ -65,6 +66,7 @@ const transcribeTranslatePart = async function (
         'en-GB'
       )
     } catch (error: unknown) {
+      console.log({ error })
       Sentry.captureException(error)
     }
   }

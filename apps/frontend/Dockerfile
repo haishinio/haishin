@@ -77,6 +77,8 @@ COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/fro
 # Ideally we'd just copy the @ffmpeg folder but since it's got the version+patch it seems a little difficult
 COPY --from=installer --chown=nextjs:nodejs /app/node_modules/.pnpm/@ffmpeg+core@0.11.0_patch_hash=ld7rzfw7iozpndvzizlt4sbpaa ./node_modules/.pnpm/@ffmpeg+core@0.11.0_patch_hash=ld7rzfw7iozpndvzizlt4sbpaa
 COPY --from=installer /app/packages/transcriber/node_modules/@ffmpeg/core ./packages/transcriber/node_modules/@ffmpeg/core
+
+# Lastly copy the transcriber dists
 COPY --from=installer /app/packages/transcriber/dist ./packages/transcriber/dist
 
 CMD node apps/frontend/server.js

@@ -28,7 +28,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     'transcriber',
     'dist',
     'workers',
-    'ffmpeg-splitter.js'
+    'ffmpeg-splitter.cjs'
   )
 
   const textLogArray = [] as TextLog[]

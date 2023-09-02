@@ -18,13 +18,14 @@ export default defineConfig((options) => {
         fileURLToPath(new URL(file, import.meta.url))
       ])
     ),
-    format: ['esm'],
+    format: ['esm', 'cjs'],
     target: 'node16',
     dts: true,
     splitting: true,
     clean: true,
     cjsInterop: true,
     shims: true,
+    noExternal: ['@haishin/utils', '@ffmpeg/ffmpeg'],
     sourcemap: process.argv.includes('--dev'),
     watch: options.watch
   }

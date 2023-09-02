@@ -86,6 +86,7 @@ const splitVideoFile = async function (
 
     await fs.promises.writeFile(partFileName, splitFileData)
   } catch (error) {
+    console.log({ error })
     Sentry.captureException(error)
   }
 
