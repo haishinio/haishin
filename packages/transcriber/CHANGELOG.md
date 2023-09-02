@@ -1,5 +1,16 @@
 # @haishin/transcriber
 
+## 3.0.3
+
+### Patch Changes
+
+- [`08970dd`](https://github.com/tomouchuu/haishin/commit/08970dd994393981085eb047fa6fb4f4aa84d88b) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Attempt to fix the "FATAL ERROR: v8::FromJust Maybe value is Nothing." again
+
+- [`d380417`](https://github.com/tomouchuu/haishin/commit/d380417bea0085e51cc32b2e06afa8f4ac08334f) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix dev command to change to watch
+
+- Updated dependencies [[`d380417`](https://github.com/tomouchuu/haishin/commit/d380417bea0085e51cc32b2e06afa8f4ac08334f)]:
+  - @haishin/utils@3.0.1
+
 ## 3.0.2
 
 ### Patch Changes

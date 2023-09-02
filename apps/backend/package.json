@@ -1,7 +1,7 @@
 {
   "name": "@haishin/backend",
   "description": "A website that transcribes+translates Japanese streams into English with OpenAI+DeepL",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "private": true,
   "main": "dist/app.mjs",
   "scripts": {
