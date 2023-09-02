@@ -31,8 +31,6 @@ function getLatestThumbnailWorker(pathToFile: string, startTime: number): void {
     if (code !== 0) {
       console.error(`Worker stopped with exit code ${code}`)
     }
-
-    thumbnailWorker.terminate()
   })
 }
 

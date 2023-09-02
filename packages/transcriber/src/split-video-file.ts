@@ -90,7 +90,6 @@ const splitVideoFile = async function (
   }
 
   ffmpegSplitWorker.postMessage({ command: 'shutdown' })
-  ffmpegSplitWorker.terminate()
 
   return {
     partFileName,

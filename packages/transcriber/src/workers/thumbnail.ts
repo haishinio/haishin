@@ -35,4 +35,9 @@ parentPort?.on('message', (message) => {
       console.log(error)
     })
   }
+
+  if (message.command === 'shutdown') {
+    // Clean up resources and exit gracefully
+    process.exit(0)
+  }
 })
