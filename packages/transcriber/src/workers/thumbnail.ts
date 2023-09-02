@@ -24,6 +24,7 @@ async function thumbnail(
   ffmpegProcess.on('close', (code) => {
     const ffmpegExitCode = code ?? undefined
 
+    parentPort?.close()
     process.exit(ffmpegExitCode)
   })
 }

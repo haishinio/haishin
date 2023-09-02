@@ -113,6 +113,7 @@ parentPort?.on('message', (message) => {
 
   if (message.command === 'shutdown') {
     // Clean up resources and exit gracefully
+    parentPort?.close()
     process.exit(0)
   }
 })

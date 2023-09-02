@@ -71,6 +71,8 @@ export const setupStream = async function (
         console.log({ workerError: message.error })
       } else if (message.thumbnail === true) {
         getLatestThumbnailWorker(streamData.file, 0)
+      } else if (message === 'shutdown') {
+        streamWorker.postMessage({ command: 'shutdown' })
       } else {
         console.log({ workerMessage: message.message })
       }

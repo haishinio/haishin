@@ -42,6 +42,7 @@ async function run(
 
     ffmpeg.exit()
     parentPort?.close()
+    process.exit(0)
   }
 }
 
