@@ -1,31 +1,55 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { encodeUrl } from '@haishin/utils/dist/url-utils'
+
 export const getStreamInfo = async (originalUrl: string) => {
-  let canPlay = false;
+  let canPlay = null
 
   try {
     // Use streamlink to try open the stream
-    canPlay = true;
+    const streamlinkCheck = Bun.spawn([
+      'streamlink',
+      '--json',
+      originalUrl,
+      '--retry-open',
+      '5'
+    ])
+    const streamlinkCheckOutput = await new Response(
+      streamlinkCheck.stdout
+    ).json()
+
+    if (streamlinkCheckOutput.streams) {
+      canPlay = true
+    } else {
+      canPlay = false
+    }
   } catch (error) {
-    console.log({ canPlayError: error });
+    canPlay = false
   }
 
-  // Get the streamsDirectory
-  // Convert the originalUrl to it's base10 hash
-  // Check if we have a stream in the streamsDirectory with the hash already
-
   // Build the streamUrl, fileUrl(mp4) and streamFile(m3u8)
+  const safeUrl = encodeUrl(originalUrl)
+  const streamUrl = `https://api.haishin.io/${safeUrl}/stream.m3u8`
+
+  const currentFolder = import.meta.dir
+  const folder = path.join(currentFolder, `../../data/streams/${safeUrl}`)
+  const file = `${folder}/stream.mp4`
+  const streamFile = `${folder}/index.m3u8`
+
+  const newStream = !fs.existsSync(file)
 
   return {
     // Utils
     canPlay,
-    newStream: true,
+    newStream,
     // Name
-    id: "",
+    id: safeUrl,
     // Urls
     originalUrl,
-    streamUrl: "",
+    streamUrl,
     // Files
-    folder: "",
-    file: "",
-    streamFile: "",
-  };
-};
+    folder,
+    file,
+    streamFile
+  }
+}

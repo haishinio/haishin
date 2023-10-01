@@ -1,6 +1,8 @@
-import { Elysia } from 'elysia'
-import { createClient } from 'redis'
-import { getStreamInfo } from './stream/get-info'
+import { Elysia } from "elysia";
+import { createClient } from "redis";
+
+import { setupStream } from "./stream";
+import { getStreamInfo } from "./stream/get-info";
 
 const redisClient = await createClient({
   url: process.env.REDIS_URL
@@ -15,6 +17,15 @@ const app = new Elysia()
 
       if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
         async function joinChannel(streamUrl: string) {
+          // Get the stream info
+          const streamInfo = await getStreamInfo(streamUrl);
+
+          if (!streamInfo.canPlay) {
+            ws.send({ error: "Stream is not available" });
+            ws.close();
+            return;
+          }
+
           // Subscribe to the stream room
           ws.subscribe(streamUrl);
 
@@ -32,23 +43,24 @@ const app = new Elysia()
             // Check if this is the first user in the room
             const currentUsers = await redisClient.sCard(`users:${streamUrl}`)
 
-            if (currentUsers === 1) {
+            if (currentUsers === 1 && streamInfo.newStream) {
               // Start the stream
               console.log(
-                `First user has joined the room ${streamUrl}, start restreaming...`
-              )
+                `First user has joined the room ${streamUrl} and stream is new, start restreaming...`
+              );
+
+              setupStream(streamUrl);
             }
           } else {
             console.log(
               'User already in the room, stream already being transcribed...',
               streamUrl,
               ws.remoteAddress
-            )
-
-            // Get the stream info
-            const streamInfo = await getStreamInfo(streamUrl)
-            ws.send(streamInfo)
+            );
           }
+
+          // Send the streamInfo to the user for ui setup
+          ws.send(streamInfo);
         }
 
         joinChannel(streamUrl)

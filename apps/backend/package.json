@@ -11,10 +11,15 @@
     "start": "bun run src/app.ts"
   },
   "dependencies": {
+    "@haishin/utils": "workspace:^",
     "elysia": "latest",
     "redis": "^4.6.10"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3"
+    "@haishin/tsconfig": "workspace:*",
+    "cross-env": "^7.0.3",
+    "eslint": "8.44.0",
+    "eslint-config-haishin": "workspace:*",
+    "typescript": "5.1.6"
   }
 }
