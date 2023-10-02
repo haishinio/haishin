@@ -2,9 +2,26 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { streamsFolder } from '../routes/streams'
-import { encodeUrl } from '../utils/url'
+import { encodeUrl } from '@haishin/utils/dist/url-utils'
 
-export const getStreamInfo = async (originalUrl: string) => {
+export interface StreamInfo {
+  // Utils
+  canPlay: boolean
+  newStream: boolean
+  // Name
+  id: string
+  // Urls
+  originalUrl: string
+  streamUrl: string
+  // Files
+  folder: string
+  file: string
+  streamFile: string
+}
+
+export const getStreamInfo = async (
+  originalUrl: string
+): Promise<StreamInfo> => {
   let canPlay = null
 
   try {
