@@ -99,6 +99,11 @@ async function restream(streamInfo: any) {
   for await (const chunk of streamLinkProcess.stdout) {
     ffmpegProcess.stdin.write(chunk)
     ffmpegProcess.stdin.flush()
+
+    self.postMessage({
+      command: 'running',
+      file: streamInfo.file
+    })
   }
 }
 

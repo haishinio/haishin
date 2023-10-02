@@ -3,6 +3,7 @@ import { createClient } from "redis";
 
 import { setupStream } from "../stream";
 import { getStreamInfo } from "../stream/get-info";
+import { transcribeStream } from "../transcriber";
 
 const redisClient = await createClient({
   url: process.env.REDIS_URL,
@@ -48,7 +49,11 @@ const ws = new Elysia().ws("/", {
               `First user has joined the room ${streamUrl} and stream is new, start restreaming...`
             );
 
-            setupStream(streamUrl);
+            // Setup the stream
+            const streamFile = await setupStream(streamUrl);
+
+            // Using streamInfo, start to split the video file for transcribing
+            transcribeStream(ws, redisClient, streamUrl, streamFile);
           }
         } else {
           console.log(
