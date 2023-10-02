@@ -2,19 +2,31 @@ import { getStreamInfo } from "./get-info";
 
 // Handles calling the getInfo function and returning this information to the user
 // If a newStream handles starting the restream + thumbnail workers
-export const setupStream = async (streamUrl: string) => {
+export const setupStream = async (streamUrl: string): Promise<string> => {
   const streamInfo = await getStreamInfo(streamUrl);
-  if (!streamInfo.canPlay) return streamInfo;
+  if (!streamInfo.canPlay) return "";
 
-  // Start the restreamer
+  // Setup the restream worker
   const restreamerWorkerUrl = new URL("./workers/restream.ts", import.meta.url)
     .href;
   const restreamerWorker = new Worker(restreamerWorkerUrl);
 
+  // Start the restream worker
   restreamerWorker.postMessage({
     command: "start",
     streamInfo,
   });
 
-  return streamInfo;
+  const streamFile = (await new Promise((resolve) => {
+    restreamerWorker.onmessage = (eventMessage) => {
+      if (eventMessage.data.command === "running") {
+        resolve(eventMessage.data.file);
+      }
+    };
+  })) as string;
+  if (!streamFile) return "";
+
+  // Start the thumbnail worker
+
+  return streamFile;
 };
