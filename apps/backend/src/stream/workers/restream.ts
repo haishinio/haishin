@@ -87,6 +87,8 @@ async function restream(streamInfo: any) {
     'delete_segments',
     '-hls_playlist_type',
     'event',
+    '-loglevel',
+    'error',
     streamInfo.streamFile
   ]
   const ffmpegProcess = Bun.spawn(['ffmpeg', ...ffmpegArgs], {
