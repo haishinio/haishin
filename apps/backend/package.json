@@ -11,6 +11,8 @@
     "start": "bun run src/app.ts"
   },
   "dependencies": {
+    "@elysiajs/html": "^0.7.0",
+    "@elysiajs/static": "^0.7.1",
     "@haishin/utils": "workspace:^",
     "elysia": "latest",
     "redis": "^4.6.10"
