@@ -1,8 +1,10 @@
 import { Elysia } from "elysia";
 
+import backups from "./routes/backups";
 import ws from "./routes/ws";
 
 const app = new Elysia()
+  .use(backups)
   .use(ws)
   .listen({
     hostname: '0.0.0.0',
