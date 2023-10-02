@@ -14,11 +14,6 @@ if (!fs.existsSync(backupFolder)) {
   fs.mkdirSync(backupFolder);
 }
 
-const files = fs.readdirSync(backupFolder);
-const liFiles = files
-  .map((file) => `<li><a href="/backups/${file}">${file}</a></li>`)
-  .join("");
-
 const backups = new Elysia()
   .use(
     staticPlugin({
@@ -28,20 +23,24 @@ const backups = new Elysia()
     })
   )
   .use(html())
-  .get(
-    "/backups",
-    () => `
-    <html>
-      <head>
-        <title>Haishin Backups</title>
-      </head>
-      <body>
-        <ul>
-          ${liFiles}
-        </ul>
-      </body>
-    </html>
-    `
-  );
+  .get("/backups", () => {
+    const files = fs.readdirSync(backupFolder);
+    const liFiles = files
+      .map((file) => `<li><a href="/backups/${file}">${file}</a></li>`)
+      .join("");
+
+    return `
+        <html>
+          <head>
+            <title>Haishin Backups</title>
+          </head>
+          <body>
+            <ul>
+              ${liFiles}
+            </ul>
+          </body>
+        </html>
+      `;
+  });
 
 export default backups;
