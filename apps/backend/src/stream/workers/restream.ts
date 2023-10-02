@@ -29,7 +29,8 @@ async function restream(streamInfo: any) {
 
       // Wait 20 seconds and then kill the ffmpeg process
       setTimeout(() => {
-        console.log('Killing ffmpeg process...')
+        console.log('Closing the ffmpeg process...')
+        ffmpegProcess.stdin.end()
         ffmpegProcess.kill()
       }, 20000)
 
@@ -59,9 +60,14 @@ async function restream(streamInfo: any) {
     }
   })
 
+  // For testing stop streamlink after 10 seconds
+  setTimeout(() => {
+    console.log('Killing streamlink process...')
+    streamLinkProcess.kill()
+  }, 60000)
+
   // Use ffmpeg to restream the stream
   const ffmpegArgs = [
-    '-re',
     '-i',
     'pipe:0',
     '-c:v',
@@ -70,6 +76,10 @@ async function restream(streamInfo: any) {
     'copy',
     '-f',
     'hls',
+    '-map',
+    '0:a?',
+    '-map',
+    '0:v?',
     '-hls_time',
     '2',
     '-hls_list_size',
@@ -87,13 +97,8 @@ async function restream(streamInfo: any) {
   // Pipe the streamlink stdout to the ffmpeg stdin
   for await (const chunk of streamLinkProcess.stdout) {
     ffmpegProcess.stdin.write(chunk)
+    ffmpegProcess.stdin.flush()
   }
-
-  // For testing stop streamlink after 10 seconds
-  setTimeout(() => {
-    console.log('Killing streamlink process...')
-    streamLinkProcess.kill()
-  }, 10000)
 }
 
 self.onmessage = (event: MessageEvent) => {
