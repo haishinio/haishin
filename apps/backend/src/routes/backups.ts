@@ -1,14 +1,20 @@
 import fs from "node:fs";
+import path from "node:path";
 import { Elysia } from "elysia";
 
 import { html } from "@elysiajs/html";
 import { staticPlugin } from "@elysiajs/static";
 
-if (!fs.existsSync("/data/backups")) {
-  fs.mkdirSync("/data/backups");
+export const backupFolder = path.join(
+  process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
+  "backups"
+);
+
+if (!fs.existsSync(backupFolder)) {
+  fs.mkdirSync(backupFolder);
 }
 
-const files = fs.readdirSync("/data/backups");
+const files = fs.readdirSync(backupFolder);
 const liFiles = files
   .map((file) => `<li><a href="/backups/${file}">${file}</a></li>`)
   .join("");
@@ -16,7 +22,7 @@ const liFiles = files
 const backups = new Elysia()
   .use(
     staticPlugin({
-      assets: "/data/backups",
+      assets: backupFolder,
       prefix: "/backups",
       ignorePatterns: [".gitkeep"],
     })

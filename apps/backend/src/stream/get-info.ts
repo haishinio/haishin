@@ -1,6 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { encodeUrl } from '@haishin/utils/dist/url-utils'
+
+import { streamsFolder } from '../routes/streams'
+import { encodeUrl } from '../utils/url'
 
 export const getStreamInfo = async (originalUrl: string) => {
   let canPlay = null
@@ -29,10 +31,9 @@ export const getStreamInfo = async (originalUrl: string) => {
 
   // Build the streamUrl, fileUrl(mp4) and streamFile(m3u8)
   const safeUrl = encodeUrl(originalUrl)
-  const streamUrl = `https://api.haishin.io/${safeUrl}/stream.m3u8`
+  const streamUrl = `https://api.haishin.io/streams/${safeUrl}/stream.m3u8`
 
-  const currentFolder = import.meta.dir
-  const folder = path.join(currentFolder, `../../data/streams/${safeUrl}`)
+  const folder = path.join(streamsFolder, `/${safeUrl}`)
   const file = `${folder}/stream.mp4`
   const streamFile = `${folder}/index.m3u8`
 

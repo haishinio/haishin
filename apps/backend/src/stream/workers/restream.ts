@@ -1,6 +1,6 @@
 import fs from 'node:fs'
-import path from 'node:path'
 
+import { backupFolder } from '../../routes/backups'
 import { setArchivedFileName } from '@haishin/utils'
 
 // prevents TS errors
@@ -38,7 +38,6 @@ async function restream(streamInfo: any) {
       setTimeout(() => {
         console.log('Moving stream file to backup folder...')
 
-        const backupFolder = path.join(streamInfo.folder, '../../backups')
         const backupFile = `${backupFolder}/${setArchivedFileName(
           streamInfo.originalUrl
         )}`
