@@ -4,6 +4,10 @@ import { Elysia } from "elysia";
 import { html } from "@elysiajs/html";
 import { staticPlugin } from "@elysiajs/static";
 
+if (!fs.existsSync("data/backups")) {
+  fs.mkdirSync("data/backups");
+}
+
 const files = fs.readdirSync("data/backups");
 const liFiles = files
   .map((file) => `<li><a href="/backups/${file}">${file}</a></li>`)
