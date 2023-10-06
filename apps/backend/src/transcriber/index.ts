@@ -12,7 +12,7 @@ export const transcribeStream = async (
   file: string,
   startTime = 0,
   prompt = ''
-) => {
+): Promise<void> => {
   // If the streamFile isn't present, stop transcribing
   if (!fs.existsSync(file)) return
 
@@ -22,7 +22,7 @@ export const transcribeStream = async (
   if (currentUsers <= 0) {
     console.log('No one is watching the stream, try again in 5 seconds')
     setTimeout(() => {
-      transcribeStream(ws, redisClient, url, file, startTime, prompt)
+      void transcribeStream(ws, redisClient, url, file, startTime, prompt)
     }, 5000)
   }
 
@@ -47,6 +47,6 @@ export const transcribeStream = async (
   // Repeat
   console.log('And repeat in a few seconds...')
   setTimeout(() => {
-    transcribeStream(ws, redisClient, url, file, nextStartTime, prompt)
+    void transcribeStream(ws, redisClient, url, file, nextStartTime, prompt)
   }, 5000)
 }

@@ -1,5 +1,7 @@
 import { getStreamInfo } from './get-info'
 
+declare let streamFile: string
+
 // Handles calling the getInfo function and returning this information to the user
 // If a newStream handles starting the restream + thumbnail workers
 export const setupStream = async (streamUrl: string): Promise<string> => {
@@ -17,14 +19,15 @@ export const setupStream = async (streamUrl: string): Promise<string> => {
     streamInfo
   })
 
-  const streamFile = (await new Promise((resolve) => {
+  streamFile = await new Promise((resolve) => {
     restreamerWorker.onmessage = (eventMessage) => {
       if (eventMessage.data.command === 'running') {
-        resolve(eventMessage.data.file)
+        const streamFile = eventMessage.data.file as string
+        resolve(streamFile)
       }
     }
-  })) as string
-  if (!streamFile) return ''
+  })
+  if (streamFile == null) return ''
 
   // Start the thumbnail worker
 

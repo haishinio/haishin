@@ -37,7 +37,7 @@ export const getStreamInfo = async (
       streamlinkCheck.stdout
     ).json()
 
-    if (streamlinkCheckOutput.streams) {
+    if (streamlinkCheckOutput.streams != null) {
       canPlay = true
     } else {
       canPlay = false

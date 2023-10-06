@@ -1,4 +1,5 @@
 # dependencies
+.turbo/
 /node_modules
 
 # Built files
