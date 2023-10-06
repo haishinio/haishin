@@ -1,4 +1,8 @@
-FROM oven/bun
+FROM oven/bun:alpine
+
+RUN apk add --no-cache g++ make py3-pip ffmpeg
+RUN apk update
+RUN pip3 install streamlink
 
 WORKDIR /app
 
