@@ -8,8 +8,10 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "lint": "eslint . --ext .ts",
-    "build": "tsup",
-    "watch": "tsup --watch -- --dev"
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationMap --outDir ./dist",
+    "build:ts": "bun build ./src/index.ts ./src/get-duration.ts ./src/seconds-to-duration.ts ./src/set-file-name.ts ./src/url-utils.ts --outdir ./dist --splitting",
+    "build": "npm run build:types && npm run build:ts",
+    "watch": "bun run build:ts -- --watch"
   },
   "keywords": [],
   "author": "",
@@ -23,9 +25,6 @@
     "@types/uuid": "^9.0.2",
     "eslint": "^8.44.0",
     "eslint-config-haishin": "workspace:*",
-    "glob": "^10.3.3",
-    "tslib": "^2.6.0",
-    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   }
 }

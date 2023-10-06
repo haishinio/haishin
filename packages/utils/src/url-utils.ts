@@ -16,7 +16,7 @@ export function urlFix(originalUrl: string): string {
 export const encodeUrl = (url: string): string => {
   const fixedUrl = urlFix(url)
   const bufferedUrl = Buffer.from(fixedUrl)
-  const encodedUrl = base32Encode(bufferedUrl)
+  const encodedUrl = base32Encode(bufferedUrl.buffer as ArrayBuffer)
 
   return encodedUrl
 }
