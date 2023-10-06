@@ -1,12 +1,11 @@
 {
-  "name": "root",
+  "name": "@haishin/mono",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "version": "4.0.0",
   "private": true,
-  "pnpm": {
-    "patchedDependencies": {
-      "@ffmpeg/core@0.11.0": "patches/@ffmpeg__core@0.11.0.patch",
-      "node-media-server@2.6.2": "patches/node-media-server@2.6.2.patch"
-    }
-  },
   "prettier": "prettier-config-standard",
   "scripts": {
     "faker": "dotenv -- turbo faker",
