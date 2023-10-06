@@ -1,8 +1,8 @@
-import { Elysia } from "elysia";
+import { Elysia } from 'elysia'
 
-import backups from "./routes/backups";
-import streams from "./routes/streams";
-import ws from "./routes/ws";
+import backups from './routes/backups'
+import streams from './routes/streams'
+import ws from './routes/ws'
 
 const app = new Elysia()
   .use(backups)
@@ -15,4 +15,4 @@ const app = new Elysia()
 
 console.log(
   `Haishin Api is running at ${app.server?.hostname}:${app.server?.port}`
-);
+)
