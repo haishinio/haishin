@@ -2,7 +2,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-declare var self: Worker
+declare const self: Worker
 
 const streamPartFolder = path.join(
   process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
@@ -13,7 +13,7 @@ async function splitterWorker(
   streamFile: string,
   startTime = 0,
   durationOfPart = 0
-) {
+): Promise<void> {
   // Setup the partFileName
   if (!fs.existsSync(streamPartFolder)) {
     fs.mkdirSync(streamPartFolder)
@@ -66,6 +66,8 @@ self.onmessage = (event: MessageEvent) => {
       event.data.file,
       event.data.startTime,
       event.data.durationOfPart
-    )
+    ).catch((error) => {
+      console.error(error)
+    })
   }
 }

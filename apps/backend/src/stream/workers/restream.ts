@@ -4,9 +4,9 @@ import { backupFolder } from '../../routes/backups'
 import { setArchivedFileName } from '@haishin/utils'
 
 // prevents TS errors
-declare var self: Worker
+declare const self: Worker
 
-async function restream(streamInfo: any) {
+async function restream(streamInfo: any): Promise<void> {
   // Create the stream folder
   console.log('Creating stream folder...')
   fs.mkdirSync(streamInfo.folder)
@@ -25,12 +25,12 @@ async function restream(streamInfo: any) {
   ]
   const streamLinkProcess = Bun.spawn(['streamlink', ...streamLinkArgs], {
     onExit(proc, exitCode, signalCode, error) {
-      if (error) console.log(error)
+      if (error != null) console.log(error)
 
       // Wait 20 seconds and then kill the ffmpeg process
       setTimeout(() => {
         console.log('Closing the ffmpeg process...')
-        ffmpegProcess.stdin.end()
+        void ffmpegProcess.stdin.end()
         ffmpegProcess.kill()
       }, 20000)
 
@@ -98,7 +98,7 @@ async function restream(streamInfo: any) {
   // Pipe the streamlink stdout to the ffmpeg stdin
   for await (const chunk of streamLinkProcess.stdout) {
     ffmpegProcess.stdin.write(chunk)
-    ffmpegProcess.stdin.flush()
+    await ffmpegProcess.stdin.flush()
 
     self.postMessage({
       command: 'running',
@@ -109,6 +109,8 @@ async function restream(streamInfo: any) {
 
 self.onmessage = (event: MessageEvent) => {
   if (event.data.command === 'start') {
-    restream(event.data.streamInfo)
+    restream(event.data.streamInfo).catch((error) => {
+      console.error(error)
+    })
   }
 }

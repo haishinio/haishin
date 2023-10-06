@@ -5,6 +5,8 @@ interface SplitterResponse {
   nextStartTime: number
 }
 
+declare let partFileData: SplitterResponse
+
 export const splitter = async (
   file: string,
   startTime = 0
@@ -45,7 +47,7 @@ export const splitter = async (
   })
 
   // When the splitter worker sends a message, send this back to the transcriber
-  const partFileData = (await new Promise((resolve) => {
+  partFileData = await new Promise((resolve) => {
     splitterWorker.onmessage = (eventMessage) => {
       if (eventMessage.data.command === 'complete') {
         const partFileData = eventMessage.data
@@ -55,7 +57,7 @@ export const splitter = async (
         })
       }
     }
-  })) as SplitterResponse
+  })
 
   return partFileData
 }
