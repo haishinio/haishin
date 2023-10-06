@@ -1,5 +1,5 @@
-# Haishin Backend
+# Haishin Backend NEXT
 
-A basic websocket server using express.
+Built with Elysia + Bun, for super good websockets and handling the restreaming + transcoding + transcribing + translating of livestreams via worker threads.
 
-Basically just sets up rooms to allow everyone who is on the same stream page in the frontend to get the same transcription+translations at the same time.
+Should accept a livestream url from a user, subscribe to it's websocket room and if it's the first user, set up the restream + transcode + transcribe + translate pipeline else just add the user to the room to get the latest transcriptions + translations.
