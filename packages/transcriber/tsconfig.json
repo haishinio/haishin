@@ -1,5 +1,5 @@
 {
-  "extends": "@haishin/tsconfig/node.json",
+  "extends": "@haishin/tsconfig/bun.json",
   "exclude": ["node_modules", "dist"],
   "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }

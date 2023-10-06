@@ -1,5 +1,5 @@
 {
-  "extends": "@haishin/tsconfig/node.json",
+  "extends": "@haishin/tsconfig/bun.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
@@ -7,5 +7,5 @@
     "outDir": "dist"
   },
   "lib": ["es2015"],
-  "include": ["src/**/*.ts", "types/**/*.d.ts"],
+  "include": ["src/**/*.ts", "types/**/*.d.ts"]
 }
