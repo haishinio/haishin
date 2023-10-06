@@ -11,7 +11,8 @@
     "start": "bun run src/app.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "elysia": "latest",
+    "redis": "^4.6.10"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
