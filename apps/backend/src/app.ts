@@ -15,9 +15,8 @@ const app = new Elysia()
 
       if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
         async function joinChannel(streamUrl: string) {
-          // Subscribe to a personal room + stream room
-          ws.subscribe(ws.remoteAddress)
-          ws.subscribe(streamUrl)
+          // Subscribe to the stream room
+          ws.subscribe(streamUrl);
 
           // Check user is already in the redis set
           const isUserInRoom = await redisClient.sIsMember(
