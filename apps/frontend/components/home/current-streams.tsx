@@ -30,9 +30,9 @@ const StreamItem = ({ stream }: { stream: StreamInfo }): React.JSX.Element => {
           unoptimized
         />
       </div>
-      <div className='flex justify-between'>
-        <span>{stream.title}</span>
-        <span>{started}</span>
+      <div className='xl:flex justify-between'>
+        <p>{stream.title}</p>
+        {startedDate.valueOf() !== 0 && <p>{started}</p>}
       </div>
     </Link>
   )
