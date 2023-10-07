@@ -48,7 +48,7 @@ export const getStreamInfo = async (
 
   // Build the streamUrl, fileUrl(mp4) and streamFile(m3u8)
   const safeUrl = urlUtils.encodeUrl(originalUrl)
-  const streamUrl = `https://api.haishin.io/streams/${safeUrl}/stream.m3u8`
+  const streamUrl = `${process.env.BACKEND_URL}/streams/${safeUrl}/index.m3u8`
 
   const folder = path.join(streamsFolder, `/${safeUrl}`)
   const file = `${folder}/stream.mp4`

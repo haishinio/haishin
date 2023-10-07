@@ -20,12 +20,6 @@ async function splitterWorker(
   }
   const partFileName = path.join(streamPartFolder, `${crypto.randomUUID()}.wav`)
 
-  console.log('Hello from splitter worker', {
-    streamFile,
-    startTime,
-    durationOfPart
-  })
-
   // Use ffmpeg to split the stream
   const ffmpegArgs = [
     '-i',

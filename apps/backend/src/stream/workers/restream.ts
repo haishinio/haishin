@@ -96,14 +96,19 @@ async function restream(streamInfo: any): Promise<void> {
   })
 
   // Pipe the streamlink stdout to the ffmpeg stdin
+  let sentMessage = false
   for await (const chunk of streamLinkProcess.stdout) {
     ffmpegProcess.stdin.write(chunk)
     await ffmpegProcess.stdin.flush()
 
-    self.postMessage({
-      command: 'running',
-      file: streamInfo.file
-    })
+    if (!sentMessage && fs.existsSync(streamInfo.streamFile)) {
+      // After the m3u8 file is created, send a message to the main thread to allow the streamPage to start
+      self.postMessage({
+        command: 'running',
+        file: streamInfo.file
+      })
+      sentMessage = true
+    }
   }
 }
 

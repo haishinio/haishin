@@ -1,7 +1,5 @@
 'use client'
 
-import io from 'socket.io-client'
-
 import { useCallback, useEffect, useState } from 'react'
 
 import { secondsToDuration } from '@haishin/utils'
@@ -9,10 +7,9 @@ import { secondsToDuration } from '@haishin/utils'
 import Loading from '../../../components/loading'
 import StreamPage from '../../../components/stream-page'
 
-import type { Socket } from 'socket.io-client'
 import type { TextLog } from '../../../types/Textlog'
 
-let socket: Socket
+let socket: WebSocket
 
 interface Props {
   streamId: string
@@ -31,50 +28,48 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
   useEffect(() => {
     const socketUrl = process.env.WS_URL ?? `http://localhost:8080`
 
-    socket = io(socketUrl, {
-      autoConnect: false,
-      query: {
-        streamUrl: url
-      }
-    })
+    socket = new WebSocket(`${socketUrl}?streamUrl=${url}`)
 
-    socket.on('connect', () => {
+    socket.addEventListener('open', () => {
       console.log('connected')
     })
 
-    socket.on('stream-error', () => {
+    socket.addEventListener('stream-error', () => {
       window.location.href = '/stream-error'
     })
 
-    socket.on('start-transcribing', (data) => {
-      setIsTranscribing(true)
+    socket.addEventListener('message', (event) => {
+      const data = JSON.parse(event.data)
 
-      updateStreamUrl(data.streamUrl)
-    })
+      console.log({ data })
 
-    socket.on('transcription-translation', (data) => {
-      if (data.transcription !== '' && data.translation !== '') {
-        updateTextLogs((state) => [
-          {
-            id: data.id,
-            time: secondsToDuration(data.startTime),
-            transcription: data.transcription,
-            translation: data.translation
-          },
-          ...state
-        ])
-      } else {
-        console.log('No transcription+translation made...')
+      if (data.type === 'start-transcribing') {
+        setIsTranscribing(true)
+        updateStreamUrl(data.content.streamUrl)
+      }
+
+      if (data.type === 'transcription-translation') {
+        const { id, startTime, transcription, translation } = data.content
+
+        if (transcription !== '' && translation !== '') {
+          updateTextLogs((state) => [
+            {
+              id,
+              time: secondsToDuration(startTime),
+              transcription,
+              translation
+            },
+            ...state
+          ])
+        } else {
+          console.log('No transcription+translation made...')
+        }
       }
     })
 
-    if (!socket.connected && url !== '') {
-      socket.connect()
-    }
-
     return () => {
       console.log('disconnecting from socket...')
-      socket.disconnect()
+      socket.close()
     }
   }, [url])
 
@@ -84,10 +79,10 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
 
     if (!nextState) {
       // Leave the room
-      socket.emit('leave-stream-transcription', { room: url })
+      socket.send('leave-stream-transcription')
     } else {
       // Join the room
-      socket.emit('join-stream-transcription', { room: url })
+      socket.send('join-stream-transcription')
     }
 
     setIsTranscribing(nextState)
@@ -97,7 +92,7 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
     console.log('Stream ended...')
     const timeout = setTimeout(
       () => {
-        socket.disconnect()
+        socket.close()
       },
       1000 * 60 * 2
     ) // 2mins

@@ -10,6 +10,7 @@ export const streamsFolder = path.join(
   process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
   'streams'
 )
+const apiStreamsUrl = `${process.env.BACKEND_URL}/streams`
 
 if (!fs.existsSync(streamsFolder)) {
   fs.mkdirSync(streamsFolder)
@@ -17,7 +18,9 @@ if (!fs.existsSync(streamsFolder)) {
 
 const streams = new Elysia()
   .get('/streams', () => {
-    const streams = fs.readdirSync(streamsFolder)
+    const streams = fs
+      .readdirSync(streamsFolder)
+      .filter((file) => !file.includes('.'))
 
     const enhancedStreamData = streams.map((stream) => {
       const streamUrl = urlUtils.decodeUrl(stream)
@@ -29,15 +32,30 @@ const streams = new Elysia()
         started: new Date(),
         duration: 0,
         title,
-        thumbnail: `${streamsFolder}/${stream}/stream.jpg`,
+        thumbnail: `${apiStreamsUrl}/${stream}/stream.jpg`,
         url: streamUrl,
         viewers: 0
       }
     })
 
-    console.log({ streams, enhancedStreamData })
-
     return enhancedStreamData
+  })
+  .get('/streams/:id', ({ params: { id } }) => {
+    const streamUrl = urlUtils.decodeUrl(id)
+    const paths = getPathsByUrl(streamUrl)
+    const title = `${paths.site} - ${paths.user}`
+
+    const stream = {
+      id,
+      started: new Date(),
+      duration: 0,
+      title,
+      thumbnail: `${apiStreamsUrl}/${id}/stream.jpg`,
+      url: streamUrl,
+      viewers: 0
+    }
+
+    return stream
   })
   .use(
     staticPlugin({

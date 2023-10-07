@@ -71,14 +71,14 @@ export default function Page(): React.JSX.Element {
             </div>
           </section>
 
-          <div className='my-8'>
+          {/* <div className='my-8'>
             <hr />
             <div className='text-center -mt-3'>
               <p className='px-4 bg-white inline-block'>OR</p>
             </div>
-          </div>
+          </div> */}
 
-          <section>
+          {/* <section>
             <h3 className='text-2xl mb-2'>Uploads</h3>
             <p>Upload a clip to have it transcribed+translated</p>
             <form action={uploadFile} className='flex my-4'>
@@ -97,7 +97,7 @@ export default function Page(): React.JSX.Element {
                 Upload
               </button>
             </form>
-          </section>
+          </section> */}
         </section>
 
         <div className='block lg:hidden'>
