@@ -7,7 +7,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "dev": "bun run --watch src/app.ts",
-    "faker": "cross-env APP_ENV=faker bun run src/app.ts",
+    "faker": "cross-env APP_ENV=faker bun run --watch src/app.ts",
     "start": "bun run src/app.ts"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "redis": "^4.6.10"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.1.0",
     "@haishin/tsconfig": "workspace:*",
     "cross-env": "^7.0.3",
     "eslint": "8.44.0",
