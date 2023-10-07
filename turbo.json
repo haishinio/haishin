@@ -3,12 +3,10 @@
   "pipeline": {
     "dev": {
       "cache": false,
-      "dependsOn": ["^build"],
       "persistent": true
     },
     "faker": {
       "cache": false,
-      "dependsOn": ["^build"],
       "persistent": true
     },
     "lint": {},
