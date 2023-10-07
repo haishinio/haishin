@@ -97,7 +97,7 @@ export const transcribeStream = async (
       type: 'transcription-translation',
       content: {
         id: crypto.randomUUID(),
-        startTime: startTime,
+        startTime: nextStartTime,
         transcription: transcriptionText,
         translation: translation.text
       }
