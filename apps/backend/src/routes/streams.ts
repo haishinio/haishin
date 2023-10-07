@@ -5,6 +5,7 @@ import { Elysia } from 'elysia'
 import { staticPlugin } from '@elysiajs/static'
 
 import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
+import { getStreamInfo } from '../stream/get-info'
 
 export const streamsFolder = path.join(
   process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
@@ -17,38 +18,52 @@ if (!fs.existsSync(streamsFolder)) {
 }
 
 const streams = new Elysia()
-  .get('/streams', () => {
+  .get('/streams', async () => {
     const streams = fs
       .readdirSync(streamsFolder)
       .filter((file) => !file.includes('.'))
 
-    const enhancedStreamData = streams.map((stream) => {
-      const streamUrl = urlUtils.decodeUrl(stream)
-      const paths = getPathsByUrl(streamUrl)
-      const title = `${paths.site} - ${paths.user}`
+    const enhancedStreamData = await Promise.all(
+      streams.map(async (stream) => {
+        const streamUrl = urlUtils.decodeUrl(stream)
 
-      return {
-        id: stream,
-        started: new Date(),
-        duration: 0,
-        title,
-        thumbnail: `${apiStreamsUrl}/${stream}/stream.jpg`,
-        url: streamUrl,
-        viewers: 0
-      }
-    })
+        const streamInfo = await getStreamInfo(streamUrl)
+        const paths = getPathsByUrl(streamUrl)
+        const title = `${paths.site} - ${paths.user}`
+
+        let started = new Date()
+        if (fs.existsSync(streamInfo.file))
+          started = fs.statSync(streamInfo.file).birthtime
+
+        return {
+          id: stream,
+          started,
+          duration: getDuration(streamInfo.file),
+          title,
+          thumbnail: `${apiStreamsUrl}/${stream}/stream.jpg`,
+          url: streamUrl,
+          viewers: 0
+        }
+      })
+    )
 
     return enhancedStreamData
   })
-  .get('/streams/:id', ({ params: { id } }) => {
+  .get('/streams/:id', async ({ params: { id } }) => {
     const streamUrl = urlUtils.decodeUrl(id)
+
+    const streamInfo = await getStreamInfo(streamUrl)
     const paths = getPathsByUrl(streamUrl)
     const title = `${paths.site} - ${paths.user}`
 
+    let started = new Date()
+    if (fs.existsSync(streamInfo.file))
+      started = fs.statSync(streamInfo.file).birthtime
+
     const stream = {
       id,
-      started: new Date(),
-      duration: 0,
+      started,
+      duration: getDuration(streamInfo.file),
       title,
       thumbnail: `${apiStreamsUrl}/${id}/stream.jpg`,
       url: streamUrl,
