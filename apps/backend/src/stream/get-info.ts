@@ -54,7 +54,7 @@ export const getStreamInfo = async (
   const file = `${folder}/stream.mp4`
   const streamFile = `${folder}/index.m3u8`
 
-  const newStream = !fs.existsSync(file)
+  const newStream = !fs.existsSync(folder)
 
   return {
     // Utils
