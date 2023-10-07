@@ -8,9 +8,9 @@
   "private": true,
   "prettier": "prettier-config-standard",
   "scripts": {
-    "faker": "dotenv -- turbo faker",
-    "dev": "dotenv -- turbo dev",
-    "start": "dotenv -- turbo start",
+    "faker": "turbo faker",
+    "dev": "turbo dev",
+    "start": "turbo start",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "publish-packages": "changeset tag"
@@ -18,7 +18,6 @@
   "devDependencies": {
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.2",
-    "dotenv-cli": "^7.2.1",
     "eslint": "^8.47.0",
     "eslint-config-haishin": "workspace:*",
     "prettier": "^3.0.1",
