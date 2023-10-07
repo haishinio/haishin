@@ -11,8 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@haishin/transcriber": "workspace:^",
-    "@haishin/utils": "workspace:^",
+    "@haishin/utils": "workspace:*",
     "@jorgeferrero/stream-to-buffer": "^2.0.6",
     "@sentry/nextjs": "^7.57.0",
     "hls-video-element": "^0.5.1",

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { secondsToDuration } from '@haishin/utils/dist/seconds-to-duration'
+import { secondsToDuration } from '@haishin/utils'
 
 const Duration = ({
   hasEnded,
