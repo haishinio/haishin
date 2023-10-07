@@ -68,7 +68,7 @@ export const transcribeStream = async (
     }
 
     // As we have the transcription, we don't need the part any more so delete it
-    if (partFileName) {
+    if (partFileName !== '') {
       fs.unlinkSync(partFileName)
     }
 

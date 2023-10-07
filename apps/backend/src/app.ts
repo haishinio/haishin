@@ -15,7 +15,11 @@ const redisClient = await createClient({
   .on('error', (err) => console.log('Redis Client Error', err))
   .connect()
 
-async function joinChannel(server: any, ws: any, streamUrl: string) {
+async function joinChannel(
+  server: any,
+  ws: any,
+  streamUrl: string
+): Promise<void> {
   // Get the stream info
   const streamInfo = await getStreamInfo(streamUrl)
 
@@ -36,7 +40,7 @@ async function joinChannel(server: any, ws: any, streamUrl: string) {
 
   if (!isUserInRoom) {
     // Add user to the redis set
-    redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress)
+    await redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress)
     console.log('User joined the room', streamUrl, ws.remoteAddress)
 
     // Check if this is the first user in the room
@@ -52,7 +56,7 @@ async function joinChannel(server: any, ws: any, streamUrl: string) {
       const streamFile = await setupStream(streamUrl)
 
       // Using streamInfo, start to split the video file for transcribing
-      transcribeStream(server, redisClient, streamUrl, streamFile)
+      void transcribeStream(server, redisClient, streamUrl, streamFile)
     }
   } else {
     console.log(
@@ -71,20 +75,20 @@ const app = new Elysia()
   .use(backups)
   .use(streams)
   .ws('/', {
-    open(ws) {
+    async open(ws) {
       const { streamUrl } = ws.data.query
 
       if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
-        joinChannel(app.server, ws, streamUrl)
+        await joinChannel(app.server, ws, streamUrl)
       } else {
         ws.close()
       }
     },
-    message(ws, message) {
+    async message(ws, message) {
       if (message === 'join-stream-transcription') {
         const { streamUrl } = ws.data.query
         if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
-          joinChannel(app.server, ws, streamUrl)
+          await joinChannel(app.server, ws, streamUrl)
         }
       }
 
@@ -95,19 +99,21 @@ const app = new Elysia()
         }
       }
     },
-    close(ws) {
-      if (!ws.remoteAddress) return
+    async close(ws) {
+      if (ws.remoteAddress === null) return
 
       const { streamUrl } = ws.data.query
-      redisClient.sRem(`users:${streamUrl}`, ws.remoteAddress)
+      await redisClient.sRem(`users:${streamUrl}`, ws.remoteAddress)
 
       console.log('User left the room', ws.remoteAddress, streamUrl)
     }
   })
   .listen({
     hostname: '0.0.0.0',
-    port: process.env.PORT || 8080
+    port: process.env.PORT ?? 8080
   })
+
+// We should probably do some cleanup here, like removing everything from streams and stream-parts
 
 console.log(
   `Haishin Api is running at ${app.server?.hostname}:${app.server?.port}`
