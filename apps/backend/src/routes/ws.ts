@@ -1,75 +1,75 @@
-import Elysia from "elysia";
-import { createClient } from "redis";
+import Elysia from 'elysia'
+import { createClient } from 'redis'
 
-import { setupStream } from "../stream";
-import { getStreamInfo } from "../stream/get-info";
-import { transcribeStream } from "../transcriber";
+import { setupStream } from '../stream'
+import { getStreamInfo } from '../stream/get-info'
+import { transcribeStream } from '../transcriber'
 
 const redisClient = await createClient({
-  url: process.env.REDIS_URL,
+  url: process.env.REDIS_URL
 })
-  .on("error", (err) => console.log("Redis Client Error", err))
-  .connect();
+  .on('error', (err) => console.log('Redis Client Error', err))
+  .connect()
 
-const ws = new Elysia().ws("/", {
+const ws = new Elysia().ws('/', {
   open(ws) {
-    const { streamUrl } = ws.data.query;
+    const { streamUrl } = ws.data.query
 
-    if (typeof streamUrl === "string" && !ws.isSubscribed(streamUrl)) {
+    if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
       async function joinChannel(streamUrl: string) {
         // Get the stream info
-        const streamInfo = await getStreamInfo(streamUrl);
+        const streamInfo = await getStreamInfo(streamUrl)
 
         if (!streamInfo.canPlay) {
-          ws.send({ error: "Stream is not available" });
-          ws.close();
-          return;
+          ws.send({ error: 'Stream is not available' })
+          ws.close()
+          return
         }
 
         // Subscribe to the stream room
-        ws.subscribe(streamUrl);
+        ws.subscribe(streamUrl)
 
         // Check user is already in the redis set
         const isUserInRoom = await redisClient.sIsMember(
           `users:${streamUrl}`,
           ws.remoteAddress
-        );
+        )
 
         if (!isUserInRoom) {
           // Add user to the redis set
-          redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress);
-          console.log("User joined the room", streamUrl, ws.remoteAddress);
+          redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress)
+          console.log('User joined the room', streamUrl, ws.remoteAddress)
 
           // Check if this is the first user in the room
-          const currentUsers = await redisClient.sCard(`users:${streamUrl}`);
+          const currentUsers = await redisClient.sCard(`users:${streamUrl}`)
 
           if (currentUsers === 1 && streamInfo.newStream) {
             // Start the stream
             console.log(
               `First user has joined the room ${streamUrl} and stream is new, start restreaming...`
-            );
+            )
 
             // Setup the stream
-            const streamFile = await setupStream(streamUrl);
+            const streamFile = await setupStream(streamUrl)
 
             // Using streamInfo, start to split the video file for transcribing
-            transcribeStream(ws, redisClient, streamUrl, streamFile);
+            transcribeStream(ws, redisClient, streamUrl, streamFile)
           }
         } else {
           console.log(
-            "User already in the room, stream already being transcribed...",
+            'User already in the room, stream already being transcribed...',
             streamUrl,
             ws.remoteAddress
-          );
+          )
         }
 
         // Send the streamInfo to the user for ui setup
-        ws.send(streamInfo);
+        ws.send(streamInfo)
       }
 
-      joinChannel(streamUrl);
+      joinChannel(streamUrl)
     } else {
-      ws.close();
+      ws.close()
     }
   },
   message(ws, message) {
@@ -87,13 +87,13 @@ const ws = new Elysia().ws("/", {
     // }
   },
   close(ws) {
-    if (!ws.remoteAddress) return;
+    if (!ws.remoteAddress) return
 
-    const { streamUrl } = ws.data.query;
-    redisClient.sRem(`users:${streamUrl}`, ws.remoteAddress);
+    const { streamUrl } = ws.data.query
+    redisClient.sRem(`users:${streamUrl}`, ws.remoteAddress)
 
-    console.log("User left the room", ws.remoteAddress, streamUrl);
-  },
-});
+    console.log('User left the room', ws.remoteAddress, streamUrl)
+  }
+})
 
-export default ws;
+export default ws
