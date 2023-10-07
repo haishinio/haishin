@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { urlUtils } from '@haishin/utils/dist/url-utils'
+import { urlUtils } from '@haishin/utils'
 
 const HomeLivestreamForm = (): React.JSX.Element => {
   const [streamUrl, updateStreamUrl] = useState('')

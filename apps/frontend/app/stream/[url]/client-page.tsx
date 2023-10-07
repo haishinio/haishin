@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { secondsToDuration } from '@haishin/utils/dist/seconds-to-duration'
+import { secondsToDuration } from '@haishin/utils'
 
 import Loading from '../../../components/loading'
 import StreamPage from '../../../components/stream-page'
