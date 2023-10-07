@@ -1,4 +1,4 @@
-export function getDuration(filePath: string): string | null {
+export function getDuration(filePath: string): number {
   const ffprobe = Bun.spawnSync([
     'ffprobe',
     '-show_format',
@@ -16,18 +16,14 @@ export function getDuration(filePath: string): string | null {
 
   exitCode = ffprobe.exitCode
 
-  console.log({ exitCode })
-
   if (exitCode !== 0) {
-    return null
+    return -1
   }
 
   const prettyProbe = JSON.parse(probeData.join(''))
   const { duration } = prettyProbe.format
 
-  console.log({ duration })
-
-  return duration
+  return Math.floor(parseFloat(duration))
 }
 
 export default getDuration

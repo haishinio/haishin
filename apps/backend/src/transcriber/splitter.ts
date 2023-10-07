@@ -21,7 +21,7 @@ export const splitter = async (
   }
 
   // Get the duration of this part (time since last transcription)
-  const durationOfPart = Math.floor(parseFloat(durationOfFile)) - startTime
+  const durationOfPart = durationOfFile - startTime
 
   // If the duration of this part is less than 0 or 0, return an empty partFileName and the startTime to try again later
   if (durationOfPart <= 0) {
