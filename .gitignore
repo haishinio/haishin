@@ -14,11 +14,11 @@
 
 # Streams
 /data/backups/**/*
-/data/live/**/*
+/data/streams/**/*
 /data/stream-parts/**/*
 /data/uploads/**/*
 !/data/backups/.gitkeep
-!/data/live/.gitkeep
+!/data/streams/.gitkeep
 !/data/stream-parts/.gitkeep
 !/data/uploads/.gitkeep
 
