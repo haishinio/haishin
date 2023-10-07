@@ -3,14 +3,16 @@ import fs from 'node:fs'
 import { backupFolder } from '../../routes/backups'
 import { setArchivedFileName } from '@haishin/utils'
 
+import type { StreamInfo } from '../get-info'
+
 // prevents TS errors
 declare const self: Worker
 
-async function restream(streamInfo: any): Promise<void> {
+async function restream(streamInfo: StreamInfo): Promise<void> {
   // Create the stream folder
-  console.log('Creating stream folder...')
+  console.log(`Creating stream folder for ${streamInfo.originalUrl}...`)
   fs.mkdirSync(streamInfo.folder)
-  console.log('Created stream folder...')
+  console.log(`Created stream folder for ${streamInfo.originalUrl}...`)
 
   // Use streamlink to download the stream
   const streamLinkArgs = [
@@ -29,14 +31,18 @@ async function restream(streamInfo: any): Promise<void> {
 
       // Wait 20 seconds and then kill the ffmpeg process
       setTimeout(() => {
-        console.log('Closing the ffmpeg process...')
+        console.log(
+          `Closing the ffmpeg process for ${streamInfo.originalUrl}...`
+        )
         void ffmpegProcess.stdin.end()
         ffmpegProcess.kill()
       }, 20000)
 
       // After 40 seconds, move the stream file to the backup folder
       setTimeout(() => {
-        console.log('Moving stream file to backup folder...')
+        console.log(
+          `Moving stream file for ${streamInfo.originalUrl} to backup folder...`
+        )
 
         const backupFile = `${backupFolder}/${setArchivedFileName(
           streamInfo.originalUrl
@@ -46,14 +52,12 @@ async function restream(streamInfo: any): Promise<void> {
           fs.mkdirSync(backupFolder)
         }
 
-        console.log({ backupFile, backupFolder, streamFile: streamInfo.file })
-
         fs.renameSync(streamInfo.file, backupFile)
       }, 40000)
 
       // After 60 seconds, delete the stream folder
       setTimeout(() => {
-        console.log('Deleting stream folder...')
+        console.log(`Deleting stream folder for ${streamInfo.originalUrl}...`)
         fs.rmdirSync(streamInfo.folder, { recursive: true })
       }, 60000)
     }
@@ -61,7 +65,7 @@ async function restream(streamInfo: any): Promise<void> {
 
   // For testing stop streamlink after 10 seconds
   setTimeout(() => {
-    console.log('Killing streamlink process...')
+    console.log(`Killing streamlink process for ${streamInfo.originalUrl}...`)
     streamLinkProcess.kill()
   }, 60000)
 
@@ -86,14 +90,19 @@ async function restream(streamInfo: any): Promise<void> {
     '-hls_flags',
     'delete_segments',
     '-hls_playlist_type',
-    'event',
-    '-loglevel',
-    'error',
-    streamInfo.streamFile
+    'event'
   ]
-  const ffmpegProcess = Bun.spawn(['ffmpeg', ...ffmpegArgs], {
-    stdin: 'pipe'
-  })
+
+  let prodffmpegArgs = [] as string[]
+  if (process.env.NODE_ENV === 'production')
+    prodffmpegArgs = ['-loglevel', 'error']
+
+  const ffmpegProcess = Bun.spawn(
+    ['ffmpeg', ...ffmpegArgs, ...prodffmpegArgs, streamInfo.streamFile],
+    {
+      stdin: 'pipe'
+    }
+  )
 
   // Pipe the streamlink stdout to the ffmpeg stdin
   let sentMessage = false

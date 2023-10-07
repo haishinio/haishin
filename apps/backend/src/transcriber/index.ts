@@ -1,11 +1,9 @@
-// Calls worker to split the stream into an audio chunk
-// Sends this chunk to openAI + deepL
-// Sends this transcription and translation to the client via websocket
-
 import fs from 'node:fs'
 
 import OpenAI from 'openai'
 import * as deepl from 'deepl-node'
+import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
+import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 
 import splitter from './splitter'
 
@@ -14,6 +12,9 @@ const openai = new OpenAI({
 })
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 
+// Calls worker to split the stream into an audio chunk
+// Sends this chunk to openAI + deepL
+// Sends this transcription and translation to the client via websocket
 export const transcribeStream = async (
   server: any, // Would be nice to fix these types
   redisClient: any, // Would be nice to fix these types
@@ -40,27 +41,28 @@ export const transcribeStream = async (
   const { partFileName, nextStartTime } = await splitter(file, startTime)
 
   if (partFileName !== '') {
-    console.log({ partFileName, nextStartTime })
-
     // Send this part to opeanAi for transcription
     let transcriptionText = ''
     try {
-      const transcription = await openai.audio.transcriptions.create({
-        model: 'whisper-1',
-        file: fs.createReadStream(partFileName),
-        prompt,
-        language: 'ja',
-        response_format: 'json',
-        temperature: 0
-      })
-      transcriptionText = transcription.text
+      if (process.env.APP_ENV === 'faker') {
+        transcriptionText = fakerJP.lorem.words(10)
+      } else {
+        const transcription = await openai.audio.transcriptions.create({
+          model: 'whisper-1',
+          file: fs.createReadStream(partFileName),
+          prompt,
+          language: 'ja',
+          response_format: 'json',
+          temperature: 0
+        })
+        transcriptionText = transcription.text
+      }
     } catch (error: unknown) {
       console.error({ error })
     }
 
     // As we have the transcription, we don't need the part any more so delete it
     if (partFileName) {
-      console.log('Deleting the part file')
       fs.unlinkSync(partFileName)
     }
 
@@ -68,11 +70,15 @@ export const transcribeStream = async (
     let translation = { text: '' }
     if (transcriptionText !== '') {
       try {
-        translation = await translator.translateText(
-          transcriptionText,
-          'ja',
-          'en-GB'
-        )
+        if (process.env.APP_ENV === 'faker') {
+          translation.text = fakerGB.lorem.words(10)
+        } else {
+          translation = await translator.translateText(
+            transcriptionText,
+            'ja',
+            'en-GB'
+          )
+        }
       } catch (error: unknown) {
         console.error({ error })
       }
@@ -90,7 +96,17 @@ export const transcribeStream = async (
         translation: translation.text
       }
     })
-    server.publish(url, message)
+
+    if (process.env.APP_ENV === 'faker') {
+      setTimeout(
+        () => {
+          server.publish(url, message)
+        },
+        fakerGB.number.int({ min: 1000, max: 5000 })
+      )
+    } else {
+      server.publish(url, message)
+    }
   }
 
   // Repeat
