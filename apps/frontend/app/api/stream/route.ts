@@ -18,8 +18,8 @@ function isEmpty(obj: object): boolean {
 }
 
 export async function GET(): Promise<NextResponse<StreamInfo[]>> {
-  const rtmpUrl = process.env.NEXT_PUBLIC_RTMP_CLIENT_API_URL ?? ''
-  const apiUrl = `${rtmpUrl}streams`
+  const backendUrl = process.env.BACKEND_URL ?? ''
+  const apiUrl = `${backendUrl}/streams`
 
   const baseStreamsObj = await fetch(apiUrl).then(
     async (response) => await response.json()
@@ -48,7 +48,7 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
       duration = Math.floor(parseFloat(durationStr))
     }
 
-    const thumbnail = `${process.env.RTMP_CLIENT_URL ?? ''}${stream}/stream.jpg`
+    const thumbnail = `${apiUrl}/${stream}/stream.jpg`
 
     return {
       id: stream,
