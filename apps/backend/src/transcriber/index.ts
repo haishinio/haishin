@@ -31,9 +31,15 @@ export const transcribeStream = async (
   // If no one is watching the stream, don't transcribe it
   if (currentUsers <= 0) {
     console.log('No one is watching the stream, try again in 5 seconds')
-    setTimeout(() => {
-      void transcribeStream(server, redisClient, url, file, startTime, prompt)
-    }, 5000)
+    await Bun.sleep(5000)
+    return void transcribeStream(
+      server,
+      redisClient,
+      url,
+      file,
+      startTime,
+      prompt
+    )
   }
 
   // Split the stream into a part
@@ -111,7 +117,13 @@ export const transcribeStream = async (
 
   // Repeat
   console.log('And repeat in a few seconds...')
-  setTimeout(() => {
-    void transcribeStream(server, redisClient, url, file, nextStartTime, prompt)
-  }, 5000)
+  await Bun.sleep(5000)
+  return void transcribeStream(
+    server,
+    redisClient,
+    url,
+    file,
+    nextStartTime,
+    prompt
+  )
 }
