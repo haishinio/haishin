@@ -34,7 +34,13 @@ export const splitter = async (
   // Setup the splitter worker
   const splitterWorkerUrl = new URL('./workers/splitter.ts', import.meta.url)
     .href
-  const splitterWorker = new Worker(splitterWorkerUrl)
+  const splitterWorker = new Worker(splitterWorkerUrl, {
+    smol: true
+  })
+
+  splitterWorker.addEventListener('close', (event) => {
+    console.log('splitterWorker is being closed')
+  })
 
   // Start the splitter, and get the partFileName and duration of this part
   splitterWorker.postMessage({
