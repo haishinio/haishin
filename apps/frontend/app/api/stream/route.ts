@@ -1,8 +1,5 @@
 import { NextResponse } from 'next/server'
 
-import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
-import { pathToData } from '../../../utils/path-to-data'
-
 import type StreamInfo from '../../../types/StreamInfo'
 
 export const dynamic = 'force-dynamic'
@@ -21,45 +18,13 @@ export async function GET(): Promise<NextResponse<StreamInfo[]>> {
   const backendUrl = process.env.BACKEND_URL ?? ''
   const apiUrl = `${backendUrl}/streams`
 
-  const baseStreamsObj = await fetch(apiUrl).then(
+  const streams = await fetch(apiUrl).then(
     async (response) => await response.json()
   )
 
-  if (isEmpty(baseStreamsObj)) {
+  if (isEmpty(streams)) {
     return NextResponse.json([], { status: 200 })
   }
-
-  const streamKeys = Object.keys(baseStreamsObj.live)
-
-  const streams = streamKeys.map((stream: string): StreamInfo => {
-    const streamData = baseStreamsObj.live[stream]
-    const { publisher, subscribers } = streamData
-    const viewers = subscribers.length
-
-    const streamUrl = urlUtils.decodeUrl(stream)
-    const paths = getPathsByUrl(streamUrl)
-    const title = `${paths.site} - ${paths.user}`
-
-    let duration = 0
-    const durationStr = getDuration(
-      pathToData(`data/live/${stream}/stream.mp4`)
-    )
-    if (durationStr !== null) {
-      duration = Math.floor(parseFloat(durationStr))
-    }
-
-    const thumbnail = `${apiUrl}/${stream}/stream.jpg`
-
-    return {
-      id: stream,
-      started: publisher.connectCreated,
-      duration,
-      thumbnail,
-      title,
-      url: streamUrl,
-      viewers
-    }
-  })
 
   return NextResponse.json(streams, { status: 200 })
 }

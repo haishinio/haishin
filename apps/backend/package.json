@@ -11,6 +11,7 @@
     "start": "bun run src/app.ts"
   },
   "dependencies": {
+    "@elysiajs/cors": "^0.7.1",
     "@elysiajs/html": "^0.7.0",
     "@elysiajs/static": "^0.7.1",
     "@haishin/utils": "workspace:^",

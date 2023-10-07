@@ -11,80 +11,81 @@ const redisClient = await createClient({
   .on('error', (err) => console.log('Redis Client Error', err))
   .connect()
 
+async function joinChannel(ws: any, streamUrl: string) {
+  // Get the stream info
+  const streamInfo = await getStreamInfo(streamUrl)
+
+  if (!streamInfo.canPlay) {
+    ws.send({ error: 'Stream is not available' })
+    ws.close()
+    return
+  }
+
+  // Subscribe to the stream room
+  ws.subscribe(streamUrl)
+
+  // Check user is already in the redis set
+  const isUserInRoom = await redisClient.sIsMember(
+    `users:${streamUrl}`,
+    ws.remoteAddress
+  )
+
+  if (!isUserInRoom) {
+    // Add user to the redis set
+    redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress)
+    console.log('User joined the room', streamUrl, ws.remoteAddress)
+
+    // Check if this is the first user in the room
+    const currentUsers = await redisClient.sCard(`users:${streamUrl}`)
+
+    if (currentUsers === 1 && streamInfo.newStream) {
+      // Start the stream
+      console.log(
+        `First user has joined the room ${streamUrl} and stream is new, start restreaming...`
+      )
+
+      // Setup the stream
+      const streamFile = await setupStream(streamUrl)
+
+      // Using streamInfo, start to split the video file for transcribing
+      transcribeStream(ws, redisClient, streamUrl, streamFile)
+    }
+  } else {
+    console.log(
+      'User already in the room, stream already being transcribed...',
+      streamUrl,
+      ws.remoteAddress
+    )
+  }
+
+  // Send the streamInfo to the user for ui setup
+  ws.send({ type: 'start-transcribing', content: streamInfo })
+}
+
 const ws = new Elysia().ws('/', {
   open(ws) {
     const { streamUrl } = ws.data.query
 
     if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
-      async function joinChannel(streamUrl: string) {
-        // Get the stream info
-        const streamInfo = await getStreamInfo(streamUrl)
-
-        if (!streamInfo.canPlay) {
-          ws.send({ error: 'Stream is not available' })
-          ws.close()
-          return
-        }
-
-        // Subscribe to the stream room
-        ws.subscribe(streamUrl)
-
-        // Check user is already in the redis set
-        const isUserInRoom = await redisClient.sIsMember(
-          `users:${streamUrl}`,
-          ws.remoteAddress
-        )
-
-        if (!isUserInRoom) {
-          // Add user to the redis set
-          redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress)
-          console.log('User joined the room', streamUrl, ws.remoteAddress)
-
-          // Check if this is the first user in the room
-          const currentUsers = await redisClient.sCard(`users:${streamUrl}`)
-
-          if (currentUsers === 1 && streamInfo.newStream) {
-            // Start the stream
-            console.log(
-              `First user has joined the room ${streamUrl} and stream is new, start restreaming...`
-            )
-
-            // Setup the stream
-            const streamFile = await setupStream(streamUrl)
-
-            // Using streamInfo, start to split the video file for transcribing
-            transcribeStream(ws, redisClient, streamUrl, streamFile)
-          }
-        } else {
-          console.log(
-            'User already in the room, stream already being transcribed...',
-            streamUrl,
-            ws.remoteAddress
-          )
-        }
-
-        // Send the streamInfo to the user for ui setup
-        ws.send(streamInfo)
-      }
-
-      joinChannel(streamUrl)
+      joinChannel(ws, streamUrl)
     } else {
       ws.close()
     }
   },
   message(ws, message) {
-    // if (message === "join-stream-transcription") {
-    //   const { streamUrl } = ws.data.query;
-    //   if (typeof streamUrl === "string" && !ws.isSubscribed(streamUrl)) {
-    //     ws.subscribe(streamUrl);
-    //   }
-    // }
-    // if (message === "leave-stream-transcription") {
-    //   const { streamUrl } = ws.data.query;
-    //   if (typeof streamUrl === "string" && ws.isSubscribed(streamUrl)) {
-    //     ws.unsubscribe(streamUrl);
-    //   }
-    // }
+    if (message === 'join-stream-transcription') {
+      const { streamUrl } = ws.data.query
+      if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
+        joinChannel(ws, streamUrl)
+      }
+    }
+
+    if (message === 'leave-stream-transcription') {
+      const { streamUrl } = ws.data.query
+      if (typeof streamUrl === 'string' && ws.isSubscribed(streamUrl)) {
+        ws.unsubscribe(streamUrl)
+      }
+    }
   },
   close(ws) {
     if (!ws.remoteAddress) return
