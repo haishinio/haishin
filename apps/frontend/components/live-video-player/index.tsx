@@ -6,7 +6,6 @@ import useStream from '../../hooks/useStream'
 import {
   MediaController,
   MediaControlBar,
-  MediaLiveButton,
   MediaLoadingIndicator,
   MediaPosterImage,
   MediaVolumeRange,
@@ -35,6 +34,7 @@ export const LiveVideoPlayer = ({
   const { duration, thumbnail, started } = data as StreamInfo
 
   const updateHasEnded = (): void => {
+    console.log('has ended')
     setHasEnded(true)
     updateEnded()
   }
@@ -53,8 +53,7 @@ export const LiveVideoPlayer = ({
         />
       )}
       <MediaControlBar>
-        <MediaLiveButton />
-        {started !== null && (
+        {started !== null && duration !== -1 && (
           <Duration initialDuration={duration} hasEnded={hasEnded} />
         )}
         <div className='flex-grow bg-[--media-secondary-color]'></div>
