@@ -52,6 +52,8 @@ async function splitterWorker(
     partFileName,
     nextStartTime: startTime + durationOfPart
   })
+
+  process.exit()
 }
 
 self.onmessage = (event: MessageEvent) => {
