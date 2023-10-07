@@ -15,7 +15,9 @@
     "@elysiajs/html": "^0.7.0",
     "@elysiajs/static": "^0.7.1",
     "@haishin/utils": "workspace:^",
+    "deepl-node": "^1.10.2",
     "elysia": "latest",
+    "openai": "^4.11.1",
     "redis": "^4.6.10"
   },
   "devDependencies": {
