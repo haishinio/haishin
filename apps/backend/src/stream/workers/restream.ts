@@ -36,7 +36,7 @@ async function restream(streamInfo: StreamInfo): Promise<void> {
         )
         void ffmpegProcess.stdin.end()
         ffmpegProcess.kill()
-      }, 20000)
+      }, 1000 * 20)
 
       // After 40 seconds, move the stream file to the backup folder
       setTimeout(() => {
@@ -53,21 +53,25 @@ async function restream(streamInfo: StreamInfo): Promise<void> {
         }
 
         fs.renameSync(streamInfo.file, backupFile)
-      }, 40000)
+      }, 1000 * 40)
 
       // After 60 seconds, delete the stream folder
       setTimeout(() => {
         console.log(`Deleting stream folder for ${streamInfo.originalUrl}...`)
         fs.rmdirSync(streamInfo.folder, { recursive: true })
-      }, 60000)
+        process.exit()
+      }, 1000 * 60)
     }
   })
 
-  // For testing stop streamlink after 2minutes
-  setTimeout(() => {
-    console.log(`Killing streamlink process for ${streamInfo.originalUrl}...`)
-    streamLinkProcess.kill()
-  }, 120000)
+  // For testing stop streamlink after 5 minutes
+  setTimeout(
+    () => {
+      console.log(`Killing streamlink process for ${streamInfo.originalUrl}...`)
+      streamLinkProcess.kill()
+    },
+    1000 * 60 * 5
+  )
 
   // Use ffmpeg to restream the stream
   const ffmpegArgs = [
