@@ -63,46 +63,45 @@ async function restream(streamInfo: StreamInfo): Promise<void> {
     }
   })
 
-  // For testing stop streamlink after 10 seconds
+  // For testing stop streamlink after 2minutes
   setTimeout(() => {
     console.log(`Killing streamlink process for ${streamInfo.originalUrl}...`)
     streamLinkProcess.kill()
-  }, 60000)
+  }, 120000)
 
   // Use ffmpeg to restream the stream
   const ffmpegArgs = [
     '-i',
     'pipe:0',
     '-c:v',
-    'copy',
+    'libx264',
+    '-preset',
+    'veryfast',
     '-c:a',
-    'copy',
+    'aac',
     '-f',
     'hls',
-    '-map',
-    '0:a?',
-    '-map',
-    '0:v?',
     '-hls_time',
-    '2',
+    2,
     '-hls_list_size',
-    '3',
+    3,
     '-hls_flags',
-    'delete_segments',
-    '-hls_playlist_type',
-    'event'
-  ]
+    'delete_segments'
+  ] as string[]
 
   let prodffmpegArgs = [] as string[]
   if (process.env.NODE_ENV === 'production')
     prodffmpegArgs = ['-loglevel', 'error']
 
-  const ffmpegProcess = Bun.spawn(
-    ['ffmpeg', ...ffmpegArgs, ...prodffmpegArgs, streamInfo.streamFile],
-    {
-      stdin: 'pipe'
-    }
-  )
+  const ffmpegCmd = [
+    'ffmpeg',
+    ...ffmpegArgs,
+    ...prodffmpegArgs,
+    streamInfo.streamFile
+  ]
+  const ffmpegProcess = Bun.spawn(ffmpegCmd, {
+    stdin: 'pipe'
+  })
 
   // Pipe the streamlink stdout to the ffmpeg stdin
   let sentMessage = false
