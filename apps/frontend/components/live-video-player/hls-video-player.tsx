@@ -40,7 +40,6 @@ const HlsVideoElement: React.FC<Props> = ({ src, updateEnded }) => {
       autoPlay
       crossOrigin=''
       playsInline
-      onEnded={updateEnded}
       slot='media'
       src={src}
     />
