@@ -1,5 +1,11 @@
 # @haishin/utils
 
+## 3.1.0
+
+### Minor Changes
+
+- [#99](https://github.com/tomouchuu/haishin/pull/99) [`4baf9cf`](https://github.com/tomouchuu/haishin/commit/4baf9cf06bf7d329b1af2117bbee19f531e482de) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from node+tsup to bun
+
 ## 3.0.1
 
 ### Patch Changes

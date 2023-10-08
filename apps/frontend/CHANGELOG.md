@@ -1,5 +1,16 @@
 # @haishin/frontend
 
+## 3.3.0
+
+### Minor Changes
+
+- [#99](https://github.com/tomouchuu/haishin/pull/99) [`f56f78c`](https://github.com/tomouchuu/haishin/commit/f56f78cc45afd591cd81c8faab5574137912af96) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Updates to account for new backend
+
+### Patch Changes
+
+- Updated dependencies [[`4baf9cf`](https://github.com/tomouchuu/haishin/commit/4baf9cf06bf7d329b1af2117bbee19f531e482de)]:
+  - @haishin/utils@3.1.0
+
 ## 3.2.5
 
 ### Patch Changes
