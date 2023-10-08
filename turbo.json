@@ -21,7 +21,7 @@
   "globalEnv": [
     "NODE_ENV",
     "APP_ENV",
-    "FFMPEG_PATH",
+    "PORT",
     "OPENAI_API_KEY",
     "DEEPL_API_KEY",
     "SENTRY_AUTH_TOKEN",
