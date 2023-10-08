@@ -1,5 +1,11 @@
 # @haishin/backend
 
+## 3.0.2
+
+### Patch Changes
+
+- [`cbdac9b`](https://github.com/tomouchuu/haishin/commit/cbdac9b9bfe901b9308cf44c5c775e4834fdf404) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix issues with setup plugin
+
 ## 3.0.1
 
 ### Patch Changes
