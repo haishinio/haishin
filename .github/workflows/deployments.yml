@@ -23,19 +23,11 @@ jobs:
       - name: Fetch tags
         run: git fetch --tags origin
 
-      - name: Setup node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install pnpm
-        run: npm i pnpm@latest -g
-
-      - name: Setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
       - name: Create release pr / create tags
         id: changesets
@@ -43,8 +35,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.HAISHIN_RUNNER_TOKEN }}
         with:
-          version: pnpm version-packages
-          publish: pnpm publish-packages
+          version: bun run version-packages
+          publish: bun run publish-packages
       - name: Echo outputs
         run: |
           echo "hasChangesets=${{ steps.changesets.outputs.hasChangesets }}"
@@ -97,8 +89,8 @@ jobs:
           file: ./apps/frontend/Dockerfile
           build-args: |
             GIT_REVISION=${{ steps.git_rev.outputs.rev }}
+            BACKEND_URL=${{ secrets.BACKEND_URL }}
             DEEPL_API_KEY=${{ secrets.DEEPL_API_KEY }}
-            RTMP_CLIENT_API_URL=${{ secrets.RTMP_CLIENT_API_URL }}
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
             TURBO_TEAM=${{ secrets.TURBO_TEAM }}
             TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
