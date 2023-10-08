@@ -1,12 +1,13 @@
-FROM oven/bun:alpine AS base
+FROM node:18-alpine AS base
 
 FROM base AS builder
 RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
 RUN apk update
 RUN pip3 install streamlink
 WORKDIR /app
+RUN yarn global add bun turbo
 COPY . .
-RUN bunx turbo prune --scope @haishin/backend --docker
+RUN turbo prune --scope @haishin/backend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer

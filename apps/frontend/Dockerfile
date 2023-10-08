@@ -1,11 +1,12 @@
-FROM oven/bun:alpine AS base
+FROM node:18-alpine AS base
 
 FROM base AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
+RUN yarn global add bun turbo
 COPY . .
-RUN bunx turbo prune --scope @haishin/frontend --docker
+RUN turbo prune --scope @haishin/frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -45,7 +46,7 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN pnpm turbo run build --filter=frontend...
+RUN bunx turbo run build --filter=frontend...
 
 FROM base AS runner
 WORKDIR /app
