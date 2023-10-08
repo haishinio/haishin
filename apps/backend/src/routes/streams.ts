@@ -11,6 +11,11 @@ export const streamsFolder = path.join(
   process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
   'streams'
 )
+export const streamPartFolder = path.join(
+  process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
+  'stream-parts'
+)
+
 const apiStreamsUrl = `${process.env.BACKEND_URL}/streams`
 
 if (!fs.existsSync(streamsFolder)) {

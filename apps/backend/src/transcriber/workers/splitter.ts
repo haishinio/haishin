@@ -2,12 +2,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-declare const self: Worker
+import { streamPartFolder } from '../../routes/streams'
 
-const streamPartFolder = path.join(
-  process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
-  'stream-parts'
-)
+declare const self: Worker
 
 async function splitterWorker(
   streamFile: string,

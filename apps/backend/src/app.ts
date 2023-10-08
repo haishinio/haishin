@@ -4,6 +4,7 @@ import { cors } from '@elysiajs/cors'
 
 import backups from './routes/backups'
 import streams from './routes/streams'
+import reset from './routes/reset'
 
 import { setupStream } from './stream'
 import { getStreamInfo } from './stream/get-info'
@@ -12,7 +13,9 @@ import { transcribeStream } from './transcriber'
 const redisClient = await createClient({
   url: process.env.REDIS_URL
 })
-  .on('error', (err) => console.log('Redis Client Error', err))
+  .on('error', (err) => {
+    console.log('Redis Client Error', err)
+  })
   .connect()
 
 async function joinChannel(
@@ -70,10 +73,14 @@ async function joinChannel(
   ws.send({ type: 'start-transcribing', content: streamInfo })
 }
 
+export const setup = new Elysia().state('redis', redisClient)
+
 const app = new Elysia()
+  .use(setup)
   .use(cors())
   .use(backups)
   .use(streams)
+  .use(reset)
   .ws('/', {
     async open(ws) {
       const { streamUrl } = ws.data.query
