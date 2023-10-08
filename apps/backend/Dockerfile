@@ -3,11 +3,8 @@ FROM oven/bun:alpine AS base
 FROM base AS builder
 RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
 RUN apk update
-
 RUN pip3 install streamlink
-
 WORKDIR /app
-
 COPY . .
 RUN bunx turbo prune --scope @haishin/backend --docker
 
@@ -32,7 +29,7 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 # Build the project
 COPY --from=builder /app/out/full/ .
-RUN bunx turbo run build --filter=@haishin/backend...
+RUN bunx turbo run build --filter=backend...
 
 # Run the project
 FROM base AS runner
