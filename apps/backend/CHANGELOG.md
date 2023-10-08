@@ -1,5 +1,15 @@
 # @haishin/backend
 
+## 3.0.1
+
+### Patch Changes
+
+- [`75f9007`](https://github.com/tomouchuu/haishin/commit/75f900783de130d32b84a746ca118f136e516acb) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds reset route
+
+- [`c6d6533`](https://github.com/tomouchuu/haishin/commit/c6d6533a2ab95dad3dc13c1642efaaae2e165e98) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Adds small cleanup backup route(s) to clean the backups dir
+
+- [`880c6de`](https://github.com/tomouchuu/haishin/commit/880c6de35529efc96eecfeff737dadf1dcc407f1) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Stream routes can now return viewers
+
 ## 3.0.0
 
 ### Major Changes
