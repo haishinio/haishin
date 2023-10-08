@@ -42,5 +42,14 @@ const backups = new Elysia()
         </html>
       `
   })
+  .get('/wipe-backups', async () => {
+    fs.rmdirSync(backupFolder, { recursive: true })
+    fs.mkdirSync(backupFolder)
+    return { success: true }
+  })
+  .delete('/backups/:file', async ({ params: { file } }) => {
+    fs.rmSync(`${backupFolder}/${file}`)
+    return { success: true }
+  })
 
 export default backups
