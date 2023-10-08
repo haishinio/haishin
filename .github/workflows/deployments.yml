@@ -3,13 +3,10 @@ name: Deployments
 on:
   push:
     branches:
-      - 'a-random-branch-that-will-never-match-for-now'
+      - main
 
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   create-release-pr:
@@ -47,105 +44,23 @@ jobs:
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
       publishedPackageNames: ${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}
 
-  publish-frontend:
+  deploy:
     needs: create-release-pr
-    name: Publish frontend
+    name: Deploy check
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
-      )
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
-
-      - name: Get git revision
-        id: git_rev
-        run: echo "rev=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./apps/frontend/Dockerfile
-          build-args: |
-            GIT_REVISION=${{ steps.git_rev.outputs.rev }}
-            BACKEND_URL=${{ secrets.BACKEND_URL }}
-            DEEPL_API_KEY=${{ secrets.DEEPL_API_KEY }}
-            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
-            TURBO_TEAM=${{ secrets.TURBO_TEAM }}
-            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
-            WS_URL=${{ secrets.WS_URL }}
-          push: true
-          labels: ${{ steps.meta.outputs.labels }}
-          tags: ${{ steps.meta.outputs.tags }}
-
-  publish-backend:
-    needs: create-release-pr
-    name: Publish backend
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
-      )
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
-
-      - name: Get git revision
-        id: git_rev
-        run: echo "rev=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./apps/backend/Dockerfile
-          build-args: |
-            GIT_REVISION=${{ steps.git_rev.outputs.rev }}
-            TURBO_TEAM=${{ secrets.TURBO_TEAM }}
-            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
-          push: true
-          labels: ${{ steps.meta.outputs.labels }}
-          tags: ${{ steps.meta.outputs.tags }}
+      - name: Check for changesets
+        if: needs.create-release-pr.outputs.hasChangesets == 'true'
+        run: exit 1
+      - name: Check for published packages
+        if: |
+          !(
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
+          )
+        run: exit 1
 
   cleanup-old-release-tags:
     needs: create-release-pr
