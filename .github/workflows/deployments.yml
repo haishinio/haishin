@@ -61,6 +61,8 @@ jobs:
             contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
           )
         run: exit 1
+      - name: Deploy
+        run: exit 0
 
   cleanup-old-release-tags:
     needs: create-release-pr
