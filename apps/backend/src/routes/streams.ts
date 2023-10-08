@@ -7,6 +7,8 @@ import { staticPlugin } from '@elysiajs/static'
 import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
 import { getStreamInfo } from '../stream/get-info'
 
+import { setup } from '../app'
+
 export const streamsFolder = path.join(
   process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
   'streams'
@@ -23,7 +25,8 @@ if (!fs.existsSync(streamsFolder)) {
 }
 
 const streams = new Elysia()
-  .get('/streams', async () => {
+  .use(setup)
+  .get('/streams', async ({ store: { redis } }) => {
     const streams = fs
       .readdirSync(streamsFolder)
       .filter((file) => !file.includes('.'))
@@ -40,6 +43,8 @@ const streams = new Elysia()
         if (fs.existsSync(streamInfo.file))
           started = fs.statSync(streamInfo.file).birthtime
 
+        const viewers = await redis.sCard(`users:${streamUrl}`)
+
         return {
           id: stream,
           started,
@@ -47,14 +52,14 @@ const streams = new Elysia()
           title,
           thumbnail: `${apiStreamsUrl}/${stream}/stream.jpg`,
           url: streamUrl,
-          viewers: 0
+          viewers
         }
       })
     )
 
     return enhancedStreamData
   })
-  .get('/streams/:id', async ({ params: { id } }) => {
+  .get('/streams/:id', async ({ params: { id }, store: { redis } }) => {
     const streamUrl = urlUtils.decodeUrl(id)
 
     const streamInfo = await getStreamInfo(streamUrl)
@@ -65,6 +70,8 @@ const streams = new Elysia()
     if (fs.existsSync(streamInfo.file))
       started = fs.statSync(streamInfo.file).birthtime
 
+    const viewers = await redis.sCard(`users:${streamUrl}`)
+
     const stream = {
       id,
       started,
@@ -72,7 +79,7 @@ const streams = new Elysia()
       title,
       thumbnail: `${apiStreamsUrl}/${id}/stream.jpg`,
       url: streamUrl,
-      viewers: 0
+      viewers
     }
 
     return stream
