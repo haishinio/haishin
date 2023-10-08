@@ -1,4 +1,3 @@
-const path = require('path')
 const { withSentryConfig } = require('@sentry/nextjs')
 
 const moduleExports = {
@@ -9,9 +8,7 @@ const moduleExports = {
   sentry: {
     hideSourceMaps: true
   },
-  output: 'standalone',
   experimental: {
-    outputFileTracingRoot: path.join(__dirname, '../../'),
     serverActions: true
   },
   reactStrictMode: true,

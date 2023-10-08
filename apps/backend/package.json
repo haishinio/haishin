@@ -14,7 +14,7 @@
     "@elysiajs/cors": "^0.7.1",
     "@elysiajs/html": "^0.7.0",
     "@elysiajs/static": "^0.7.1",
-    "@haishin/utils": "workspace:^",
+    "@haishin/utils": "workspace:*",
     "deepl-node": "^1.10.2",
     "elysia": "latest",
     "openai": "^4.11.1",
@@ -24,8 +24,8 @@
     "@faker-js/faker": "^8.1.0",
     "@haishin/tsconfig": "workspace:*",
     "cross-env": "^7.0.3",
-    "eslint": "8.44.0",
+    "eslint": "^8.44.0",
     "eslint-config-haishin": "workspace:*",
-    "typescript": "5.1.6"
+    "typescript": "^5.1.6"
   }
 }

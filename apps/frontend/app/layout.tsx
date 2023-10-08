@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     default: 'Page'
   },
   creator: 'Thomas(tomouchuu)',
-  metadataBase: new URL(process.env.PRODUCTION_URL ?? 'http://localhost:3000')
+  metadataBase: new URL(process.env.FRONTEND_URL ?? 'http://localhost:3000')
 }
 
 export default function RootLayout({

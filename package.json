@@ -10,7 +10,12 @@
   "scripts": {
     "faker": "turbo faker",
     "dev": "turbo dev",
+    "build": "turbo build",
     "start": "turbo start",
+    "build:frontend": "turbo run build --filter=frontend...",
+    "start:frontend": "cd apps/frontend && bun run start",
+    "build:backend": "turbo run build --filter=backend...",
+    "start:backend": "bun run apps/backend/src/app.ts",
     "changeset": "changeset",
     "version-packages": "changeset version",
     "publish-packages": "changeset tag"

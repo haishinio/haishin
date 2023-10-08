@@ -64,13 +64,13 @@ async function restream(streamInfo: StreamInfo): Promise<void> {
     }
   })
 
-  // For testing stop streamlink after 5 minutes
+  // For testing stop streamlink after 1 minutes
   setTimeout(
     () => {
       console.log(`Killing streamlink process for ${streamInfo.originalUrl}...`)
       streamLinkProcess.kill()
     },
-    1000 * 60 * 5
+    1000 * 60 * 1
   )
 
   // Use ffmpeg to restream the stream
