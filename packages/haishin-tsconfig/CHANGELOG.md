@@ -1,5 +1,15 @@
 # @haishin/tsconfig
 
+## 3.0.0
+
+### Major Changes
+
+- [#99](https://github.com/tomouchuu/haishin/pull/99) [`751efbf`](https://github.com/tomouchuu/haishin/commit/751efbfbeb4ce1dec681b33c8ba4eeba8bde7e11) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from node to bun
+
+### Minor Changes
+
+- [#99](https://github.com/tomouchuu/haishin/pull/99) [`16ba0d0`](https://github.com/tomouchuu/haishin/commit/16ba0d0995d55f9d710717bb65b7455a108f0b88) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update the base + bun tsconfigs with defaults from elysia
+
 ## 2.1.2
 
 ### Patch Changes

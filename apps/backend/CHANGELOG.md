@@ -1,5 +1,16 @@
 # @haishin/backend
 
+## 3.0.0
+
+### Major Changes
+
+- [#99](https://github.com/tomouchuu/haishin/pull/99) [`16ba0d0`](https://github.com/tomouchuu/haishin/commit/16ba0d0995d55f9d710717bb65b7455a108f0b88) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Move from express+node-media-server+socket.io to bun+elysia
+
+### Patch Changes
+
+- Updated dependencies [[`4baf9cf`](https://github.com/tomouchuu/haishin/commit/4baf9cf06bf7d329b1af2117bbee19f531e482de)]:
+  - @haishin/utils@3.1.0
+
 ## 2.3.5
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "name": "@haishin/utils",
   "description": "Transcriber Utils for use within @haishin/*",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
