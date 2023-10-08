@@ -28,9 +28,9 @@ COPY turbo.json turbo.json
 ARG GIT_REVISION
 ENV HAISHIN_VERSION=$GIT_REVISION
 
-ARG RTMP_CLIENT_API_URL
-ENV RTMP_CLIENT_API_URL=$RTMP_CLIENT_API_URL
-ENV NEXT_PUBLIC_RTMP_CLIENT_API_URL=$RTMP_CLIENT_API_URL
+ARG BACKEND_URL
+ENV BACKEND_URL=$BACKEND_URL
+ENV NEXT_PUBLIC_BACKEND_URL=$BACKEND_URL
 
 ARG WS_URL
 ENV WS_URL=$WS_URL
@@ -61,9 +61,9 @@ RUN apk update
 WORKDIR /app
 
 # Don't run production as root
-# RUN addgroup --system --gid 1001 nodejs
-# RUN adduser --system --uid 1001 nextjs
-# USER nextjs
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
 
 COPY --from=installer /app/apps/frontend/next.config.js .
 COPY --from=installer /app/apps/frontend/package.json .
@@ -73,12 +73,5 @@ COPY --from=installer /app/apps/frontend/package.json .
 COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
 COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
 COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/frontend/public
-
-# Ideally we'd just copy the @ffmpeg folder but since it's got the version+patch it seems a little difficult
-COPY --from=installer --chown=nextjs:nodejs /app/node_modules/.pnpm/@ffmpeg+core@0.11.0_patch_hash=ld7rzfw7iozpndvzizlt4sbpaa ./node_modules/.pnpm/@ffmpeg+core@0.11.0_patch_hash=ld7rzfw7iozpndvzizlt4sbpaa
-COPY --from=installer /app/packages/transcriber/node_modules/@ffmpeg/core ./packages/transcriber/node_modules/@ffmpeg/core
-
-# Lastly copy the transcriber dists
-COPY --from=installer /app/packages/transcriber/dist ./packages/transcriber/dist
 
 CMD node apps/frontend/server.js
