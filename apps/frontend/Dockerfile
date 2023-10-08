@@ -1,17 +1,16 @@
-FROM node:18-alpine AS base
+FROM node:18-alpine AS node
+FROM oven/bun:alpine AS bun
 
-FROM base AS builder
+FROM node AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
-RUN yarn global add bun turbo
+RUN yarn global add turbo
 COPY . .
 RUN turbo prune --scope @haishin/frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
-FROM base AS installer
-RUN apk add --no-cache libc6-compat
-RUN apk update
+FROM bun AS installer
 WORKDIR /app
 # First install the dependencies (as they change less often)
 COPY .gitignore .gitignore
@@ -48,7 +47,7 @@ ENV TURBO_TOKEN=$TURBO_TOKEN
 
 RUN bunx turbo run build --filter=frontend...
 
-FROM base AS runner
+FROM bun AS runner
 WORKDIR /app
 # Don't run production as root
 RUN addgroup --system --gid 1001 nodejs

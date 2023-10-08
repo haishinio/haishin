@@ -1,18 +1,17 @@
-FROM node:18-alpine AS base
+FROM node:18-alpine AS node
+FROM oven/bun:alpine AS bun
 
 FROM base AS builder
-RUN apk add --no-cache libc6-compat g++ make py3-pip ffmpeg
+RUN apk add --no-cache libc6-compat
 RUN apk update
 RUN pip3 install streamlink
 WORKDIR /app
-RUN yarn global add bun turbo
+RUN yarn global add turbo
 COPY . .
 RUN turbo prune --scope @haishin/backend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
-FROM base AS installer
-RUN apk add --no-cache libc6-compat
-RUN apk update
+FROM bun AS installer
 WORKDIR /app
 
 # First install the dependencies (as they change less often)
@@ -33,9 +32,11 @@ COPY --from=builder /app/out/full/ .
 RUN bunx turbo run build --filter=backend...
 
 # Run the project
-FROM base AS runner
+FROM bun AS runner
+RUN apk add --no-cache g++ make py3-pip ffmpeg
+RUN apk update
+RUN pip3 install streamlink
 WORKDIR /app
-
 COPY --from=installer /app .
 
 CMD ["bun", "apps/backend/src/index.ts"]
