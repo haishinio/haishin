@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import { Elysia } from 'elysia'
 
-import { setup } from '../app'
+import { setup } from '../plugins/setup'
 import { backupFolder } from './backups'
 import { streamPartFolder, streamsFolder } from './streams'
 

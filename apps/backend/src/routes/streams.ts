@@ -7,7 +7,7 @@ import { staticPlugin } from '@elysiajs/static'
 import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
 import { getStreamInfo } from '../stream/get-info'
 
-import { setup } from '../app'
+import { setup } from '../plugins/setup'
 
 export const streamsFolder = path.join(
   process.env.RAILWAY_VOLUME_MOUNT_PATH as string,
