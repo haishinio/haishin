@@ -12,16 +12,12 @@ Currently with beta testers so please wait for now, if you'd like to give it a t
 
 ## Local Use
 
-For starters grab API keys for [OpenAi](https://platform.openai.com/) + [DeepL](https://www.deepl.com/pro-api). Then clone the repo to your local machine and once downloaded, copy `.env.example` to `.env` filling it out with your OpenAi+DeepL api keys and ffmpeg path.
-
-If using [Docker](https://www.docker.com/), you _should_ be also copy `.env` to `.env.docker` and able to run `docker compose build` within the repo folder and then `docker compose up` to start.
-
-If not using Docker then the instructions below are for you!
-
-1. You'll also need [nodejs](https://nodejs.org/en), [ffmpeg](https://ffmpeg.org/download.html), [streamlink](https://streamlink.github.io/install.html) and [pnpm](https://pnpm.io/installation) to be available in your command line.
-2. Run `pnpm i` within the repo folder to install more dependencies.
-3. Now you should be able to run `pnpm run faker` to start the dev servers which is enough to get started. Once started you should be able to go to http://localhost:3000 to see the site.
-4. If you wish to run the site with actual transcriptions and translations then run `pnpm run dev`.
+1. You'll need [bun](https://bun.sh/), [ffmpeg](https://ffmpeg.org/download.html) and [streamlink](https://streamlink.github.io/install.html) to be available in your command line.
+2. Also setup a redis server somewhere and grab the connection url for it. I like railway!
+3. Next grab API keys for [OpenAi](https://platform.openai.com/) + [DeepL](https://www.deepl.com/pro-api). Then clone the repo to your local machine and once downloaded, copy `.env.example` to `.env` filling it out with your OpenAi+DeepL api keys and redis url from step 2.
+4. Run `bun imstall` within the repo folder to install more dependencies.
+5. Now you should be able to run `bun run faker` to start the dev servers which is enough to get started. Once started you should be able to go to http://localhost:3000 to see the site.
+6. If you wish to run the site with actual transcriptions and translations then run `bun run dev`.
 
 OpenAI gives you $5 to use for the first few months after signing up. I _think_ you can just keep creating accounts to get more. You'll be spending $0.006 a minute with OpenAI so a 1 hour stream will cost you ~$0.36 meaning you can watch just under 14 hours of streams with the free $5 you are given.
 

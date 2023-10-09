@@ -1,4 +1,4 @@
-# Haishin Backend NEXT
+# Haishin Backend
 
 Built with Elysia + Bun, for super good websockets and handling the restreaming + transcoding + transcribing + translating of livestreams via worker threads.
 

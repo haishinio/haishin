@@ -1,3 +1,3 @@
 # Haishin Frontend
 
-A nextjs based site to handle displaying the transcription+translations for streams and uploaded files.
+A nextjs based site to handle displaying the transcription+translations for streams
