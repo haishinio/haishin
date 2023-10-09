@@ -40,6 +40,7 @@ export const splitter = async (
 
   splitterWorker.addEventListener('close', (event) => {
     console.log('splitterWorker is being closed')
+    splitterWorker.terminate()
   })
 
   // Start the splitter, and get the partFileName and duration of this part

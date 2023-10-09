@@ -22,6 +22,7 @@ export const setupStream = async (streamUrl: string): Promise<string> => {
 
   restreamerWorker.addEventListener('close', (event) => {
     console.log('restreamerWorker is being closed')
+    restreamerWorker.terminate()
   })
 
   const streamFile = await new Promise((resolve) => {
@@ -48,6 +49,7 @@ export const setupStream = async (streamUrl: string): Promise<string> => {
 
   thumbnailWorker.addEventListener('close', (event) => {
     console.log('thumbnailWorker is being closed')
+    thumbnailWorker.terminate()
   })
 
   // Get the first thumbnail
