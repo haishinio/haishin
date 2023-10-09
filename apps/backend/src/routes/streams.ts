@@ -2,7 +2,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { Elysia } from 'elysia'
-import { staticPlugin } from '@elysiajs/static'
 
 import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
 import { getStreamInfo } from '../stream/get-info'
@@ -84,12 +83,5 @@ const streams = new Elysia()
 
     return stream
   })
-  .use(
-    staticPlugin({
-      assets: streamsFolder,
-      prefix: '/streams',
-      ignorePatterns: ['.gitkeep']
-    })
-  )
 
 export default streams

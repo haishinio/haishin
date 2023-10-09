@@ -1,10 +1,11 @@
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
+import { staticPlugin } from '@elysiajs/static'
 
 import { redisClient } from './plugins/setup'
 
 import backups from './routes/backups'
-import streams from './routes/streams'
+import streams, { streamsFolder } from './routes/streams'
 import reset from './routes/reset'
 
 import { setupStream } from './stream'
@@ -70,6 +71,13 @@ const app = new Elysia()
   .use(cors())
   .use(backups)
   .use(streams)
+  .use(
+    staticPlugin({
+      assets: streamsFolder,
+      prefix: '/streams',
+      ignorePatterns: ['.gitkeep']
+    })
+  )
   .use(reset)
   .ws('/', {
     async open(ws) {
@@ -109,8 +117,6 @@ const app = new Elysia()
     hostname: '0.0.0.0',
     port: process.env.PORT ?? 8080
   })
-
-// We should probably do some cleanup here, like removing everything from streams and stream-parts
 
 console.log(
   `Haishin Api is running at ${app.server?.hostname}:${app.server?.port}`
