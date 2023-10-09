@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import LiveVideoPlayer from './live-video-player'
-import VodVideoPlayer from './vod-video-player'
 import Spinner from './spinner'
 import TopMenu from './top-menu'
 import TextLogRow from './textlog-row'
@@ -19,7 +18,6 @@ interface Props {
   streamId?: string
   streamUrl: string
   textLogs: TextLog[]
-  updateFileDuration?: (duration: number) => void
   updateEnded: () => void
 }
 
@@ -31,7 +29,6 @@ const StreamPage = (props: Props): React.JSX.Element => {
     originalUrl,
     streamUrl,
     textLogs,
-    updateFileDuration,
     updateEnded
   } = props
 
@@ -47,18 +44,6 @@ const StreamPage = (props: Props): React.JSX.Element => {
     }
   }, [size])
 
-  // Passes duration back up if we have it,
-  // Needed for uploads
-  const updateDuration = (duration: number | undefined): void => {
-    if (updateFileDuration === undefined) return
-
-    if (duration === undefined) {
-      throw new Error('No duration for file/stream')
-    }
-
-    updateFileDuration(duration)
-  }
-
   return (
     <div className='h-screen overflow-hidden'>
       <div className='grid grid-cols-12 content-start'>
@@ -66,16 +51,11 @@ const StreamPage = (props: Props): React.JSX.Element => {
           <TopMenu url={originalUrl} />
 
           <div className='aspect-w-16 aspect-h-9'>
-            {streamId != null ? (
+            {streamId != null && (
               <LiveVideoPlayer
                 streamId={streamId}
                 url={streamUrl}
                 updateEnded={updateEnded}
-              />
-            ) : (
-              <VodVideoPlayer
-                streamUrl={streamUrl}
-                updateDuration={updateDuration}
               />
             )}
           </div>

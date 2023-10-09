@@ -94,8 +94,8 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
       () => {
         socket.close()
       },
-      1000 * 60 * 2
-    ) // 2mins
+      1000 * 60 * 1
+    ) // 1 mins
 
     return () => {
       clearTimeout(timeout)
@@ -112,7 +112,6 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
           streamId={streamId}
           streamUrl={streamUrl}
           textLogs={textLogs}
-          updateFileDuration={() => {}}
           updateEnded={updateEnded}
         />
       ) : (

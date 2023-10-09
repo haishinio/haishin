@@ -25,11 +25,11 @@ export default function Page(): React.JSX.Element {
           </h1>
 
           <p>
-            This tool is able to take a stream url or an mp4 file and then
-            transcribe what was said in Japanese and then translate it into
-            English. It does this by splitting the file or stream into chunks
-            and sends these to OpenAI&apos;s whisper model for transcribing and
-            then it sends this transcription to DeepL for translation.
+            This tool is able to take a stream url and then transcribe what was
+            said in Japanese and then translate it into English. It does this by
+            splitting the file or stream into chunks and sends these to
+            OpenAI&apos;s whisper model for transcribing and then it sends this
+            transcription to DeepL for translation.
           </p>
           <p className='my-2'>
             Presently you&apos;ll get a new a new transcription and translation
@@ -70,34 +70,6 @@ export default function Page(): React.JSX.Element {
               </p>
             </div>
           </section>
-
-          {/* <div className='my-8'>
-            <hr />
-            <div className='text-center -mt-3'>
-              <p className='px-4 bg-white inline-block'>OR</p>
-            </div>
-          </div> */}
-
-          {/* <section>
-            <h3 className='text-2xl mb-2'>Uploads</h3>
-            <p>Upload a clip to have it transcribed+translated</p>
-            <form action={uploadFile} className='flex my-4'>
-              <label className='relative flex-1'>
-                <span className='sr-only'>File</span>
-                <input
-                  className='placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md p-2 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm'
-                  type='file'
-                  name='file'
-                />
-              </label>
-              <button
-                type='submit'
-                className='ml-4 px-8 py-1 text-white rounded bg-sky-600 hover:bg-sky-700'
-              >
-                Upload
-              </button>
-            </form>
-          </section> */}
         </section>
 
         <div className='block lg:hidden'>
