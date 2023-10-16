@@ -58,7 +58,6 @@ jobs:
       needs.create-release-pr.outputs.hasChangesets == 'false' && (
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
       )
     steps:
@@ -87,7 +86,6 @@ jobs:
       needs.create-release-pr.outputs.hasChangesets == 'false' && (
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
       )
     steps:
