@@ -37,11 +37,11 @@ async function splitterWorker(
     partFileName
   ]
 
-  const ffmpegProcess = Bun.spawn(['ffmpeg', ...ffmpegArgs], {
+  const ffmpegSplitterProcess = Bun.spawn(['ffmpeg', ...ffmpegArgs], {
     stdin: Bun.file(streamFile)
   })
 
-  await ffmpegProcess.exited
+  await ffmpegSplitterProcess.exited
 
   // Send the partFileName back to the transcriber
   self.postMessage({

@@ -28,11 +28,11 @@ async function thumbnail(
   ]
 
   const ffmpegCmd = ['ffmpeg', ...ffmpegArgs]
-  const ffmpegProcess = Bun.spawn(ffmpegCmd)
+  const ffmpegThumbnailProcess = Bun.spawn(ffmpegCmd)
 
-  await ffmpegProcess.exited
+  await ffmpegThumbnailProcess.exited
 
-  if (ffmpegProcess.exitCode === 0)
+  if (ffmpegThumbnailProcess.exitCode === 0)
     console.log(`Generated thumbnail for ${pathToVideo}...`)
 
   process.exit()
