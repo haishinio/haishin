@@ -1,5 +1,11 @@
 # @haishin/tsconfig
 
+## 3.0.1
+
+### Patch Changes
+
+- [`78808f3`](https://github.com/haishinio/haishin/commit/78808f3d77c4a5d83fbc6516510df898f6671f26) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up and update READMEs for all projects
+
 ## 3.0.0
 
 ### Major Changes
