@@ -44,25 +44,63 @@ jobs:
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
       publishedPackageNames: ${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}
 
-  deploy:
+  publish-frontend:
     needs: create-release-pr
-    name: Deploy check
+    name: Publish frontend
     runs-on: ubuntu-latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    if: |
+      needs.create-release-pr.outputs.hasChangesets == 'false' && (
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
+      )
     steps:
-      - name: Check for changesets
-        if: needs.create-release-pr.outputs.hasChangesets == 'true'
-        run: exit 1
-      - name: Check for published packages
-        if: |
-          !(
-            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true ||
-            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
-          )
-        run: exit 1
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Set service
+        run: railway service frontend
+
       - name: Deploy
-        run: exit 0
+        run: railway up
+
+  publish-backend:
+    needs: create-release-pr
+    name: Publish backend
+    runs-on: ubuntu-latest
+    env:
+      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+    if: |
+      needs.create-release-pr.outputs.hasChangesets == 'false' && (
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/transcriber') == true ||
+        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
+      )
+    steps:
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Install Railway
+        run: npm i -g @railway/cli
+
+      - name: Set service
+        run: railway service backend
+
+      - name: Deploy
+        run: railway up
 
   cleanup-old-release-tags:
     needs: create-release-pr
