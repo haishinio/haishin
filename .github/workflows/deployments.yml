@@ -13,6 +13,10 @@ jobs:
     name: Create release pr
     timeout-minutes: 15
     runs-on: ubuntu-latest
+    permissions:
+      contents: write #  to create release (changesets/action)
+      issues: write # to post issue comments (changesets/action)
+      pull-requests: write #  to create pull request (changesets/action)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -107,6 +111,8 @@ jobs:
     name: Cleanup old release tags
     runs-on: ubuntu-latest
     continue-on-error: true
+    permissions:
+      contents: write
     if: |
       needs.create-release-pr.outputs.hasChangesets == 'false' && needs.create-release-pr.outputs.publishedPackages != '[]'
     strategy:
