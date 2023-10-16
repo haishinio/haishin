@@ -1,5 +1,13 @@
 # @haishin/utils
 
+## 3.1.1
+
+### Patch Changes
+
+- [`9aa9df8`](https://github.com/haishinio/haishin/commit/9aa9df8c0ed5e883d38c2b3fa20484233342562e) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix util by removing unused pathToData from index
+
+- [`78808f3`](https://github.com/haishinio/haishin/commit/78808f3d77c4a5d83fbc6516510df898f6671f26) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up and update READMEs for all projects
+
 ## 3.1.0
 
 ### Minor Changes

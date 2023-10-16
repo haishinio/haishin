@@ -1,5 +1,20 @@
 # @haishin/backend
 
+## 3.0.3
+
+### Patch Changes
+
+- [`c41f197`](https://github.com/haishinio/haishin/commit/c41f197f0c00c34d499a9f5b72fea5c55bbb0696) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Add terminates when the workers close just to be sure
+
+- [`6813437`](https://github.com/haishinio/haishin/commit/6813437d1896bb53d688a4b60695319dc86af2ab) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix stream files static paths
+
+- [`48fdd42`](https://github.com/haishinio/haishin/commit/48fdd42efa7d3d1052eeee4a9d18dc887a03cc32) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Remove the enforced timelimit on streams
+
+- [`78808f3`](https://github.com/haishinio/haishin/commit/78808f3d77c4a5d83fbc6516510df898f6671f26) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up and update READMEs for all projects
+
+- Updated dependencies [[`9aa9df8`](https://github.com/haishinio/haishin/commit/9aa9df8c0ed5e883d38c2b3fa20484233342562e), [`78808f3`](https://github.com/haishinio/haishin/commit/78808f3d77c4a5d83fbc6516510df898f6671f26)]:
+  - @haishin/utils@3.1.1
+
 ## 3.0.2
 
 ### Patch Changes

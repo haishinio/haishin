@@ -1,5 +1,16 @@
 # @haishin/frontend
 
+## 3.3.1
+
+### Patch Changes
+
+- [`78808f3`](https://github.com/haishinio/haishin/commit/78808f3d77c4a5d83fbc6516510df898f6671f26) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up and update READMEs for all projects
+
+- [`ed8d290`](https://github.com/haishinio/haishin/commit/ed8d290e6f23f7850a2188ef9ea325361452a62e) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Clean up frontend to remove upload + unused code
+
+- Updated dependencies [[`9aa9df8`](https://github.com/haishinio/haishin/commit/9aa9df8c0ed5e883d38c2b3fa20484233342562e), [`78808f3`](https://github.com/haishinio/haishin/commit/78808f3d77c4a5d83fbc6516510df898f6671f26)]:
+  - @haishin/utils@3.1.1
+
 ## 3.3.0
 
 ### Minor Changes
