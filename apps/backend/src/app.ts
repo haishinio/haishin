@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
 import { staticPlugin } from '@elysiajs/static'
@@ -8,15 +9,16 @@ import backups from './routes/backups'
 import streams, { streamsFolder } from './routes/streams'
 import reset from './routes/reset'
 
-import { setupStream } from './stream'
-import { getStreamInfo } from './stream/get-info'
-import { transcribeStream } from './transcriber'
+import { getStreamInfo } from './utils/get-stream-info'
 
-async function joinChannel(
-  server: any,
-  ws: any,
-  streamUrl: string
-): Promise<void> {
+import { transcribingQueue } from './queues/shared'
+import restream from './queues/restream'
+import './queues/thumbnail'
+import './queues/transcribe'
+
+import type { TranscriptionResponse } from './queues/transcribe'
+
+async function joinChannel(ws: any, streamUrl: string): Promise<void> {
   // Get the stream info
   const streamInfo = await getStreamInfo(streamUrl)
 
@@ -40,21 +42,8 @@ async function joinChannel(
     await redisClient.sAdd(`users:${streamUrl}`, ws.remoteAddress)
     console.log('User joined the room', streamUrl, ws.remoteAddress)
 
-    // Check if this is the first user in the room
-    const currentUsers = await redisClient.sCard(`users:${streamUrl}`)
-
-    if (currentUsers === 1 && streamInfo.newStream) {
-      // Start the stream
-      console.log(
-        `First user has joined the room ${streamUrl} and stream is new, start restreaming...`
-      )
-
-      // Setup the stream
-      const streamFile = await setupStream(streamUrl)
-
-      // Using streamInfo, start to split the video file for transcribing
-      void transcribeStream(server, redisClient, streamUrl, streamFile)
-    }
+    // Start the restreaming and transcriptions
+    restream(streamUrl)
   } else {
     console.log(
       'User already in the room, stream already being transcribed...',
@@ -84,7 +73,7 @@ const app = new Elysia()
       const { streamUrl } = ws.data.query
 
       if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
-        await joinChannel(app.server, ws, streamUrl)
+        await joinChannel(ws, streamUrl)
       } else {
         ws.close()
       }
@@ -93,7 +82,7 @@ const app = new Elysia()
       if (message === 'join-stream-transcription') {
         const { streamUrl } = ws.data.query
         if (typeof streamUrl === 'string' && !ws.isSubscribed(streamUrl)) {
-          await joinChannel(app.server, ws, streamUrl)
+          await joinChannel(ws, streamUrl)
         }
       }
 
@@ -117,6 +106,28 @@ const app = new Elysia()
     hostname: '0.0.0.0',
     port: process.env.PORT ?? 8080
   })
+
+transcribingQueue.on(
+  'job succeeded',
+  async (job: string, result: TranscriptionResponse) => {
+    // Send the results to the client
+    if (result.socketData !== undefined)
+      app.server?.publish(job, JSON.stringify(result.socketData))
+
+    // Restart the transcriber queue unless the stream is over
+    if (fs.existsSync(result._file)) {
+      transcribingQueue
+        .createJob({
+          file: result._file,
+          prompt: result._prompt,
+          startTime: result._startTime,
+          viewers: await redisClient.sCard(`users:${job}`)
+        })
+        .setId(job)
+        .save()
+    }
+  }
+)
 
 console.log(
   `Haishin Api is running at ${app.server?.hostname}:${app.server?.port}`

@@ -39,9 +39,8 @@ const StreamUrlPage = ({ streamId, url }: Props): React.JSX.Element => {
     })
 
     socket.addEventListener('message', (event) => {
+      if (event.data === undefined || event.data === 'undefined') return
       const data = JSON.parse(event.data)
-
-      console.log({ data })
 
       if (data.type === 'start-transcribing') {
         setIsTranscribing(true)
