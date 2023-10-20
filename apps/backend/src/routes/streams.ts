@@ -26,6 +26,8 @@ if (!fs.existsSync(streamsFolder)) {
 const streams = new Elysia()
   .use(setup)
   .get('/streams', async ({ store: { redis } }) => {
+    console.log({ streamsFolder })
+
     const streams = fs
       .readdirSync(streamsFolder)
       .filter((file) => !file.includes('.'))

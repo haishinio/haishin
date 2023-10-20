@@ -24,6 +24,7 @@ const backups = new Elysia()
   )
   .use(html())
   .get('/backups', () => {
+    console.log({ backupFolder })
     const files = fs.readdirSync(backupFolder)
     const liFiles = files
       .map((file) => `<li><a href="/backups/${file}">${file}</a></li>`)
