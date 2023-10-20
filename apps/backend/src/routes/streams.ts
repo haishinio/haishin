@@ -4,7 +4,7 @@ import path from 'node:path'
 import { Elysia } from 'elysia'
 
 import { getDuration, getPathsByUrl, urlUtils } from '@haishin/utils'
-import { getStreamInfo } from '../stream/get-info'
+import { getStreamInfo } from '../utils/get-stream-info'
 
 import { setup } from '../plugins/setup'
 
