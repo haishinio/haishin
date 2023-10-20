@@ -8,15 +8,13 @@ on:
 env:
   CI: true
 
+permissions: write-all
+
 jobs:
   create-release-pr:
     name: Create release pr
     timeout-minutes: 15
     runs-on: ubuntu-latest
-    permissions:
-      contents: write #  to create release (changesets/action)
-      issues: write # to post issue comments (changesets/action)
-      pull-requests: write #  to create pull request (changesets/action)
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
