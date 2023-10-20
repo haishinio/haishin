@@ -1,5 +1,5 @@
 function getVersion(): string {
-  return process.env.HAISHIN_VERSION ?? 'dev'
+  return process.env.RAILWAY_ENVIRONMENT_NAME ?? '??'
 }
 
 export default function Footer(): React.JSX.Element {
@@ -15,7 +15,7 @@ export default function Footer(): React.JSX.Element {
           Github
         </a>
         <span className='flex-none mx-2'>|</span>
-        <span className='place-self-start'>{version.slice(0, 7)}</span>
+        <span className='place-self-start'>{version}</span>
       </p>
       <p className='text-xs'>
         Built by <a href='https://tomo.uchuu.io'>Thomas(tomouchuu)</a>
