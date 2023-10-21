@@ -50,8 +50,6 @@ jobs:
     needs: create-release-pr
     name: Publish frontend
     runs-on: ubuntu-latest
-    env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     if: |
       needs.create-release-pr.outputs.hasChangesets == 'false' && (
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
@@ -71,18 +69,15 @@ jobs:
       - name: Install Railway
         run: bun install --global @railway/cli
 
-      - name: Set service
-        run: railway service frontend
-
       - name: Deploy
-        run: railway up
+        run: railway up -s "frontend"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   publish-backend:
     needs: create-release-pr
     name: Publish backend
     runs-on: ubuntu-latest
-    env:
-      RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     if: |
       needs.create-release-pr.outputs.hasChangesets == 'false' && (
         contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
@@ -102,11 +97,10 @@ jobs:
       - name: Install Railway
         run: bun install --global @railway/cli
 
-      - name: Set service
-        run: railway service backend
-
       - name: Deploy
-        run: railway up
+        run: railway up -s "backend"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   cleanup-old-release-tags:
     needs: create-release-pr
