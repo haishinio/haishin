@@ -50,12 +50,12 @@ jobs:
     needs: create-release-pr
     name: Publish frontend
     runs-on: ubuntu-latest
-    if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
-      )
+    # if: |
+    #   needs.create-release-pr.outputs.hasChangesets == 'false' && (
+    #     contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+    #     contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+    #     contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
+    #   )
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -78,12 +78,12 @@ jobs:
     needs: create-release-pr
     name: Publish backend
     runs-on: ubuntu-latest
-    if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
-      )
+    # if: |
+    #   needs.create-release-pr.outputs.hasChangesets == 'false' && (
+    #     contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+    #     contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+    #     contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
+    #   )
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
