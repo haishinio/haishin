@@ -1,5 +1,21 @@
 # @haishin/backend
 
+## 4.0.0
+
+### Major Changes
+
+- [`57daefb`](https://github.com/haishinio/haishin/commit/57daefb0993dd75e9e3283555cdd15a699942d21) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from workers to using a redis based queue system
+
+### Patch Changes
+
+- [`94e775f`](https://github.com/haishinio/haishin/commit/94e775f889c9f10315a1ba1c37539c2a9e20ddb3) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Remove stream length cap on other environments aside from faker
+
+- [`a0a3ef3`](https://github.com/haishinio/haishin/commit/a0a3ef31505045d105ee6e95b61d229c527df269) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix backups path and ensure consistent variable namings for folders
+
+- [`7478295`](https://github.com/haishinio/haishin/commit/74782954842a52596de3afabe24a1830644a6a62) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Fix stream info path
+
+- [`409562d`](https://github.com/haishinio/haishin/commit/409562d6f821476fbee8db7cc62654d4fed08162) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Change simulataneous jobs to 5 at a time
+
 ## 3.0.3
 
 ### Patch Changes
