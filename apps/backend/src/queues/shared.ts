@@ -1,6 +1,6 @@
 import Queue from 'bee-queue'
 
-export const simulataneousJobs = 20
+export const simulataneousJobs = 5
 
 const options = {
   removeOnSuccess: true,
