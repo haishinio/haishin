@@ -1,5 +1,15 @@
 # @haishin/frontend
 
+## 3.4.0
+
+### Minor Changes
+
+- [`57daefb`](https://github.com/haishinio/haishin/commit/57daefb0993dd75e9e3283555cdd15a699942d21) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Switch from workers to using a redis based queue system
+
+### Patch Changes
+
+- [`33b87b4`](https://github.com/haishinio/haishin/commit/33b87b49ad79e87ee8c0a9d163bbca53a594ceb2) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Updates the version to use the railway environment
+
 ## 3.3.1
 
 ### Patch Changes
