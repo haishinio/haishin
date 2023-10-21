@@ -8,7 +8,7 @@ import { faker as fakerJP } from '@faker-js/faker/locale/ja'
 import { getDuration } from '@haishin/utils'
 
 import { simulataneousJobs, transcribingQueue } from './shared'
-import { streamPartFolder } from '../routes/streams'
+import { streamPartsFolder } from '../routes/streams'
 
 export interface TranscriptionResponse {
   _file: string
@@ -60,10 +60,13 @@ transcribingQueue.process(simulataneousJobs, async (job: any) => {
   if (durationOfPart <= 0) return response
 
   // Setup the partFileName
-  if (!fs.existsSync(streamPartFolder)) {
-    fs.mkdirSync(streamPartFolder)
+  if (!fs.existsSync(streamPartsFolder)) {
+    fs.mkdirSync(streamPartsFolder)
   }
-  const partFileName = path.join(streamPartFolder, `${crypto.randomUUID()}.wav`)
+  const partFileName = path.join(
+    streamPartsFolder,
+    `${crypto.randomUUID()}.wav`
+  )
 
   // Use ffmpeg to split the stream
   const ffmpegArgs = [

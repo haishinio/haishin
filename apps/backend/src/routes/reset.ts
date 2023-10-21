@@ -2,8 +2,8 @@ import fs from 'node:fs'
 import { Elysia } from 'elysia'
 
 import { setup } from '../plugins/setup'
-import { backupFolder } from './backups'
-import { streamPartFolder, streamsFolder } from './streams'
+import { backupsFolder } from './backups'
+import { streamPartsFolder, streamsFolder } from './streams'
 
 const reset = new Elysia()
   .use(setup)
@@ -12,13 +12,13 @@ const reset = new Elysia()
     await redis.flushAll()
 
     // Clean the volumes
-    fs.rmdirSync(backupFolder, { recursive: true })
-    fs.rmdirSync(streamPartFolder, { recursive: true })
+    fs.rmdirSync(backupsFolder, { recursive: true })
+    fs.rmdirSync(streamPartsFolder, { recursive: true })
     fs.rmdirSync(streamsFolder, { recursive: true })
 
     // Rebuild the volumes
-    fs.mkdirSync(backupFolder)
-    fs.mkdirSync(streamPartFolder)
+    fs.mkdirSync(backupsFolder)
+    fs.mkdirSync(streamPartsFolder)
     fs.mkdirSync(streamsFolder)
 
     return { success: true }

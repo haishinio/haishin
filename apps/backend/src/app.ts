@@ -5,7 +5,7 @@ import { staticPlugin } from '@elysiajs/static'
 
 import { redisClient } from './plugins/setup'
 
-import backups from './routes/backups'
+import backups, { backupsFolder } from './routes/backups'
 import streams, { streamsFolder } from './routes/streams'
 import reset from './routes/reset'
 
@@ -60,6 +60,13 @@ const app = new Elysia()
   .use(cors())
   .use(backups)
   .use(streams)
+  .use(
+    staticPlugin({
+      assets: backupsFolder,
+      prefix: '/backups',
+      ignorePatterns: ['.gitkeep']
+    })
+  )
   .use(
     staticPlugin({
       assets: streamsFolder,

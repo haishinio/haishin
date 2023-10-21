@@ -7,7 +7,7 @@ import {
   transcribingQueue
 } from './shared'
 
-import { backupFolder } from '../routes/backups'
+import { backupsFolder } from '../routes/backups'
 import { getStreamInfo, type StreamInfo } from '../utils/get-stream-info'
 import { setArchivedFileName } from '@haishin/utils'
 
@@ -47,12 +47,12 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
         `Moving stream file for ${streamInfo.originalUrl} to backup folder...`
       )
 
-      const backupFile = `${backupFolder}/${setArchivedFileName(
+      const backupFile = `${backupsFolder}/${setArchivedFileName(
         streamInfo.originalUrl
       )}`
 
-      if (!fs.existsSync(backupFolder)) {
-        fs.mkdirSync(backupFolder)
+      if (!fs.existsSync(backupsFolder)) {
+        fs.mkdirSync(backupsFolder)
       }
 
       fs.renameSync(streamInfo.file, backupFile)
