@@ -70,7 +70,7 @@ jobs:
         run: bun install --global @railway/cli
 
       - name: Deploy
-        run: railway up -s "frontend"
+        run: railway up --service ${{ secrets.RAILWAY_FRONTEND_SERVICE_ID }}
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
@@ -98,7 +98,7 @@ jobs:
         run: bun install --global @railway/cli
 
       - name: Deploy
-        run: railway up -s "backend"
+        run: railway up --service ${{ secrets.RAILWAY_BACKEND_SERVICE_ID }}
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
