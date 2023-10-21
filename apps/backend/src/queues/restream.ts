@@ -65,13 +65,17 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
   })
 
   // For testing stop streamlink after 5 minutes
-  setTimeout(
-    () => {
-      console.log(`Killing streamlink process for ${streamInfo.originalUrl}...`)
-      streamLinkProcess.kill()
-    },
-    1000 * 60 * 5
-  )
+  if (process.env.APP_ENV === 'faker') {
+    setTimeout(
+      () => {
+        console.log(
+          `Killing streamlink process for ${streamInfo.originalUrl}...`
+        )
+        streamLinkProcess.kill()
+      },
+      1000 * 60 * 5
+    )
+  }
 
   // Use ffmpeg to restream the stream
   const ffmpegArgs = [
