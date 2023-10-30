@@ -41,10 +41,8 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
       console.log(
         `Closing the ffmpeg processes for ${streamInfo.originalUrl}...`
       )
-      void mp4FfmpegProcess.stdin.end()
-      mp4FfmpegProcess.kill()
-      void hlsFfmpegProcess.stdin.end()
-      hlsFfmpegProcess.kill()
+      void ffmpegProcess.stdin.end()
+      ffmpegProcess.kill()
 
       // After another 20 seconds, move the stream file to the backup folder
       await Bun.sleep(1000 * 20)
@@ -89,30 +87,7 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
     prodffmpegArgs = ['-loglevel', 'error']
 
   // Use ffmpeg to download the stream
-  const mp4FfmpegArgs = [
-    '-i',
-    '-',
-    '-vf',
-    'setpts=PTS-STARTPTS',
-    '-af',
-    'asetpts=PTS-STARTPTS',
-    '-movflags',
-    'frag_keyframe+empty_moov',
-    '-f',
-    'mp4',
-    '-'
-  ] as string[]
-  const mp4FfmpegCmd = ['ffmpeg', ...mp4FfmpegArgs, ...prodffmpegArgs]
-  const mp4FfmpegProcess = Bun.spawn(mp4FfmpegCmd, {
-    stdin: 'pipe',
-    stdout: Bun.file(streamInfo.file),
-    stderr: null
-  })
-
-  console.log({ mp4FfmpegProcessPID: mp4FfmpegProcess.pid })
-
-  // Use ffmpeg to restream the stream
-  const hlsFfmpegArgs = [
+  const ffmpegArgs = [
     '-i',
     '-',
     '-vf',
@@ -127,24 +102,27 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
     3,
     '-hls_flags',
     'delete_segments',
-    streamInfo.streamFile
+    streamInfo.streamFile,
+    '-movflags',
+    'frag_keyframe+empty_moov',
+    '-f',
+    'mp4',
+    '-'
   ] as string[]
-  const hlsFfmpegCmd = ['ffmpeg', ...hlsFfmpegArgs, ...prodffmpegArgs]
-  const hlsFfmpegProcess = Bun.spawn(hlsFfmpegCmd, {
+  const ffmpegCmd = ['ffmpeg', ...ffmpegArgs, ...prodffmpegArgs]
+  const ffmpegProcess = Bun.spawn(ffmpegCmd, {
     stdin: 'pipe',
-    stdout: null,
+    stdout: Bun.file(streamInfo.file),
     stderr: null
   })
 
-  console.log({ hlsFfmpegProcessPID: hlsFfmpegProcess.pid })
+  console.log({ ffmpegProcessPID: ffmpegProcess.pid })
 
   // Pipe the streamlink stdout to the ffmpeg stdin(s)
   let sentMessage = false
   for await (const chunk of streamLinkProcess.stdout) {
-    mp4FfmpegProcess.stdin.write(chunk)
-    hlsFfmpegProcess.stdin.write(chunk)
-    await mp4FfmpegProcess.stdin.flush()
-    await hlsFfmpegProcess.stdin.flush()
+    ffmpegProcess.stdin.write(chunk)
+    await ffmpegProcess.stdin.flush()
 
     if (!sentMessage && fs.existsSync(streamInfo.streamFile)) {
       // After the m3u8 file is created, send a message to the main thread to allow the streamPage to start
