@@ -26,19 +26,14 @@ export interface TranscriptionResponse {
   }
 }
 
-const options = {
-  removeOnSuccess: true,
-  redis: {
-    url: process.env.REDIS_URL
-  }
-}
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 })
 const translator = new deepl.Translator(process.env.DEEPL_API_KEY as string)
 
 transcribingQueue.process(simulataneousJobs, async (job: any) => {
+  console.log(`Transcribing ${job.data.file} from ${job.data.startTime}...`)
+
   const { file, prompt, startTime, viewers } = job.data
   let response: TranscriptionResponse = {
     _file: file,
@@ -70,8 +65,10 @@ transcribingQueue.process(simulataneousJobs, async (job: any) => {
 
   // Use ffmpeg to split the stream
   const ffmpegArgs = [
+    '-f',
+    'mp4',
     '-i',
-    'pipe:0',
+    '-',
     '-ss',
     startTime.toString(),
     '-t',
@@ -85,11 +82,14 @@ transcribingQueue.process(simulataneousJobs, async (job: any) => {
     '-hide_banner',
     '-loglevel',
     'error',
-    partFileName
+    '-f',
+    'wav',
+    '-'
   ]
 
   const ffmpegSplitterProcess = Bun.spawn(['ffmpeg', ...ffmpegArgs], {
-    stdin: Bun.file(file)
+    stdin: Bun.file(file),
+    stdout: Bun.file(partFileName)
   })
 
   // We know we have the file when the ffmpeg process exits
@@ -169,10 +169,6 @@ transcribingQueue.process(simulataneousJobs, async (job: any) => {
         _viewers: viewers
       }
     }
-  }
-
-  if (process.env.APP_ENV === 'faker') {
-    await Bun.sleep(fakerGB.number.int({ min: 1000, max: 5000 }))
   }
 
   return response

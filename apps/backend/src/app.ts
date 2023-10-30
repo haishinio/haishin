@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import { Elysia } from 'elysia'
 import { cors } from '@elysiajs/cors'
 import { staticPlugin } from '@elysiajs/static'
+import { faker as fakerGB } from '@faker-js/faker/locale/en_GB'
 
 import { redisClient } from './plugins/setup'
 
@@ -116,14 +117,12 @@ const app = new Elysia()
 
 transcribingQueue.on(
   'job succeeded',
-  async (job: string, result: TranscriptionResponse) => {
-    // Send the results to the client
-    if (result.socketData !== undefined)
-      app.server?.publish(job, JSON.stringify(result.socketData))
+  (job: string, result: TranscriptionResponse) => {
+    async function startTranscription(): Promise<void> {
+      // Just slow the transcriptions down a bit
+      await Bun.sleep(fakerGB.number.int({ min: 1000, max: 5000 }))
 
-    // Restart the transcriber queue unless the stream is over
-    if (fs.existsSync(result._file)) {
-      transcribingQueue
+      void transcribingQueue
         .createJob({
           file: result._file,
           prompt: result._prompt,
@@ -132,6 +131,15 @@ transcribingQueue.on(
         })
         .setId(job)
         .save()
+    }
+
+    // Send the results to the client
+    if (result.socketData !== undefined)
+      app.server?.publish(job, JSON.stringify(result.socketData))
+
+    // Restart the transcriber queue unless the stream is over
+    if (fs.existsSync(result._file)) {
+      void startTranscription()
     }
   }
 )

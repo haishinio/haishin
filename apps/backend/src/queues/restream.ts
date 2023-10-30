@@ -25,21 +25,26 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
     streamInfo.originalUrl,
     '--default-stream',
     'best',
-    '-R',
-    streamInfo.file,
-    '-f',
+    '-O',
     '--retry-open',
     '5'
   ]
   const streamLinkProcess = Bun.spawn(['streamlink', ...streamLinkArgs], {
+    stdin: null,
+    stdout: 'pipe',
+    stderr: null,
     async onExit(proc, exitCode, signalCode, error): Promise<void> {
       if (error != null) console.log(error)
 
       // Wait 20 seconds and then kill the ffmpeg process
       await Bun.sleep(1000 * 20)
-      console.log(`Closing the ffmpeg process for ${streamInfo.originalUrl}...`)
-      void ffmpegProcess.stdin.end()
-      ffmpegProcess.kill()
+      console.log(
+        `Closing the ffmpeg processes for ${streamInfo.originalUrl}...`
+      )
+      void mp4FfmpegProcess.stdin.end()
+      mp4FfmpegProcess.kill()
+      void hlsFfmpegProcess.stdin.end()
+      hlsFfmpegProcess.kill()
 
       // After another 20 seconds, move the stream file to the backup folder
       await Bun.sleep(1000 * 20)
@@ -64,6 +69,8 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
     }
   })
 
+  console.log({ streamLinkProcessPID: streamLinkProcess.pid })
+
   // For testing stop streamlink after 5 minutes
   if (process.env.APP_ENV === 'faker') {
     setTimeout(
@@ -77,16 +84,41 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
     )
   }
 
-  // Use ffmpeg to restream the stream
-  const ffmpegArgs = [
+  let prodffmpegArgs = [] as string[]
+  if (process.env.NODE_ENV === 'production')
+    prodffmpegArgs = ['-loglevel', 'error']
+
+  // Use ffmpeg to download the stream
+  const mp4FfmpegArgs = [
     '-i',
-    'pipe:0',
-    '-c:v',
-    'libx264',
-    '-preset',
-    'veryfast',
-    '-c:a',
-    'aac',
+    '-',
+    '-vf',
+    'setpts=PTS-STARTPTS',
+    '-af',
+    'asetpts=PTS-STARTPTS',
+    '-movflags',
+    'frag_keyframe+empty_moov',
+    '-f',
+    'mp4',
+    '-'
+  ] as string[]
+  const mp4FfmpegCmd = ['ffmpeg', ...mp4FfmpegArgs, ...prodffmpegArgs]
+  const mp4FfmpegProcess = Bun.spawn(mp4FfmpegCmd, {
+    stdin: 'pipe',
+    stdout: Bun.file(streamInfo.file),
+    stderr: null
+  })
+
+  console.log({ mp4FfmpegProcessPID: mp4FfmpegProcess.pid })
+
+  // Use ffmpeg to restream the stream
+  const hlsFfmpegArgs = [
+    '-i',
+    '-',
+    '-vf',
+    'setpts=PTS-STARTPTS',
+    '-af',
+    'asetpts=PTS-STARTPTS',
     '-f',
     'hls',
     '-hls_time',
@@ -94,28 +126,25 @@ restreamingQueue.process(simulataneousJobs, async (job: any) => {
     '-hls_list_size',
     3,
     '-hls_flags',
-    'delete_segments'
-  ] as string[]
-
-  let prodffmpegArgs = [] as string[]
-  if (process.env.NODE_ENV === 'production')
-    prodffmpegArgs = ['-loglevel', 'error']
-
-  const ffmpegCmd = [
-    'ffmpeg',
-    ...ffmpegArgs,
-    ...prodffmpegArgs,
+    'delete_segments',
     streamInfo.streamFile
-  ]
-  const ffmpegProcess = Bun.spawn(ffmpegCmd, {
-    stdin: 'pipe'
+  ] as string[]
+  const hlsFfmpegCmd = ['ffmpeg', ...hlsFfmpegArgs, ...prodffmpegArgs]
+  const hlsFfmpegProcess = Bun.spawn(hlsFfmpegCmd, {
+    stdin: 'pipe',
+    stdout: null,
+    stderr: null
   })
 
-  // Pipe the streamlink stdout to the ffmpeg stdin
+  console.log({ hlsFfmpegProcessPID: hlsFfmpegProcess.pid })
+
+  // Pipe the streamlink stdout to the ffmpeg stdin(s)
   let sentMessage = false
   for await (const chunk of streamLinkProcess.stdout) {
-    ffmpegProcess.stdin.write(chunk)
-    await ffmpegProcess.stdin.flush()
+    mp4FfmpegProcess.stdin.write(chunk)
+    hlsFfmpegProcess.stdin.write(chunk)
+    await mp4FfmpegProcess.stdin.flush()
+    await hlsFfmpegProcess.stdin.flush()
 
     if (!sentMessage && fs.existsSync(streamInfo.streamFile)) {
       // After the m3u8 file is created, send a message to the main thread to allow the streamPage to start
