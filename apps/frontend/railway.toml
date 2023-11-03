@@ -1,2 +1,0 @@
-[build]
-nixpacksConfigPath = "apps/frontend/nixpacks.toml"

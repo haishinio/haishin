@@ -46,61 +46,221 @@ jobs:
       publishedPackages: ${{ steps.changesets.outputs.publishedPackages }}
       publishedPackageNames: ${{ toJSON(fromJSON(steps.changesets.outputs.publishedPackages).*['name']) }}
 
-  publish-frontend:
-    needs: create-release-pr
-    name: Publish frontend
+  build-frontend:
+    name: Build frontend
     runs-on: ubuntu-latest
-    if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
-      )
+    if:
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Setup bun
-        uses: oven-sh/setup-bun@v1
+      - name: 👀 Read app name
+        uses: SebRollen/toml-action@v1.0.2
+        id: app_name
+        with:
+          file: 'apps/frontend/fly.toml'
+          field: 'app'
 
-      - name: Install dependencies
-        run: bun install
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          version: v0.9.1
 
-      - name: Install Railway
-        run: npm i -g @railway/cli
+      # Setup cache
+      - name: ⚡️ Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
-      - name: Deploy
-        run: railway up --service ${{ secrets.RAILWAY_FRONTEND_SERVICE_ID }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: 🔑 Fly Registry Auth
+        uses: docker/login-action@v2
+        with:
+          registry: registry.fly.io
+          username: x
+          password: ${{ secrets.FLY_API_TOKEN }}
 
-  publish-backend:
-    needs: create-release-pr
-    name: Publish backend
+      - name: 🐳 Docker build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: apps/frontend/Dockerfile
+          push: true
+          tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{
+            github.ref_name }}-${{ github.sha }}
+          build-args: |
+            BACKEND_URL=${{ secrets.BACKEND_URL }}
+            COMMIT_SHA=${{ github.sha }}
+            DEEPL_API_KEY=${{ secrets.DEEPL_API_KEY }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            TURBO_TEAM=${{ secrets.TURBO_TEAM }}
+            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+            WS_URL=${{ secrets.WS_URL }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+
+      # This ugly bit is necessary if you don't want your cache to grow forever
+      # till it hits GitHub's limit of 5GB.
+      # Temp fix
+      # https://github.com/docker/build-push-action/issues/252
+      # https://github.com/moby/buildkit/issues/1896
+      - name: 🚚 Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  deploy-frontend:
+    name: 🚀 Deploy Frontend
     runs-on: ubuntu-latest
-    if: |
-      needs.create-release-pr.outputs.hasChangesets == 'false' && (
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
-        contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
-      )
+    needs: [create-release-pr, build-frontend]
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
 
-      - name: Setup bun
-        uses: oven-sh/setup-bun@v1
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: bun install
+      - name: 👀 Read app name
+        uses: SebRollen/toml-action@v1.0.2
+        id: app_name
+        with:
+          file: 'apps/frontend/fly.toml'
+          field: 'app'
 
-      - name: Install Railway
-        run: npm i -g @railway/cli
-
-      - name: Deploy
-        run: railway up --service ${{ secrets.RAILWAY_BACKEND_SERVICE_ID }}
+      - name: 🚀 Deploy Staging
+        if: needs.create-release-pr.outputs.hasChangesets == 'true'
+        uses: superfly/flyctl-actions@v1.4
+        with:
+          args:
+            'deploy --app ${{ steps.app_name.outputs.value }}-staging --config
+            ./apps/frontend/fly.toml --image registry.fly.io/${{
+            steps.app_name.outputs.value }}:${{ github.ref_name }}-${{
+            github.sha }}'
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: 🚀 Deploy Production
+        if: |
+          needs.create-release-pr.outputs.hasChangesets == 'false' && (
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/frontend') == true
+          )
+        uses: superfly/flyctl-actions@v1.4
+        with:
+          args: 'deploy --config ./apps/frontend/fly.toml --image
+            registry.fly.io/${{ steps.app_name.outputs.value }}:${{
+            github.ref_name }}-${{ github.sha }}'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+  build-backend:
+    name: Build backend
+    runs-on: ubuntu-latest
+    if:
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 👀 Read app name
+        uses: SebRollen/toml-action@v1.0.2
+        id: app_name
+        with:
+          file: 'apps/backend/fly.toml'
+          field: 'app'
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          version: v0.9.1
+
+      # Setup cache
+      - name: ⚡️ Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: 🔑 Fly Registry Auth
+        uses: docker/login-action@v2
+        with:
+          registry: registry.fly.io
+          username: x
+          password: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: 🐳 Docker build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: apps/backend/Dockerfile
+          push: true
+          tags: registry.fly.io/${{ steps.app_name.outputs.value }}:${{
+            github.ref_name }}-${{ github.sha }}
+          build-args: |
+            COMMIT_SHA=${{ github.sha }}
+            TURBO_TEAM=${{ secrets.TURBO_TEAM }}
+            TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+
+      # This ugly bit is necessary if you don't want your cache to grow forever
+      # till it hits GitHub's limit of 5GB.
+      # Temp fix
+      # https://github.com/docker/build-push-action/issues/252
+      # https://github.com/moby/buildkit/issues/1896
+      - name: 🚚 Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  deploy-backend:
+    name: 🚀 Deploy backend
+    runs-on: ubuntu-latest
+    needs: [create-release-pr, build-backend]
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.11.0
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v4
+
+      - name: 👀 Read app name
+        uses: SebRollen/toml-action@v1.0.2
+        id: app_name
+        with:
+          file: 'apps/backend/fly.toml'
+          field: 'app'
+
+      - name: 🚀 Deploy Staging
+        if: needs.create-release-pr.outputs.hasChangesets == 'true'
+        uses: superfly/flyctl-actions@v1.4
+        with:
+          args:
+            'deploy --app ${{ steps.app_name.outputs.value }}-staging --config
+            ./apps/backend/fly.toml --image registry.fly.io/${{
+            steps.app_name.outputs.value }}:${{ github.ref_name }}-${{
+            github.sha }}'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
+      - name: 🚀 Deploy Production
+        if: |
+          needs.create-release-pr.outputs.hasChangesets == 'false' && (
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/tsconfig') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/utils') == true ||
+            contains(needs.create-release-pr.outputs.publishedPackageNames, '@haishin/backend') == true
+          )
+        uses: superfly/flyctl-actions@v1.4
+        with:
+          args: 'deploy --config ./apps/backend/fly.toml --image
+            registry.fly.io/${{ steps.app_name.outputs.value }}:${{
+            github.ref_name }}-${{ github.sha }}'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
 
   cleanup-old-release-tags:
     needs: create-release-pr

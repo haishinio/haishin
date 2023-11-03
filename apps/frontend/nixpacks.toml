@@ -1,3 +1,0 @@
-[phases.setup]
-nixpkgsArchive = 'a3d8834fae7c986033e72db669239cd9c1cedc96'
-nixPkgs = ["..."]
