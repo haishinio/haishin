@@ -1,12 +1,12 @@
+FROM node:18-alpine AS node
 FROM oven/bun:alpine AS bun
 
-FROM bun AS builder
+FROM node AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 RUN pip3 install streamlink
 WORKDIR /app
-RUN bun install --global turbo
-RUN bunx @turbo/workspaces@latest convert ./ yarn --skip-install
+RUN yarn global add turbo
 COPY . .
 RUN turbo prune --scope @haishin/backend --docker
 
