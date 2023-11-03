@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - main
+  pull_request: {}
+
+permissions:
+  actions: write
+  contents: read
 
 env:
   CI: true
-
-permissions: write-all
 
 jobs:
   create-release-pr:
@@ -49,7 +52,6 @@ jobs:
   build-frontend:
     name: Build frontend
     runs-on: ubuntu-latest
-    if:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
@@ -159,7 +161,6 @@ jobs:
   build-backend:
     name: Build backend
     runs-on: ubuntu-latest
-    if:
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v4
