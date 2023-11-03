@@ -1,11 +1,11 @@
-FROM node:18-alpine AS node
 FROM oven/bun:alpine AS bun
 
-FROM node AS builder
+FROM bun AS builder
 RUN apk add --no-cache libc6-compat
 RUN apk update
 WORKDIR /app
-RUN yarn global add turbo
+RUN bun install --global turbo
+RUN bunx @turbo/workspaces@latest convert ./ yarn --skip-install
 COPY . .
 RUN turbo prune --scope @haishin/frontend --docker
 
