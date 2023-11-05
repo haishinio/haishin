@@ -56,6 +56,7 @@ ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
 ENV NODE_ENV="production"
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN bunx turbo run build --filter=frontend...
 
@@ -65,6 +66,7 @@ ENV FLY="true"
 ENV INTERNAL_PORT="3000"
 ENV PORT="3000"
 ENV NODE_ENV="production"
+ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
 # Don't run production as root
