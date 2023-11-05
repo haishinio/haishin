@@ -55,6 +55,8 @@ ENV TURBO_TEAM=$TURBO_TEAM
 ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
+ENV NODE_ENV="production"
+
 RUN bunx turbo run build --filter=frontend...
 
 FROM bun AS runner

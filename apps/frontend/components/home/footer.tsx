@@ -1,5 +1,5 @@
 function getVersion(): string {
-  return process.env.RAILWAY_ENVIRONMENT_NAME ?? '??'
+  return process.env.HAISHIN_VERSION ?? '??'
 }
 
 export default function Footer(): React.JSX.Element {
