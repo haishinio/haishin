@@ -70,9 +70,9 @@ WORKDIR /app
 
 # Copy our required files from the installer stage
 COPY --from=installer /app/apps/frontend ./apps/frontend
-COPY --from=installer /app/bun.lockb ./apps/bun.lockb
+COPY --from=installer /app/bun.lockb ./bun.lockb
 COPY --from=installer /app/node_modules ./node_modules
-COPY --from=installer /app/package.json ./apps/package.json
-COPY --from=installer /app/packages ./apps/packages
+COPY --from=installer /app/package.json ./package.json
+COPY --from=installer /app/packages ./packages
 
 CMD bun apps/frontend/.next/standalone/server.js
