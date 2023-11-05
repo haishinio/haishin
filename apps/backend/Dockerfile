@@ -64,6 +64,6 @@ ENV INTERNAL_PORT="8080"
 ENV PORT="8080"
 ENV NODE_ENV="production"
 
-CMD ["bun", "apps/backend/src/index.ts"]
+CMD ["bun", "apps/backend/src/app.ts"]
 
 EXPOSE 8080
