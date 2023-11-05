@@ -56,7 +56,6 @@ ARG TURBO_TOKEN
 ENV TURBO_TOKEN=$TURBO_TOKEN
 
 ENV NODE_ENV="production"
-ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN bunx turbo run build --filter=frontend...
 
@@ -66,19 +65,8 @@ ENV FLY="true"
 ENV INTERNAL_PORT="3000"
 ENV PORT="3000"
 ENV NODE_ENV="production"
-ENV NEXT_TELEMETRY_DISABLED=1
 
 WORKDIR /app
-# Don't run production as root
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-USER nextjs
-COPY --from=installer /app/apps/frontend/next.config.js .
-COPY --from=installer /app/apps/frontend/package.json .
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/.next/static ./apps/frontend/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/frontend/public ./apps/frontend/public
+COPY --from=installer . .
 
-CMD bun server.js
+CMD node apps/frontend/.next/standalone/server.js
