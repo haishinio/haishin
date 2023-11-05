@@ -1,24 +1,30 @@
-FROM node:18-alpine AS node
+# FROM node:18-alpine AS node
 FROM oven/bun:alpine AS bun
 
-FROM node AS builder
-RUN apk add --no-cache libc6-compat
-RUN apk update
-WORKDIR /app
-RUN yarn global add turbo
-COPY . .
-RUN turbo prune --scope @haishin/frontend --docker
+# FROM node AS builder
+# RUN apk add --no-cache libc6-compat
+# RUN apk update
+# WORKDIR /app
+# RUN yarn global add turbo
+# COPY . .
+# RUN turbo prune --scope @haishin/frontend --docker
 
 # Add lockfile and package.json's of isolated subworkspace
+# FROM bun AS installer
+# WORKDIR /app
+# # First install the dependencies (as they change less often)
+# COPY .gitignore .gitignore
+# COPY --from=builder /app/out/json/ .
+# COPY --from=builder /app/out/bun.lockb ./bun.lockb
+# RUN bun install --production
+# # Build the project
+# COPY --from=builder /app/out/full/ .
+
 FROM bun AS installer
 WORKDIR /app
 # First install the dependencies (as they change less often)
-COPY .gitignore .gitignore
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/bun.lockb ./bun.lockb
+COPY . .
 RUN bun install --production
-# Build the project
-COPY --from=builder /app/out/full/ .
 
 ARG GIT_SHA
 ENV HAISHIN_VERSION=$GIT_SHA

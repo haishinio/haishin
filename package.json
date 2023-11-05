@@ -6,7 +6,6 @@
   ],
   "version": "4.0.0",
   "private": true,
-  "packageManager": "yarn@1.22.19",
   "prettier": "prettier-config-standard",
   "scripts": {
     "faker": "turbo faker",
