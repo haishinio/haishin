@@ -39,7 +39,7 @@ RUN bun install -g turbo
 
 # First install the dependencies (as they change less often)
 COPY . .
-RUN bun install --production
+RUN bun install --frozen-lockfile
 
 # Use build args to enable remote caching
 ARG TURBO_TEAM

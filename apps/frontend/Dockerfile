@@ -28,7 +28,7 @@ RUN bun install -g turbo
 
 # First install the dependencies (as they change less often)
 COPY . .
-RUN bun install --production
+RUN bun install --frozen-lockfile
 
 ARG GIT_SHA
 ENV HAISHIN_VERSION=$GIT_SHA
