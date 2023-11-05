@@ -8,6 +8,7 @@ const moduleExports = {
   sentry: {
     hideSourceMaps: true
   },
+  output: 'standalone',
   experimental: {
     serverActions: true
   },
