@@ -10,7 +10,7 @@
     "lint": "eslint . --ext .ts",
     "build:types": "tsc --emitDeclarationOnly --declaration --declarationMap --outDir ./dist",
     "build:ts": "bun build ./src/index.ts --outdir ./dist --target browser --splitting",
-    "build": "bun run build:ts",
+    "build": "bun run build:types && bun run build:ts",
     "faker": "bun run build:types -- --watch & bun run build:ts -- --watch",
     "dev": "bun run build:types -- --watch & bun run build:ts -- --watch"
   },
