@@ -1,5 +1,15 @@
 # @haishin/frontend
 
+## 3.5.0
+
+### Minor Changes
+
+- [`1d5ba2c`](https://github.com/haishinio/haishin/commit/1d5ba2c0a5cf9f514ccf493c4c63cac92d6b09ed) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Playing around with fly migration
+
+### Patch Changes
+
+- [`859694f`](https://github.com/haishinio/haishin/commit/859694fa360147ff7973cbeada1a7e0dc4a7ef05) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update bun versions on railway
+
 ## 3.4.0
 
 ### Minor Changes
