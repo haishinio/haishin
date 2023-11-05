@@ -69,4 +69,4 @@ ENV NODE_ENV="production"
 WORKDIR /app
 COPY --from=installer . .
 
-CMD node apps/frontend/.next/standalone/server.js
+CMD bun apps/frontend/.next/standalone/server.js
