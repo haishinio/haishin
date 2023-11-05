@@ -22,6 +22,10 @@ FROM oven/bun:alpine AS bun
 
 FROM bun AS installer
 WORKDIR /app
+
+# Get turbo
+RUN bun install -g turbo
+
 # First install the dependencies (as they change less often)
 COPY . .
 RUN bun install --production

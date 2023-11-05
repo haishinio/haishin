@@ -34,6 +34,9 @@ FROM oven/bun:alpine AS bun
 FROM bun AS installer
 WORKDIR /app
 
+# Get turbo
+RUN bun install -g turbo
+
 # First install the dependencies (as they change less often)
 COPY . .
 RUN bun install --production
@@ -56,6 +59,11 @@ RUN pip3 install streamlink
 WORKDIR /app
 COPY --from=installer /app .
 
+ENV FLY="true"
+ENV INTERNAL_PORT="8080"
+ENV PORT="8080"
+ENV NODE_ENV="production"
+
 CMD ["bun", "apps/backend/src/index.ts"]
 
-EXPOSE 3000
+EXPOSE 8080
