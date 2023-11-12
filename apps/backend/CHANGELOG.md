@@ -1,5 +1,17 @@
 # @haishin/backend
 
+## 4.1.0
+
+### Minor Changes
+
+- [`1d5ba2c`](https://github.com/haishinio/haishin/commit/1d5ba2c0a5cf9f514ccf493c4c63cac92d6b09ed) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Playing around with fly migration
+
+### Patch Changes
+
+- [`a233609`](https://github.com/haishinio/haishin/commit/a2336097848424c163f35af847421635032f8e5b) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Attempt to fix memory issues
+
+- [`859694f`](https://github.com/haishinio/haishin/commit/859694fa360147ff7973cbeada1a7e0dc4a7ef05) Thanks [@tomouchuu](https://github.com/tomouchuu)! - Update bun versions on railway
+
 ## 4.0.0
 
 ### Major Changes
